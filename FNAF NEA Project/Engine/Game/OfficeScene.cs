@@ -16,14 +16,17 @@ namespace FNAF_NEA_Project.Engine.Game
         public ScrollSprite Freddy;
         public Clock Time = new Clock();
         public Power Power = new Power();
+        public DebugPosCollector DebugPosCollector = new DebugPosCollector(false);
 
         public OfficeScene()
         {
-            textures = new string[] { "freddy", "Office" };
+            textures = new string[] { "freddy", "Office", "Square64" };
         }
 
         public override void Initialize()
         {
+            DebugPosCollector.Initialize();
+
             // Time Init Logic
             Time.Initialize();
             Time.EndTimeReached += event_EndTimeReached;
@@ -36,6 +39,8 @@ namespace FNAF_NEA_Project.Engine.Game
         {
             // Should always be first!
             base.LoadContent();
+
+            DebugPosCollector.LoadContent();
 
             Time.LoadContent();
 
@@ -55,12 +60,14 @@ namespace FNAF_NEA_Project.Engine.Game
             DrawManager.EnqueueItem(Freddy);
             Time.Draw(gameTime);
             Power.Draw(gameTime);
+            DebugPosCollector.Draw(gameTime);
         }
 
         public override void Update(GameTime gameTime)
         {
             Time.Update(gameTime);
             Power.Update(gameTime);
+            DebugPosCollector.Update(gameTime);
         }
 
         private void event_EndTimeReached()
