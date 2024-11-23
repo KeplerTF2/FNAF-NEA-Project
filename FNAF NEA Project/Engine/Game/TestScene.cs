@@ -10,15 +10,19 @@ namespace FNAF_NEA_Project.Engine.Game
 {
     public class TestScene : Scene
     {
-        public SpriteItem Freddy;
+        public ScrollObject Scroll;
+        public ScrollSprite Office;
+        public ScrollSprite Freddy;
+        public Clock Time = new Clock();
 
         public TestScene()
         {
-            textures = new string[] { "freddy" };
+            textures = new string[] { "freddy", "Office" };
         }
 
         public override void Initialize()
         {
+            Time.Initialize();
         }
 
         public override void LoadContent()
@@ -26,16 +30,26 @@ namespace FNAF_NEA_Project.Engine.Game
             // Should always be first!
             base.LoadContent();
 
-            Freddy = new SpriteItem("freddy");
+            Time.LoadContent();
+
+            Scroll = new ScrollObject("Scroll", 0, 1280, -640, 0, true, true);
+            Office = new ScrollSprite("Office", "Scroll");
+            Freddy = new ScrollSprite("freddy", "Scroll");
+            Freddy.dp.Pos.X = 200;
+            Freddy.dp.Pos.Y = 200;
+            Freddy.ZIndex = 1;
         }
 
         public override void Draw(GameTime gameTime)
         {
+            DrawManager.EnqueueItem(Office);
             DrawManager.EnqueueItem(Freddy);
+            Time.Draw(gameTime);
         }
 
         public override void Update(GameTime gameTime)
         {
+            Time.Update(gameTime);
         }
     }
 }

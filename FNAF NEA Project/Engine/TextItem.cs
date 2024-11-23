@@ -1,47 +1,51 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.DXGI;
+using NEA_Project.Engine;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#nullable enable
-
-namespace NEA_Project.Engine
+namespace FNAF_NEA_Project.Engine
 {
-    public class SpriteItem : DrawItem
+    public class TextItem : DrawItem
     {
-        protected string textureName = "";
-        protected Texture2D? texture = null;
-        public Texture2D? Texture { get { return texture; } }
+        protected SpriteFont Font;
+        protected string FontName;
+        public string Text;
 
-        public SpriteItem() { }
-        public SpriteItem(string textureName)
+        public TextItem() { }
+
+        public TextItem(string FontName)
         {
-            this.textureName = textureName;
+            this.FontName = FontName;
             LoadContent();
         }
 
+        public TextItem(string FontName, string Text)
+        {
+            this.FontName = FontName;
+            this.Text = Text;
+            LoadContent();
+        }
 
         // What to load
         public override void LoadContent()
         {
-            texture = TextureManager.GetTexture(textureName);
+            Font = MonogameGraphics._content.Load<SpriteFont>(FontName);
         }
 
         // What to draw
         public override void Draw()
         {
-            if (texture != null && Visible)
+            if (Font != null && Visible)
             {
                 Vector2 scale = GlobalCamera.ApplyCameraScale(dp.Scale);
                 Vector2 pos = GlobalCamera.ApplyCameraPosition(dp.Pos);
                 float rot = GlobalCamera.ApplyCameraRotation(dp.Rot);
                 Color colour = GlobalCamera.ApplyCameraColour(dp.Colour);
-                MonogameGraphics._spriteBatch.Draw(texture, pos, dp.Size, colour, rot, dp.Origin, scale, dp.Effects, 1.0f);
+                MonogameGraphics._spriteBatch.DrawString(Font, Text, pos, colour, rot, dp.Origin, scale, SpriteEffects.None, 1);
             }
         }
     }

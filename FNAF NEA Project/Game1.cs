@@ -10,11 +10,14 @@ namespace FNAF_NEA_Project
     {
         TestScene testScene = new TestScene();
 
+        public static Game1 CurrentGame;
+
         public Game1()
         {
             MonogameGraphics.SetGraphicsDeviceManager(new GraphicsDeviceManager(this));
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            CurrentGame = this;
         }
 
         protected override void Initialize()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FNAF_NEA_Project.Engine
 {
-    internal interface IMonogame
+    public interface IMonogame
     {
         // Interface that interacts with Monogame's core procedures
 
