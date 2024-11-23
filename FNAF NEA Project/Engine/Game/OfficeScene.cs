@@ -17,6 +17,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public Clock Time = new Clock();
         public Power Power = new Power();
         public DebugPosCollector DebugPosCollector = new DebugPosCollector(false);
+        public MouseTrigger Trigger = new MouseTrigger(true, true);
 
         public OfficeScene()
         {
@@ -33,6 +34,8 @@ namespace FNAF_NEA_Project.Engine.Game
 
             // Power Init Logic
             Power.Initialize();
+
+            Trigger.Initialize();
         }
 
         public override void LoadContent()
@@ -45,6 +48,8 @@ namespace FNAF_NEA_Project.Engine.Game
             Time.LoadContent();
 
             Power.LoadContent();
+
+            Trigger.LoadContent();
 
             Scroll = new ScrollObject("Scroll", 0, 1280, -640, 0, true, true);
             Office = new ScrollSprite("Office", "Scroll");
@@ -61,6 +66,7 @@ namespace FNAF_NEA_Project.Engine.Game
             Time.Draw(gameTime);
             Power.Draw(gameTime);
             DebugPosCollector.Draw(gameTime);
+            Trigger.Draw(gameTime);
         }
 
         public override void Update(GameTime gameTime)
@@ -68,6 +74,7 @@ namespace FNAF_NEA_Project.Engine.Game
             Time.Update(gameTime);
             Power.Update(gameTime);
             DebugPosCollector.Update(gameTime);
+            Trigger.Update(gameTime);
         }
 
         private void event_EndTimeReached()
