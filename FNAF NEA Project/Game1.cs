@@ -6,11 +6,13 @@ using NEA_Project.Engine;
 
 namespace FNAF_NEA_Project
 {
+    // Delegates
+    public delegate void Notify();
+
     public class Game1 : Game
     {
-        TestScene testScene = new TestScene();
-
         public static Game1 CurrentGame;
+        private static Scene CurrentScene;
 
         public Game1()
         {
@@ -18,6 +20,15 @@ namespace FNAF_NEA_Project
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             CurrentGame = this;
+
+            CurrentScene = new OfficeScene();
+        }
+
+        public static void ChangeScene(Scene scene)
+        {
+            CurrentScene = scene;
+            scene.Initialize();
+            scene.LoadContent();
         }
 
         protected override void Initialize()
@@ -26,7 +37,7 @@ namespace FNAF_NEA_Project
             Window.AllowUserResizing = true;
             GlobalCamera.Size = new Vector2(1280, 720);
 
-            testScene.Initialize();
+            CurrentScene.Initialize();
 
             base.Initialize();
         }
@@ -41,7 +52,7 @@ namespace FNAF_NEA_Project
             TextureManager.SetContentManager(Content);
 
             // Scenes
-            testScene.LoadContent();
+            CurrentScene.LoadContent();
 
             // TODO: use this.Content to load your game content here
         }
@@ -54,7 +65,7 @@ namespace FNAF_NEA_Project
             // TODO: Add your update logic here
             GlobalCamera.WindowSize = Window.ClientBounds.Size;
 
-            testScene.Update(gameTime);
+            CurrentScene.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -64,7 +75,7 @@ namespace FNAF_NEA_Project
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            testScene.Draw(gameTime);
+            CurrentScene.Draw(gameTime);
 
             // This is the final step after enqueuing all draw requests
             MonogameGraphics._spriteBatch.Begin();

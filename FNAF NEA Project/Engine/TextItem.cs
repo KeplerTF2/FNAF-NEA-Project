@@ -30,6 +30,11 @@ namespace FNAF_NEA_Project.Engine
             LoadContent();
         }
 
+        public SpriteFont GetSpriteFont()
+        {
+            return Font;
+        }
+
         // What to load
         public override void LoadContent()
         {

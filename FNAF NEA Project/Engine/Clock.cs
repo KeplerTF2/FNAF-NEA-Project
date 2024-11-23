@@ -16,7 +16,10 @@ namespace FNAF_NEA_Project.Engine
         private int Minute = 0;
         private int Hour = 12;
         private bool IsAM = true;
-        private float TimeScale = 60f; //= 60f; // How much faster this clock should run compared to real time
+        private float TimeScale = 60f; // How much faster this clock should run compared to real time
+        private float EndTime = 360;
+
+        public event Notify EndTimeReached;
 
         public Clock()
         {
@@ -53,6 +56,9 @@ namespace FNAF_NEA_Project.Engine
                 // Sets the label
                 DrawText.Text = String.Format("{0:00}:{1:00} " + (IsAM ? "AM" : "PM"), Hour, Minute);
             }
+
+            // Checks if end time has been reached
+            if (ActualTime >= EndTime) EndTimeReached?.Invoke();
         }
     }
 }
