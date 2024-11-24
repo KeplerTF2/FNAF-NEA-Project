@@ -14,35 +14,43 @@ namespace FNAF_NEA_Project.Engine
     {
         public bool DrawDebug = false;
 
-        private bool Active = true;
-        private Rectangle Rect = new Rectangle(0, 0, 64, 64);
-        private RectItem DebugRect = new RectItem();
-        private bool MouseInside = false;
+        protected bool Active = true;
+        protected Rectangle Rect = new Rectangle(0, 0, 64, 64);
+        protected RectItem DebugRect = new RectItem();
+        protected bool MouseInside = false;
 
         public event Notify MouseEntered;
         public event Notify MouseLeft;
 
-        public MouseTrigger() { }
+        public MouseTrigger()
+        {
+            MonogameIManager.AddObject(this);
+        }
 
         public MouseTrigger(bool Active)
         {
             this.Active = Active;
+            MonogameIManager.AddObject(this);
         }
 
         public MouseTrigger(Rectangle Rect)
         {
             SetRect(Rect);
+            MonogameIManager.AddObject(this);
         }
 
         public MouseTrigger(Rectangle Rect, bool Active)
         {
             SetRect(Rect);
             this.Active = Active;
+            MonogameIManager.AddObject(this);
         }
 
         public MouseTrigger(bool Active, bool DrawDebug)
         {
             this.Active = Active;
+            this.DrawDebug = DrawDebug;
+            MonogameIManager.AddObject(this);
         }
 
         public MouseTrigger(Rectangle Rect, bool Active, bool DrawDebug)
@@ -50,6 +58,7 @@ namespace FNAF_NEA_Project.Engine
             SetRect(Rect);
             this.Active = Active;
             this.DrawDebug = DrawDebug;
+            MonogameIManager.AddObject(this);
         }
 
         public void SetRect(Rectangle Rect)
@@ -96,7 +105,7 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
-        public void Initialize()
+        public virtual void Initialize()
         {
             DebugRect.ZIndex = 31;
         }
@@ -106,7 +115,7 @@ namespace FNAF_NEA_Project.Engine
             DebugRect.LoadContent();
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             if (Active)
             {
@@ -115,9 +124,9 @@ namespace FNAF_NEA_Project.Engine
                 && Rect.Top   < (Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y)
                 && Rect.Bottom > (Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y))
                 {
-                    if (!MouseInside) { MouseInside = true; MouseEntered?.Invoke(); Debug.WriteLine("Mouse entered"); }
+                    if (!MouseInside) { MouseInside = true; MouseEntered?.Invoke(); }
                 }
-                else if (MouseInside) { MouseInside = false; MouseLeft?.Invoke(); Debug.WriteLine("Mouse left"); }
+                else if (MouseInside) { MouseInside = false; MouseLeft?.Invoke(); }
             }
         }
     }

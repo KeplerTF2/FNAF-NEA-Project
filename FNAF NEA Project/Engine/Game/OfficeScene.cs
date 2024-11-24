@@ -17,7 +17,8 @@ namespace FNAF_NEA_Project.Engine.Game
         public Clock Time = new Clock();
         public Power Power = new Power();
         public DebugPosCollector DebugPosCollector = new DebugPosCollector(false);
-        public MouseTrigger Trigger = new MouseTrigger(true, true);
+        public Button Trigger = new Button(new Rectangle(32, 64, 128, 32), true, true);
+        public Button Trigger2 = new Button(new Rectangle(40, 104, 120, 32), true, true);
 
         public OfficeScene()
         {
@@ -28,28 +29,17 @@ namespace FNAF_NEA_Project.Engine.Game
         {
             DebugPosCollector.Initialize();
 
-            // Time Init Logic
-            Time.Initialize();
             Time.EndTimeReached += event_EndTimeReached;
 
-            // Power Init Logic
-            Power.Initialize();
-
-            Trigger.Initialize();
+            // Debug
+            Trigger.MousePressed += event_TestTrigger;
+            Trigger2.MousePressed += event_TestTrigger2;
         }
 
         public override void LoadContent()
         {
             // Should always be first!
             base.LoadContent();
-
-            DebugPosCollector.LoadContent();
-
-            Time.LoadContent();
-
-            Power.LoadContent();
-
-            Trigger.LoadContent();
 
             Scroll = new ScrollObject("Scroll", 0, 1280, -640, 0, true, true);
             Office = new ScrollSprite("Office", "Scroll");
@@ -63,23 +53,25 @@ namespace FNAF_NEA_Project.Engine.Game
         {
             DrawManager.EnqueueItem(Office);
             DrawManager.EnqueueItem(Freddy);
-            Time.Draw(gameTime);
-            Power.Draw(gameTime);
-            DebugPosCollector.Draw(gameTime);
-            Trigger.Draw(gameTime);
         }
 
         public override void Update(GameTime gameTime)
         {
-            Time.Update(gameTime);
-            Power.Update(gameTime);
-            DebugPosCollector.Update(gameTime);
-            Trigger.Update(gameTime);
         }
 
         private void event_EndTimeReached()
         {
             Game1.ChangeScene(new NightWonScene());
+        }
+
+        private void event_TestTrigger()
+        {
+            Time.Update(new GameTime(new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 20)));
+        }
+
+        private void event_TestTrigger2()
+        {
+            Time.Update(new GameTime(new TimeSpan(0, 0, -20), new TimeSpan(0, 0, -20)));
         }
     }
 }

@@ -23,6 +23,7 @@ namespace FNAF_NEA_Project.Engine
 
         public Clock()
         {
+            MonogameIManager.AddObject(this);
         }
 
         public void Draw(GameTime gameTime)

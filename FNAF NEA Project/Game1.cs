@@ -1,4 +1,5 @@
-﻿using FNAF_NEA_Project.Engine.Game;
+﻿using FNAF_NEA_Project.Engine;
+using FNAF_NEA_Project.Engine.Game;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +15,9 @@ namespace FNAF_NEA_Project
         public static Game1 CurrentGame;
         private static Scene CurrentScene;
 
+        private static bool ShouldChangeScene = false;
+        private static Scene SceneToChangeTo;
+
         public Game1()
         {
             MonogameGraphics.SetGraphicsDeviceManager(new GraphicsDeviceManager(this));
@@ -26,9 +30,19 @@ namespace FNAF_NEA_Project
 
         public static void ChangeScene(Scene scene)
         {
-            CurrentScene = scene;
-            scene.Initialize();
-            scene.LoadContent();
+            SceneToChangeTo = scene;
+            ShouldChangeScene = true;
+        }
+
+        private static void ChangeScene()
+        {
+            MouseCursorManager.ResetData();
+            MonogameIManager.Clear();
+            CurrentScene = SceneToChangeTo;
+            CurrentScene.Initialize();
+            CurrentScene.LoadContent();
+            ShouldChangeScene = false;
+            SceneToChangeTo = null;
         }
 
         protected override void Initialize()
@@ -38,6 +52,8 @@ namespace FNAF_NEA_Project
             GlobalCamera.Size = new Vector2(1280, 720);
 
             CurrentScene.Initialize();
+
+            MonogameIManager.Initialize();
 
             base.Initialize();
         }
@@ -54,6 +70,8 @@ namespace FNAF_NEA_Project
             // Scenes
             CurrentScene.LoadContent();
 
+            MonogameIManager.LoadContent();
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -67,6 +85,11 @@ namespace FNAF_NEA_Project
 
             CurrentScene.Update(gameTime);
 
+            MonogameIManager.Update(gameTime);
+            MouseCursorManager.Update(gameTime);
+
+            if (ShouldChangeScene) ChangeScene();
+
             base.Update(gameTime);
         }
 
@@ -76,6 +99,8 @@ namespace FNAF_NEA_Project
 
             // TODO: Add your drawing code here
             CurrentScene.Draw(gameTime);
+
+            MonogameIManager.Draw(gameTime);
 
             // This is the final step after enqueuing all draw requests
             MonogameGraphics._spriteBatch.Begin();

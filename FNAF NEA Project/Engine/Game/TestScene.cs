@@ -22,15 +22,12 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public override void Initialize()
         {
-            Time.Initialize();
         }
 
         public override void LoadContent()
         {
             // Should always be first!
             base.LoadContent();
-
-            Time.LoadContent();
 
             Scroll = new ScrollObject("Scroll", 0, 1280, -640, 0, true, true);
             Office = new ScrollSprite("Office", "Scroll");
@@ -44,12 +41,10 @@ namespace FNAF_NEA_Project.Engine.Game
         {
             DrawManager.EnqueueItem(Office);
             DrawManager.EnqueueItem(Freddy);
-            Time.Draw(gameTime);
         }
 
         public override void Update(GameTime gameTime)
         {
-            Time.Update(gameTime);
         }
     }
 }

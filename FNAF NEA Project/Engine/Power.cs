@@ -17,7 +17,10 @@ namespace FNAF_NEA_Project.Engine
 
         public event Notify PowerOutReached;
 
-        public Power() { }
+        public Power() 
+        {
+            MonogameIManager.AddObject(this);
+        }
 
         public void Draw(GameTime gameTime)
         {

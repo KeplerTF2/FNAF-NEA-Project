@@ -16,10 +16,15 @@ namespace FNAF_NEA_Project.Engine
 
         public RectItem rect = new RectItem(64, 32);
 
-        public DebugPosCollector() { }
+        public DebugPosCollector() 
+        {
+            MonogameIManager.AddObject(this);
+        }
+
         public DebugPosCollector(bool Active)
         {
             this.Active = Active;
+            MonogameIManager.AddObject(this);
         }
 
         public void Draw(GameTime gameTime)
