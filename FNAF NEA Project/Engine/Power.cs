@@ -36,6 +36,7 @@ namespace FNAF_NEA_Project.Engine
             DrawText = new TextItem("DefaultFont", "100%");
             DrawText.dp.Scale = new Vector2(0.5f, 0.5f);
             DrawText.dp.Pos = new Vector2(10, 720 - 48);
+            DrawText.ZIndex = 5;
         }
 
         public void Update(GameTime gameTime)

@@ -17,12 +17,13 @@ namespace FNAF_NEA_Project.Engine.Game
         public Clock Time = new Clock();
         public Power Power = new Power();
         public DebugPosCollector DebugPosCollector = new DebugPosCollector(false);
+        public Cameras Cameras = new Cameras();
         public Button Trigger = new Button(new Rectangle(32, 64, 128, 32), true, true);
         public Button Trigger2 = new Button(new Rectangle(40, 104, 120, 32), true, true);
 
         public OfficeScene()
         {
-            textures = new string[] { "freddy", "Office", "Square64" };
+            textures = new string[] { "freddy", "Office", "Square64", "Camera", "CamIndicator" };
         }
 
         public override void Initialize()
