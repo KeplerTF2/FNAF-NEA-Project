@@ -17,7 +17,7 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public TestScene()
         {
-            textures = new string[] { "freddy", "Office" };
+            //textures = new string[] { "freddy", "Office" };
         }
 
         public override void Initialize()

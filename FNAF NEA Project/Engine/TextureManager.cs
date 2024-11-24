@@ -25,6 +25,7 @@ namespace NEA_Project.Engine
         public static bool AddTexture(string name)
         {
             if (content == null) { return false; }
+            if (Textures.ContainsKey(name)) { return false; }
 
             Texture2D texture = content.Load<Texture2D>(name);
             Textures.Add(name, texture);

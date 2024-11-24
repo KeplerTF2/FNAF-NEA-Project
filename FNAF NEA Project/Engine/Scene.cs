@@ -12,18 +12,11 @@ namespace NEA_Project.Engine
 {
     public class Scene : IMonogame
     {
-        protected string[] textures;
-
         public virtual void Initialize() { }
 
         public virtual void LoadContent() 
         {
             TextureManager.ResetTextures();
-
-            foreach (string name in textures)
-            {
-                TextureManager.AddTexture(name);
-            }
         }
 
         public virtual void Update(GameTime gameTime) { }

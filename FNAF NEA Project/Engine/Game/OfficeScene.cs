@@ -21,10 +21,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public Button Trigger = new Button(new Rectangle(32, 64, 128, 32), true, true);
         public Button Trigger2 = new Button(new Rectangle(40, 104, 120, 32), true, true);
 
-        public OfficeScene()
-        {
-            textures = new string[] { "freddy", "Office", "Square64", "Camera", "CamIndicator" };
-        }
+        public OfficeScene() { }
 
         public override void Initialize()
         {

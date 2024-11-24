@@ -29,6 +29,7 @@ namespace NEA_Project.Engine
         // What to load
         public override void LoadContent()
         {
+            TextureManager.AddTexture(textureName);
             texture = TextureManager.GetTexture(textureName);
         }
 

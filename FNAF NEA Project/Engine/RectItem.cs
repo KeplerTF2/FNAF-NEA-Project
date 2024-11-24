@@ -34,6 +34,7 @@ namespace FNAF_NEA_Project.Engine
         // What to load
         public override void LoadContent()
         {
+            TextureManager.AddTexture("Square64");
             texture = TextureManager.GetTexture("Square64");
         }
 

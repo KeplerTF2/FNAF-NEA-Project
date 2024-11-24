@@ -12,10 +12,7 @@ namespace FNAF_NEA_Project.Engine.Game
     {
         public TextItem text = new TextItem("DefaultFont", "You Win!");
 
-        public NightWonScene()
-        {
-            textures = new string[0];
-        }
+        public NightWonScene() { }
 
         public override void Initialize()
         {
