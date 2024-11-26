@@ -62,5 +62,15 @@ namespace FNAF_NEA_Project.Engine
                 }
             }
         }
+
+        public int GetNumOfFrames()
+        {
+            return FrameTextures.Length;
+        }
+
+        public Texture2D? GetFrameTexture(int frame)
+        {
+            return FrameTextures[frame];
+        }
     }
 }
