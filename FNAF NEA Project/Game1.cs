@@ -55,7 +55,7 @@ namespace FNAF_NEA_Project
 
             MonogameIManager.Initialize();
 
-            InputManager.AddKeyInput("fullscreen", Keys.F);
+            //InputManager.AddKeyInput("fullscreen", Keys.F);
 
             base.Initialize();
         }

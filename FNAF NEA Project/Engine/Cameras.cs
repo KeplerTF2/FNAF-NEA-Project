@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Input;
 
 namespace FNAF_NEA_Project.Engine
 {
@@ -35,6 +36,7 @@ namespace FNAF_NEA_Project.Engine
 
         public void Initialize()
         {
+            InputManager.AddKeyInput("FlipCam", Keys.S);
             CamTrigger.MouseEntered += event_FlipCamera;
         }
 
@@ -52,18 +54,8 @@ namespace FNAF_NEA_Project.Engine
         public void Update(GameTime gameTime)
         {
             CamBG.Update(gameTime);
-            /*
-            if (!TriggerAvailable)
-            {
-                TriggerTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (TriggerTimer >= 0.4f)
-                {
-                    TriggerAvailable = true;
-                    TriggerTimer = 0f;
-                    CamIndicator.Visible = true;
-                }
-            }
-            */
+
+            if (InputManager.GetKeyState("FlipCam").JustDown) { event_FlipCamera(); }
         }
 
         public void event_FlipCamera()
@@ -71,8 +63,6 @@ namespace FNAF_NEA_Project.Engine
             Using = !Using;
             CamBG.PlayBackwards = !Using;
             CamBG.SetPlaying(true);
-            //CamIndicator.Visible = false;
-            //TriggerAvailable = false;
         }
     }
 }
