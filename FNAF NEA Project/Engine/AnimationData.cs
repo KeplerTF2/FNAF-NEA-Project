@@ -50,6 +50,47 @@ namespace FNAF_NEA_Project.Engine
             SetFrameTextures();
         }
 
+        public AnimationData(string frame, int count)
+        {
+            SetFrameArray(frame, count);
+            FPS = 24;
+            DoesLoop = false;
+            SetFrameTextures();
+        }
+
+        public AnimationData(string frame, int count, bool doesLoop)
+        {
+            SetFrameArray(frame, count);
+            FPS = 24;
+            DoesLoop = doesLoop;
+            SetFrameTextures();
+        }
+
+        public AnimationData(string frame, int count, float fps)
+        {
+            SetFrameArray(frame, count);
+            FPS = fps;
+            DoesLoop = false;
+            SetFrameTextures();
+        }
+
+        public AnimationData(string frame, int count, float fPS, bool doesLoop)
+        {
+            SetFrameArray(frame, count);
+            FPS = fPS;
+            DoesLoop = doesLoop;
+            SetFrameTextures();
+        }
+
+        protected void SetFrameArray(string frame, int count)
+        {
+            Frames = new string[count];
+            for (int i = 0; i < count; i++)
+            {
+                Frames[i] = frame + i.ToString();
+            }
+        }
+
         protected void SetFrameTextures()
         {
             if (Frames != null)

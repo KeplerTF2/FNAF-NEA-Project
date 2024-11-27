@@ -44,7 +44,7 @@ namespace FNAF_NEA_Project.Engine.Game
             Scroll = new ScrollObject("Scroll", 0, 1280, -640, 0, true, true);
             Office = new ScrollSprite("Office", "Scroll");
             Freddy = new ScrollSprite("freddy", "Scroll");
-            sprite = new AnimatedSprite("test", new AnimationData(new string[] { "TestAnim/load1", "TestAnim/load2", "TestAnim/load3", "TestAnim/load4" }, 12, false));
+            //sprite = new AnimatedSprite("test", new AnimationData(new string[] { "TestAnim/load1", "TestAnim/load2", "TestAnim/load3", "TestAnim/load4" }, 12, false));
             Freddy.dp.Pos.X = 200;
             Freddy.dp.Pos.Y = 200;
             Freddy.ZIndex = 1;
@@ -54,12 +54,12 @@ namespace FNAF_NEA_Project.Engine.Game
         {
             DrawManager.EnqueueItem(Office);
             DrawManager.EnqueueItem(Freddy);
-            DrawManager.EnqueueItem(sprite);
+            //DrawManager.EnqueueItem(sprite);
         }
 
         public override void Update(GameTime gameTime)
         {
-            sprite.Update(gameTime);
+            //sprite.Update(gameTime);
         }
 
         private void event_EndTimeReached()
@@ -74,7 +74,7 @@ namespace FNAF_NEA_Project.Engine.Game
 
         private void event_TestTrigger2()
         {
-            sprite.Play();
+            //sprite.Play();
         }
     }
 }

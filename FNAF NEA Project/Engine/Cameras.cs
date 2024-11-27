@@ -14,7 +14,7 @@ namespace FNAF_NEA_Project.Engine
         private float TriggerTimer = 0f;
         private bool TriggerAvailable = true;
         private MouseTrigger CamTrigger = new MouseTrigger(new Rectangle(352, 655, 576, 66));
-        private SpriteItem CamBG;
+        private AnimatedSprite CamBG;
         private SpriteItem CamIndicator;
 
         public Cameras()
@@ -40,9 +40,9 @@ namespace FNAF_NEA_Project.Engine
 
         public void LoadContent()
         {
-            CamBG = new SpriteItem("Camera");
-            CamBG.Visible = false;
+            CamBG = new AnimatedSprite("flip", new AnimationData("CamLoad/", 5));
             CamBG.ZIndex = 2;
+            CamBG.dp.Scale = new Vector2(5f / 6f);
 
             CamIndicator = new SpriteItem("CamIndicator");
             CamIndicator.ZIndex = 5;
@@ -51,6 +51,8 @@ namespace FNAF_NEA_Project.Engine
 
         public void Update(GameTime gameTime)
         {
+            CamBG.Update(gameTime);
+            /*
             if (!TriggerAvailable)
             {
                 TriggerTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -61,17 +63,16 @@ namespace FNAF_NEA_Project.Engine
                     CamIndicator.Visible = true;
                 }
             }
+            */
         }
 
         public void event_FlipCamera()
         {
-            if (TriggerAvailable)
-            {
-                Using = !Using;
-                CamBG.Visible = Using;
-                CamIndicator.Visible = false;
-                TriggerAvailable = false;
-            }
+            Using = !Using;
+            CamBG.PlayBackwards = !Using;
+            CamBG.SetPlaying(true);
+            //CamIndicator.Visible = false;
+            //TriggerAvailable = false;
         }
     }
 }

@@ -119,14 +119,20 @@ namespace FNAF_NEA_Project.Engine
         {
             if (Active)
             {
-                if (Rect.Left < (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X)
-                && Rect.Right > (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X)
-                && Rect.Top   < (Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y)
-                && Rect.Bottom > (Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y))
+                if (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X >= 0
+                && Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X <= 1280
+                && Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y >= 0
+                && Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y <= 720)
                 {
-                    if (!MouseInside) { MouseInside = true; MouseEntered?.Invoke(); }
+                    if (Rect.Left < (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X)
+                    && Rect.Right > (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X)
+                    && Rect.Top < (Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y)
+                    && Rect.Bottom > (Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y))
+                    {
+                        if (!MouseInside) { MouseInside = true; MouseEntered?.Invoke(); }
+                    }
+                    else if (MouseInside) { MouseInside = false; MouseLeft?.Invoke(); }
                 }
-                else if (MouseInside) { MouseInside = false; MouseLeft?.Invoke(); }
             }
         }
     }

@@ -55,6 +55,8 @@ namespace FNAF_NEA_Project
 
             MonogameIManager.Initialize();
 
+            InputManager.AddKeyInput("fullscreen", Keys.F);
+
             base.Initialize();
         }
 
@@ -77,6 +79,8 @@ namespace FNAF_NEA_Project
 
         protected override void Update(GameTime gameTime)
         {
+            InputManager.Update(); // Should always come before any game logic!
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 

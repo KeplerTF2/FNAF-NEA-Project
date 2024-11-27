@@ -4,6 +4,7 @@ using NEA_Project.Engine;
 using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,9 +18,10 @@ namespace FNAF_NEA_Project.Engine
         protected Dictionary<string, AnimationData> Animations = new Dictionary<string, AnimationData>();
         protected string CurrentAnimationName = "";
         protected AnimationData? CurrentAnimation;
-        protected int Frame;
         protected double Time;
         protected bool Playing = false;
+        public bool PlayBackwards = false;
+        public int Frame;
 
         public event Notify AnimationFinished;
         public event Notify AnimationLooped;
@@ -117,8 +119,36 @@ namespace FNAF_NEA_Project.Engine
                 if (Time >= 1f / CurrentAnimation.FPS)
                 {
                     Time = 0;
-                    if (Frame < CurrentAnimation.GetNumOfFrames() - 1) Frame++;
-                    else Playing = CurrentAnimation.DoesLoop;
+                    if (PlayBackwards)
+                    {
+                        if (Frame > 0) Frame--;
+                        else if (CurrentAnimation.DoesLoop)
+                        {
+                            Playing = true;
+                            Frame = CurrentAnimation.GetNumOfFrames() - 1;
+                            AnimationLooped?.Invoke();
+                        }
+                        else
+                        {
+                            Playing = false;
+                            AnimationFinished?.Invoke();
+                        }
+                    }
+                    else
+                    {
+                        if (Frame < CurrentAnimation.GetNumOfFrames() - 1) Frame++;
+                        else if (CurrentAnimation.DoesLoop)
+                        {
+                            Playing = true;
+                            Frame = 0;
+                            AnimationLooped?.Invoke();
+                        }
+                        else
+                        {
+                            Playing = false;
+                            AnimationFinished?.Invoke();
+                        }
+                    }
                 }
             }
         }
@@ -132,13 +162,38 @@ namespace FNAF_NEA_Project.Engine
         {
             Playing = true;
             Time = 0;
+            if (PlayBackwards && CurrentAnimation != null) Frame = CurrentAnimation.GetNumOfFrames() - 1;
+            else Frame = 0;
+        }
+
+        public void PlayForwards()
+        {
+            Playing = true;
+            Time = 0;
             Frame = 0;
+            PlayBackwards = false;
+        }
+
+        public void PlayReversed()
+        {
+            Playing = true;
+            Time = 0;
+            if (CurrentAnimation != null) Frame = CurrentAnimation.GetNumOfFrames() - 1;
+            PlayBackwards = true;
         }
 
         public void Stop()
         {
             Playing = false;
             Time = 0;
+        }
+
+        public void Reset(bool ResetToStart)
+        {
+            Playing = false;
+            Time = 0;
+            if (ResetToStart) Frame = 0;
+            else if (CurrentAnimation != null) Frame = CurrentAnimation.GetNumOfFrames() - 1;
         }
 
         public bool IsPlaying()
