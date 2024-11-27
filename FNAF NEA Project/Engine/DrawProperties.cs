@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace NEA_Project.Engine
 {
+    // Contain basic properties of any DrawItem
     public class DrawProperties
     {
         public Vector2 Pos = new Vector2(0,0);

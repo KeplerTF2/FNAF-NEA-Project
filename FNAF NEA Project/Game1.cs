@@ -107,7 +107,7 @@ namespace FNAF_NEA_Project
             MonogameIManager.Draw(gameTime);
 
             // This is the final step after enqueuing all draw requests
-            MonogameGraphics._spriteBatch.Begin();
+            MonogameGraphics._spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
             DrawManager.Draw();
             MonogameGraphics._spriteBatch.End();
 

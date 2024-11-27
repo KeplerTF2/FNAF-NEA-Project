@@ -63,31 +63,37 @@ namespace FNAF_NEA_Project.Engine
             List.Add(ID, this);
         }
 
+        // Returns the list of all scrolling objects
         public static Dictionary<string, ScrollObject> GetList()
         {
             return List;
         }
 
+        // Sets the range of input scroll
         public void SetRange(int min, int max)
         {
             MinRange = min; MaxRange = max;
         }
 
+        // Returns the range of input scroll
         public (int, int) GetRange()
         {
             return (MinRange, MaxRange);
         }
 
+        // Sets the range of output scroll
         public void SetOut(int min, int max)
         {
             MinOut = min; MaxOut = max;
         }
 
+        // Returns the range of output scroll
         public (int, int) GetOut()
         {
             return (MinOut, MaxOut);
         }
 
+        // Changes the ID of the scroll object
         public void SetID(string iD)
         {
             List.Remove(ID);
@@ -95,11 +101,13 @@ namespace FNAF_NEA_Project.Engine
             List.Add(ID, this);
         }
 
+        // Return the ID of scroll object
         public string GetID()
         {
             return ID;
         }
 
+        // Returns the output scroll amount
         public float GetScrollAmount()
         {
             // Declares variables

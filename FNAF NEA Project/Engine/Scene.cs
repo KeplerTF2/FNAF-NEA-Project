@@ -10,6 +10,7 @@ using FNAF_NEA_Project.Engine;
 
 namespace NEA_Project.Engine
 {
+    // Used to seperate different areas of the game, e.g. the office, the main menu etc
     public class Scene : IMonogame
     {
         public virtual void Initialize() { }

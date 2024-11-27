@@ -38,6 +38,7 @@ namespace NEA_Project.Engine
 
         public Queue() { }
 
+        // Adds an item to the end of the queue
         public void Enqueue(dynamic item)
         {
             length++;
@@ -48,6 +49,7 @@ namespace NEA_Project.Engine
             else { head = newQueueItem; }
         }
 
+        // Removes and returns an item from the front of the queue
         public dynamic? Dequeue()
         {
             if (head == null) { return null; }

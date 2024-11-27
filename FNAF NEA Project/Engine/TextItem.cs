@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace FNAF_NEA_Project.Engine
 {
+    // Drawable text
     public class TextItem : DrawItem
     {
         protected SpriteFont Font;

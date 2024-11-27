@@ -61,6 +61,7 @@ namespace FNAF_NEA_Project.Engine
             MonogameIManager.AddObject(this);
         }
 
+        // Sets size and position of trigger
         public void SetRect(Rectangle Rect)
         {
             this.Rect = Rect;
@@ -68,11 +69,13 @@ namespace FNAF_NEA_Project.Engine
             DebugRect.dp.Pos = new Vector2(Rect.X, Rect.Y);
         }
 
+        // Returns if mouse is inside
         public bool IsMouseInTrigger()
         {
             return MouseInside;
         }
 
+        // Sets if active with the option to trigger events
         public void SetActive(bool Active, bool TriggerEvents)
         {
             this.Active = Active;
@@ -83,6 +86,7 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
+        // Sets if active without triggering events
         public void SetActive(bool Active)
         {
             this.Active = Active;
@@ -92,11 +96,13 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
+        // Returns active
         public bool GetActive()
         {
             return Active;
         }
 
+        // If DrawDebug is enabled, draw bounds of the trigger
         public void Draw(GameTime gameTime)
         {
             if (DrawDebug)
@@ -115,22 +121,27 @@ namespace FNAF_NEA_Project.Engine
             DebugRect.LoadContent();
         }
 
+        // Mains logic for checking if the mouse is in bounds
         public virtual void Update(GameTime gameTime)
         {
             if (Active)
             {
+                // Checks if mouse is in the window
                 if (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X >= 0
                 && Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X <= 1280
                 && Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y >= 0
                 && Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y <= 720)
                 {
+                    // Checks if mouse is in the trigger
                     if (Rect.Left < (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X)
                     && Rect.Right > (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X)
                     && Rect.Top < (Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y)
                     && Rect.Bottom > (Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y))
                     {
+                        // If so and previously wasn't, invoke MouseEntered event
                         if (!MouseInside) { MouseInside = true; MouseEntered?.Invoke(); }
                     }
+                    // If not and previously was, invoke MouseLeft event
                     else if (MouseInside) { MouseInside = false; MouseLeft?.Invoke(); }
                 }
             }

@@ -82,6 +82,7 @@ namespace FNAF_NEA_Project.Engine
             SetFrameTextures();
         }
 
+        // Automatically creates an array if the frame names follow the convention: X0, X1, X2 etc
         protected void SetFrameArray(string frame, int count)
         {
             Frames = new string[count];
@@ -91,6 +92,7 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
+        // Creates and loads all textures to and from the texture manager
         protected void SetFrameTextures()
         {
             if (Frames != null)
@@ -104,11 +106,13 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
+        // Returns length of animation in frames
         public int GetNumOfFrames()
         {
             return FrameTextures.Length;
         }
 
+        // Gets a specific frame
         public Texture2D? GetFrameTexture(int frame)
         {
             return FrameTextures[frame];

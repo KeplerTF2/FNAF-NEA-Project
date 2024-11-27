@@ -38,6 +38,8 @@ namespace FNAF_NEA_Project.Engine
             SetAnimation(animationName, animation);
         }
 
+        // Either sets the current animation data,
+        // Or if there is none of that name and data is provided, creates new animation data and sets current animation to that
         public void SetAnimation(string animationName)
         {
             if (Animations.ContainsKey(animationName))
@@ -110,40 +112,47 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
+        // Update logic, allows animations to play
         public void Update(GameTime gameTime)
         {
             // Logic for going through frames
             if (CurrentAnimation != null && Playing)
             {
+                // Adds to time
                 Time += gameTime.ElapsedGameTime.TotalSeconds;
-                if (Time >= 1f / CurrentAnimation.FPS)
+
+                // If time is above 1 / FPS, progress to next frame
+                if (Time >= 1d / CurrentAnimation.FPS)
                 {
                     Time = 0;
+
+                    // If playing backswards, subtracts a frame and checks if animation is done
                     if (PlayBackwards)
                     {
                         if (Frame > 0) Frame--;
-                        else if (CurrentAnimation.DoesLoop)
+                        else if (CurrentAnimation.DoesLoop) // Loops
                         {
                             Playing = true;
                             Frame = CurrentAnimation.GetNumOfFrames() - 1;
                             AnimationLooped?.Invoke();
                         }
-                        else
+                        else // Stops playing
                         {
                             Playing = false;
                             AnimationFinished?.Invoke();
                         }
                     }
+                    // Otherwise, add a frame and checks if animation is done
                     else
                     {
                         if (Frame < CurrentAnimation.GetNumOfFrames() - 1) Frame++;
-                        else if (CurrentAnimation.DoesLoop)
+                        else if (CurrentAnimation.DoesLoop) // Loops
                         {
                             Playing = true;
                             Frame = 0;
                             AnimationLooped?.Invoke();
                         }
-                        else
+                        else // Stops playing
                         {
                             Playing = false;
                             AnimationFinished?.Invoke();
@@ -153,11 +162,13 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
+        // Sets if playing without touching other variables
         public void SetPlaying(bool playing)
         {
             Playing = playing;
         }
 
+        // Plays from the start (or end if playing backwards)
         public void Play()
         {
             Playing = true;
@@ -166,6 +177,7 @@ namespace FNAF_NEA_Project.Engine
             else Frame = 0;
         }
 
+        // Plays forward from the start
         public void PlayForwards()
         {
             Playing = true;
@@ -174,6 +186,7 @@ namespace FNAF_NEA_Project.Engine
             PlayBackwards = false;
         }
 
+        // Plays backwards from the end
         public void PlayReversed()
         {
             Playing = true;
@@ -182,12 +195,14 @@ namespace FNAF_NEA_Project.Engine
             PlayBackwards = true;
         }
 
+        // Stops animation, but doesn't set the frame
         public void Stop()
         {
             Playing = false;
             Time = 0;
         }
 
+        // Stops animation and sets frame to the start (or end if playing backwards)
         public void Reset(bool ResetToStart)
         {
             Playing = false;
@@ -196,6 +211,7 @@ namespace FNAF_NEA_Project.Engine
             else if (CurrentAnimation != null) Frame = CurrentAnimation.GetNumOfFrames() - 1;
         }
 
+        // Returns playing
         public bool IsPlaying()
         {
             return Playing;

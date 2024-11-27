@@ -3,28 +3,50 @@ using NEA_Project.Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+
+public enum Tools
+{
+    CAMS, LEFT_DOOR, RIGHT_DOOR, FLASHLIGHT, GENERATOR
+}
 
 namespace FNAF_NEA_Project.Engine
 {
     public class Power : IMonogame
     {
         private TextItem DrawText;
+        private AnimatedSprite UsageBar;
         private float Amount = 101f;
-        private float Usage = 0f; // %/min
-        private float PassivePowerLoss = 5f; // %/min
+        private int Usage = 1; // Num of bars
+        private float PowerLoss = 7f; // %/min
+        private Dictionary<Tools, bool> ActiveTools = new Dictionary<Tools, bool>();
+
+        public static Power GlobalPower;
 
         public event Notify PowerOutReached;
 
         public Power() 
         {
             MonogameIManager.AddObject(this);
+            GlobalPower = this;
+        }
+
+        // Sets up dictionary that keeps track of whats being used
+        private void SetupDictionary()
+        {
+            ActiveTools.Add(Tools.CAMS, false);
+            ActiveTools.Add(Tools.LEFT_DOOR, false);
+            ActiveTools.Add(Tools.RIGHT_DOOR, false);
+            ActiveTools.Add(Tools.FLASHLIGHT, false);
+            ActiveTools.Add(Tools.GENERATOR, false);
         }
 
         public void Draw(GameTime gameTime)
         {
             DrawManager.EnqueueItem(DrawText);
+            DrawManager.EnqueueItem(UsageBar);
         }
 
         public void Initialize()
@@ -33,19 +55,37 @@ namespace FNAF_NEA_Project.Engine
 
         public void LoadContent()
         {
+            // Text setup logic
             DrawText = new TextItem("DefaultFont", "100%");
             DrawText.dp.Scale = new Vector2(0.5f, 0.5f);
-            DrawText.dp.Pos = new Vector2(10, 720 - 48);
+            DrawText.dp.Pos = new Vector2(16, 720 - 96);
             DrawText.ZIndex = 5;
+
+            // Usage bar sprite setup logic
+            UsageBar = new AnimatedSprite("usage", new AnimationData("PowerUsage/", 6));
+            UsageBar.dp.Scale = new Vector2(10f / 3f);
+            UsageBar.dp.Pos = new Vector2(16, 720 - 48);
+            UsageBar.ZIndex = 5;
+            UsageBar.Frame = 1;
         }
 
+        // Calculates new power
         public void Update(GameTime gameTime)
         {
-            CalculateUsage();
             float OldAmount = Amount;
-            Amount -= Usage / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (Amount <= 0) { PowerOutReached?.Invoke(); Amount = 0; }
+            // Remove Usage * PowerLoss per minute if Usage is above 0
+            if (Usage != 0)
+                Amount -= Usage * PowerLoss / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            // Otherwise add 20%/min to power
+            else
+                Amount += 20f / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Invokes power out event if amount reaches 0
+            if (Amount < 0) { PowerOutReached?.Invoke(); Amount = 0; }
+
+            // Caps power at 100% (effectively 101%, but just under so that the text says 100%)
+            if (Amount > 100.99f) { Amount = 100.99f; }
 
             // Change label if needed
             else if ((int)OldAmount != (int)Amount)
@@ -54,9 +94,25 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
-        private void CalculateUsage()
+        // Calculates how much power should be used
+        public void CalculateUsage()
         {
-            Usage = PassivePowerLoss;
+            Usage = 1;
+            foreach (Tools tool in ActiveTools.Keys)
+            {
+                if (tool != Tools.GENERATOR)
+                {
+                    if (ActiveTools[tool]) Usage++;
+                }
+                else if (ActiveTools[tool]) Usage -= 2;
+            }
+            UsageBar.Frame = Usage;
+        }
+
+        // Updates if a tool is being used or not
+        public void SetToolStatus(Tools tool, bool value)
+        {
+            ActiveTools[tool] = value;
         }
     }
 }

@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace FNAF_NEA_Project.Engine
 {
+    // Interface that interacts with Monogame's core procedures
+    // Implement on objects that utilise these so that they only have to be called once in the class itself,
+    // rather then for every instance of a class
     public interface IMonogame
     {
-        // Interface that interacts with Monogame's core procedures
-
         void Initialize();
 
         void LoadContent();

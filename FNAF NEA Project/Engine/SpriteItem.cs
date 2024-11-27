@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace NEA_Project.Engine
 {
+    // A drawable sprite with one texture
     public class SpriteItem : DrawItem
     {
         protected string textureName = "";

@@ -27,6 +27,7 @@ namespace FNAF_NEA_Project.Engine
             MonogameIManager.AddObject(this);
         }
 
+        // If active, draw the rectangle at where the mouse is
         public void Draw(GameTime gameTime)
         {
             if (Active)
@@ -37,17 +38,20 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
+        // Sets up rectangle
         public void Initialize()
         {
             rect.dp.Colour = new Color(Color.White, 0.5f);
             rect.ZIndex = 31;
         }
 
+        // Sets up rectangle
         public void LoadContent()
         {
             rect.LoadContent();
         }
 
+        // If active, print mouse co-ords (in terms of global camera size) to debug console
         public void Update(GameTime gameTime)
         {
             if (Active)

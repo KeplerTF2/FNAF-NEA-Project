@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace NEA_Project.Engine
 {
+    // Contains Monogame's classes for graphics,
+    // so that it can be accessed from any class
     public static class MonogameGraphics
     {
         public static GraphicsDeviceManager _graphics = null;

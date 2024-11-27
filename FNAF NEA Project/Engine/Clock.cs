@@ -37,6 +37,7 @@ namespace FNAF_NEA_Project.Engine
 
         public void LoadContent()
         {
+            // Text setup logic
             DrawText = new TextItem("DefaultFont", "12:00 AM");
             DrawText.dp.Scale = new Vector2(0.5f, 0.5f);
             DrawText.dp.Pos = new Vector2(10, 5);
@@ -45,8 +46,10 @@ namespace FNAF_NEA_Project.Engine
 
         public void Update(GameTime gameTime)
         {
+            // Adds to time
             Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
             float ActualTime = Time * TimeScale / 60f;
+
             if ((int)ActualTime % 60 != Minute) // Does a check to see if the label actually needs updating
             {
                 // Time calculations

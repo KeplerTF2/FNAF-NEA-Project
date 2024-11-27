@@ -56,14 +56,15 @@ namespace FNAF_NEA_Project.Engine
         public override void Initialize()
         {
             base.Initialize();
-
-            MouseCursorManager.AddButton(this);
+            MouseCursorManager.AddButton(this); // Adds the button to MouseCursorManager for the proper cursor image
         }
 
+        // Main logic
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
+            base.Update(gameTime); // Checks if the mouse is within the button bounds
 
+            // If valid, invoke relevant events if the left mouse button is clicked or not
             if (Active && MouseInside)
             {
                 if (Mouse.GetState().LeftButton == ButtonState.Pressed && !ButtonPressed) { ButtonPressed = true; MousePressed?.Invoke(); }

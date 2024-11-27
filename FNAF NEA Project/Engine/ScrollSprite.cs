@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace FNAF_NEA_Project.Engine
 {
+    // A sprite that moves along with a scroll object
     public class ScrollSprite : SpriteItem
     {
         public string ScrollObjectID = "";
