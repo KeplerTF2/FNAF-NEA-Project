@@ -9,6 +9,7 @@ namespace FNAF_NEA_Project
 {
     // Delegates
     public delegate void Notify();
+    public delegate void NotifyInt(int value);
 
     public class Game1 : Game
     {

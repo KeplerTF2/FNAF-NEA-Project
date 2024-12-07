@@ -12,7 +12,7 @@ namespace FNAF_NEA_Project.Engine
     {
         private int Size;
         private Dictionary<int, dynamic> ItemDict = new Dictionary<int, dynamic>();
-        private Dictionary<int, Dictionary<int, float>> ConnectionDict;
+        private Dictionary<int, Dictionary<int, float>> ConnectionDict = new Dictionary<int, Dictionary<int, float>>();
 
         public Graph() { }
 
@@ -20,6 +20,11 @@ namespace FNAF_NEA_Project.Engine
         {
             foreach (dynamic item in items)
                 AddItem(item);
+        }
+
+        public dynamic GetItem(int ID)
+        {
+            return ItemDict[ID];
         }
 
         public void AddItem(dynamic item)
@@ -89,6 +94,15 @@ namespace FNAF_NEA_Project.Engine
         public float GetConnection(int ID1, int ID2)
         {
             return ConnectionDict[ID1][ID2];
+        }
+
+        public int GetID(dynamic item)
+        {
+            foreach (int ID in ItemDict.Keys)
+            {
+                if (ItemDict[ID] == item) return ID;
+            }
+            return -1;
         }
 
         public Dictionary<int, dynamic> GetItemDict() { return ItemDict; }

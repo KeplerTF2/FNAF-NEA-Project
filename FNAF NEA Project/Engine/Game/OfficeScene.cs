@@ -18,8 +18,8 @@ namespace FNAF_NEA_Project.Engine.Game
         public Power Power = new Power();
         public DebugPosCollector DebugPosCollector = new DebugPosCollector(false);
         public Cameras Cameras = new Cameras();
-        public Button Trigger = new Button(new Rectangle(32, 64, 128, 32), true, true);
-        public Button Trigger2 = new Button(new Rectangle(40, 104, 120, 32), true, true);
+        public TemperatureGroups TempGroups = new TemperatureGroups();
+        public Building Building = new Building();
 
         public AnimatedSprite sprite;
 
@@ -30,10 +30,6 @@ namespace FNAF_NEA_Project.Engine.Game
             DebugPosCollector.Initialize();
 
             Time.EndTimeReached += event_EndTimeReached;
-
-            // Debug
-            Trigger.MousePressed += event_TestTrigger;
-            Trigger2.MousePressed += event_TestTrigger2;
         }
 
         public override void LoadContent()

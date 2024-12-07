@@ -25,11 +25,13 @@ namespace FNAF_NEA_Project.Engine
         private AnimatedSprite LoadAnim;
         private SpriteItem CamIndicator;
         private SpriteItem CamMap;
+        private TextItem CamLabel;
+        private CamButton[] CamButtons;
+        private int CurrentCamNum = 1;
 
-        // TEST CAMERA
-        private SingleCam Cam1 = new SingleCam(1, new Vector2(500, 500));
         public Cameras()
         {
+            InitCamButtons();
             MonogameIManager.AddObject(this);
         }
 
@@ -45,6 +47,7 @@ namespace FNAF_NEA_Project.Engine
             DrawManager.EnqueueItem(CamIndicator);
             DrawManager.EnqueueItem(LoadAnim);
             DrawManager.EnqueueItem(CamMap);
+            DrawManager.EnqueueItem(CamLabel);
         }
 
         public void Initialize()
@@ -63,13 +66,13 @@ namespace FNAF_NEA_Project.Engine
 
             // Creates the camera map sprite
             CamMap = new SpriteItem("CamMap");
-            CamMap.ZIndex = 2;
+            CamMap.ZIndex = 3;
             CamMap.dp.Scale = new Vector2(4);
             CamMap.Visible = false;
 
             // Creates the load animation sprite
             LoadAnim = new AnimatedSprite("load", new AnimationData(new string[] { "CamLoad/0", "CamLoad/1", "CamLoad/2", "CamLoad/2", "CamLoad/3" }, 12));
-            LoadAnim.ZIndex = 4;
+            LoadAnim.ZIndex = 2;
             LoadAnim.dp.Scale = new Vector2(4);
             LoadAnim.Frame = 4;
 
@@ -77,6 +80,13 @@ namespace FNAF_NEA_Project.Engine
             CamIndicator = new SpriteItem("CamIndicator");
             CamIndicator.ZIndex = 5;
             CamIndicator.dp.Pos = new Vector2((384 * 2) - (576 / 2), (216 * 4) - 68);
+
+            // Creates the text displaying which cam we are on
+            CamLabel = new TextItem("DefaultFont", "Cam 01 - Parts & Service");
+            CamLabel.ZIndex = 3;
+            CamLabel.Visible = false;
+            CamLabel.dp.Scale = new Vector2(0.5f);
+            CamLabel.dp.Pos = new Vector2(512, 32);
         }
 
         public void Update(GameTime gameTime)
@@ -87,6 +97,24 @@ namespace FNAF_NEA_Project.Engine
 
             // Keybind Input Logic
             if (InputManager.GetKeyState("FlipCam").JustDown) { event_FlipCamera(); }
+        }
+
+        public void InitCamButtons()
+        {
+            // Sets up cam buttons
+            CamButtons = new CamButton[7];
+            CamButtons[0] = new CamButton(1, new Vector2(1004, 408)); // Cam 01
+            CamButtons[1] = new CamButton(2, new Vector2(964, 592)); // Cam 02
+            CamButtons[2] = new CamButton(3, new Vector2(1338, 618)); // Cam 03
+            CamButtons[3] = new CamButton(4, new Vector2(1168, 678)); // Cam 04
+            CamButtons[4] = new CamButton(5, new Vector2(984, 700)); // Cam 05
+            CamButtons[5] = new CamButton(6, new Vector2(1070, 778)); // Cam 06
+            CamButtons[6] = new CamButton(7, new Vector2(1318, 752)); // Cam 06
+
+            foreach (CamButton cam in CamButtons)
+            {
+                cam.ButtonPressed += event_CamButtonPressed;
+            }
         }
 
         // Toggles whether cameras are up or not
@@ -108,7 +136,7 @@ namespace FNAF_NEA_Project.Engine
             {
                 State = CamState.GOING_DOWN;
                 LoadAnim.Reset(false);
-                CamMap.Visible = false;
+                SetCamsVisible(false);
             }
         }
 
@@ -118,9 +146,26 @@ namespace FNAF_NEA_Project.Engine
             if (Using) { 
                 State = CamState.UP;
                 LoadAnim.Play();
-                CamMap.Visible = true;
+                SetCamsVisible(true);
             }
             else { State = CamState.DOWN; }
+        }
+
+        public void SetCamsVisible(bool value)
+        {
+            CamMap.Visible = value;
+            CamLabel.Visible = value;
+            foreach (CamButton cam in CamButtons)
+            {
+                cam.SetVisible(value);
+            }
+        }
+
+        public void event_CamButtonPressed(int CamNum)
+        {
+            CurrentCamNum = CamNum;
+            LoadAnim.Play();
+            CamLabel.Text = "Cam " + string.Format("{0:00}", CamNum) + " - " + Building.GetRoom(CamNum).GetName();
         }
     }
 }

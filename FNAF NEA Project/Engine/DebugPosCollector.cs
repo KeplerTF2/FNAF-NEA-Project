@@ -14,7 +14,7 @@ namespace FNAF_NEA_Project.Engine
     {
         public bool Active = true;
 
-        public RectItem rect = new RectItem(64, 32);
+        public RectItem rect = new RectItem(64, 48);
 
         public DebugPosCollector() 
         {
