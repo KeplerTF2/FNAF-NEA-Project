@@ -24,6 +24,7 @@ namespace FNAF_NEA_Project.Engine
         private AnimatedSprite CamBG;
         private AnimatedSprite LoadAnim;
         private SpriteItem CamIndicator;
+        private SpriteItem CamMap;
 
         // TEST CAMERA
         private SingleCam Cam1 = new SingleCam(1, new Vector2(500, 500));
@@ -43,6 +44,7 @@ namespace FNAF_NEA_Project.Engine
             DrawManager.EnqueueItem(CamBG);
             DrawManager.EnqueueItem(CamIndicator);
             DrawManager.EnqueueItem(LoadAnim);
+            DrawManager.EnqueueItem(CamMap);
         }
 
         public void Initialize()
@@ -58,6 +60,12 @@ namespace FNAF_NEA_Project.Engine
             CamBG.ZIndex = 2;
             CamBG.dp.Scale = new Vector2(4);
             CamBG.AnimationFinished += event_FlipAnimFinished;
+
+            // Creates the camera map sprite
+            CamMap = new SpriteItem("CamMap");
+            CamMap.ZIndex = 2;
+            CamMap.dp.Scale = new Vector2(4);
+            CamMap.Visible = false;
 
             // Creates the load animation sprite
             LoadAnim = new AnimatedSprite("load", new AnimationData(new string[] { "CamLoad/0", "CamLoad/1", "CamLoad/2", "CamLoad/2", "CamLoad/3" }, 12));
@@ -100,6 +108,7 @@ namespace FNAF_NEA_Project.Engine
             {
                 State = CamState.GOING_DOWN;
                 LoadAnim.Reset(false);
+                CamMap.Visible = false;
             }
         }
 
@@ -109,6 +118,7 @@ namespace FNAF_NEA_Project.Engine
             if (Using) { 
                 State = CamState.UP;
                 LoadAnim.Play();
+                CamMap.Visible = true;
             }
             else { State = CamState.DOWN; }
         }
