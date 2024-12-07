@@ -17,6 +17,7 @@ namespace FNAF_NEA_Project.Engine
         protected bool Active = true;
         protected Rectangle Rect = new Rectangle(0, 0, 64, 64);
         protected RectItem DebugRect = new RectItem();
+        protected Color DebugColour = Color.White;
         protected bool MouseInside = false;
 
         public event Notify MouseEntered;
@@ -67,6 +68,11 @@ namespace FNAF_NEA_Project.Engine
             this.Rect = Rect;
             DebugRect.Size = new Vector2(Rect.Width, Rect.Height);
             DebugRect.dp.Pos = new Vector2(Rect.X, Rect.Y);
+        }
+
+        public void SetRectColour(Color colour)
+        {
+            DebugRect.dp.Colour = colour;
         }
 
         // Returns if mouse is inside

@@ -25,6 +25,8 @@ namespace FNAF_NEA_Project.Engine
         private AnimatedSprite LoadAnim;
         private SpriteItem CamIndicator;
 
+        // TEST CAMERA
+        private SingleCam Cam1 = new SingleCam(1, new Vector2(500, 500));
         public Cameras()
         {
             MonogameIManager.AddObject(this);
