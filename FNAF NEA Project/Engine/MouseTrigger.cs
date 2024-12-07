@@ -134,9 +134,9 @@ namespace FNAF_NEA_Project.Engine
             {
                 // Checks if mouse is in the window
                 if (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X >= 0
-                && Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X <= 1280
+                && Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X <= GlobalCamera.Size.X
                 && Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y >= 0
-                && Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y <= 720)
+                && Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y <= GlobalCamera.Size.Y)
                 {
                     // Checks if mouse is in the trigger
                     if (Rect.Left < (Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X)

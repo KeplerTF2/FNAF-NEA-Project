@@ -41,13 +41,14 @@ namespace FNAF_NEA_Project.Engine.Game
             // Should always be first!
             base.LoadContent();
 
-            Scroll = new ScrollObject("Scroll", 0, 1280, -640, 0, true, true);
+            Scroll = new ScrollObject("Scroll", 0, 1536, -768, 0, true, true);
             Office = new ScrollSprite("Office", "Scroll");
             Freddy = new ScrollSprite("freddy", "Scroll");
             //sprite = new AnimatedSprite("test", new AnimationData(new string[] { "TestAnim/load1", "TestAnim/load2", "TestAnim/load3", "TestAnim/load4" }, 12, false));
-            Freddy.dp.Pos.X = 200;
-            Freddy.dp.Pos.Y = 200;
+            Freddy.dp.Pos.X = 240;
+            Freddy.dp.Pos.Y = 240;
             Freddy.ZIndex = 1;
+            Office.dp.Scale = new Vector2(4);
         }
 
         public override void Draw(GameTime gameTime)

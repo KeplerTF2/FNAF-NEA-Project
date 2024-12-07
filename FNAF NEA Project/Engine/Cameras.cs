@@ -20,7 +20,7 @@ namespace FNAF_NEA_Project.Engine
         private static CamState State = CamState.DOWN;
         private float TriggerTimer = 0f;
         private bool TriggerAvailable = true;
-        private MouseTrigger CamTrigger = new MouseTrigger(new Rectangle(352, 655, 576, 66));
+        private MouseTrigger CamTrigger = new MouseTrigger(new Rectangle((384 * 2) - (576 / 2), (216 * 4) - 68, 576, 80));
         private AnimatedSprite CamBG;
         private AnimatedSprite LoadAnim;
         private SpriteItem CamIndicator;
@@ -56,19 +56,19 @@ namespace FNAF_NEA_Project.Engine
             // Creates the camera background sprite
             CamBG = new AnimatedSprite("flip", new AnimationData("CamFlip/", 5));
             CamBG.ZIndex = 2;
-            CamBG.dp.Scale = new Vector2(10f / 3f);
+            CamBG.dp.Scale = new Vector2(4);
             CamBG.AnimationFinished += event_FlipAnimFinished;
 
             // Creates the load animation sprite
             LoadAnim = new AnimatedSprite("load", new AnimationData(new string[] { "CamLoad/0", "CamLoad/1", "CamLoad/2", "CamLoad/2", "CamLoad/3" }, 12));
             LoadAnim.ZIndex = 4;
-            LoadAnim.dp.Scale = new Vector2(10f / 3f);
+            LoadAnim.dp.Scale = new Vector2(4);
             LoadAnim.Frame = 4;
 
             // Creates the trigger indicator sprite
             CamIndicator = new SpriteItem("CamIndicator");
             CamIndicator.ZIndex = 5;
-            CamIndicator.dp.Pos = new Vector2(352, 655);
+            CamIndicator.dp.Pos = new Vector2((384 * 2) - (576 / 2), (216 * 4) - 68);
         }
 
         public void Update(GameTime gameTime)

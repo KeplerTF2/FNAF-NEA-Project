@@ -49,7 +49,7 @@ namespace FNAF_NEA_Project
         {
             // TODO: Add your initialization logic here
             Window.AllowUserResizing = true;
-            GlobalCamera.Size = new Vector2(1280, 720);
+            GlobalCamera.Size = new Vector2(1536, 864);
 
             CurrentScene.Initialize();
 
