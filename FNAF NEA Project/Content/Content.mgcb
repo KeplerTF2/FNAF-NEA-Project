@@ -13,6 +13,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Audio/blip.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/blip.wav
+
+#begin Audio/camera_load_short.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/camera_load_short.mp3
+
 #begin Camera.png
 /importer:TextureImporter
 /processor:TextureProcessor

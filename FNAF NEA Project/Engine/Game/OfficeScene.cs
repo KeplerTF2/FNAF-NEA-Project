@@ -57,6 +57,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public override void Update(GameTime gameTime)
         {
             //sprite.Update(gameTime);
+            
         }
 
         private void event_EndTimeReached()

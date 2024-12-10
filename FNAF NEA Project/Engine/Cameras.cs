@@ -29,6 +29,10 @@ namespace FNAF_NEA_Project.Engine
         private CamButton[] CamButtons;
         private int CurrentCamNum = 1;
 
+        // Audio Effects
+        private AudioEffect FlipSound = new AudioEffect("CamFlip", "Audio/camera_load_short", 0.5f);
+        private AudioEffect BlipSound = new AudioEffect("CamBlip", "Audio/blip", 0.5f);
+
         public Cameras()
         {
             InitCamButtons();
@@ -122,6 +126,9 @@ namespace FNAF_NEA_Project.Engine
         {
             Using = !Using; // Sets Using variable
 
+            // Audio
+            FlipSound.Play();
+
             // Camera background sprite logic
             CamBG.PlayBackwards = !Using;
             CamBG.SetPlaying(true);
@@ -165,6 +172,7 @@ namespace FNAF_NEA_Project.Engine
         {
             CurrentCamNum = CamNum;
             LoadAnim.Play();
+            BlipSound.Play();
             CamLabel.Text = "Cam " + string.Format("{0:00}", CamNum) + " - " + Building.GetRoom(CamNum).GetName();
         }
     }
