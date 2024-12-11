@@ -100,13 +100,13 @@ namespace FNAF_NEA_Project.Engine
             Usage = 1;
             foreach (Tools tool in ActiveTools.Keys)
             {
-                if (tool != Tools.GENERATOR)
+                if (tool == Tools.GENERATOR)
                 {
-                    if (ActiveTools[tool]) Usage++;
+                    if (ActiveTools[tool]) Usage -= 2;
                 }
-                else if (ActiveTools[tool]) Usage -= 2;
+                else if (ActiveTools[tool]) Usage++;
             }
-            UsageBar.Frame = Usage;
+            UsageBar.Frame = Math.Max(Math.Min(Usage, 6), 0);
         }
 
         // Updates if a tool is being used or not

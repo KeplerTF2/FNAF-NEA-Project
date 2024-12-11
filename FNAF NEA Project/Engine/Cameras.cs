@@ -27,8 +27,9 @@ namespace FNAF_NEA_Project.Engine
         private SpriteItem CamMap;
         private TextItem CamLabel;
         private CamButton[] CamButtons;
-        private int CurrentCamNum = 1;
+        public static int CurrentCamNum = 1;
         private TemperatureSensor TempSensor = new TemperatureSensor();
+        private PowerGenerator PowerGen = new PowerGenerator();
 
         // Audio Effects
         private AudioEffect FlipSound = new AudioEffect("CamFlip", "Audio/camera_load_short", 0.5f);
@@ -164,6 +165,7 @@ namespace FNAF_NEA_Project.Engine
             CamMap.Visible = value;
             CamLabel.Visible = value;
             TempSensor.SetVisible(value);
+            PowerGen.SetVisible(value);
             foreach (CamButton cam in CamButtons)
             {
                 cam.SetVisible(value);
@@ -176,6 +178,7 @@ namespace FNAF_NEA_Project.Engine
             LoadAnim.Play();
             BlipSound.Play();
             TempSensor.SwitchCam(CamNum);
+            PowerGen.SwitchCams();
             CamLabel.Text = "Cam " + string.Format("{0:00}", CamNum) + " - " + Building.GetRoom(CamNum).GetName();
         }
     }

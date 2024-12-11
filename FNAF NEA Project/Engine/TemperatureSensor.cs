@@ -70,7 +70,7 @@ namespace FNAF_NEA_Project.Engine
             UpdateButtonEnabled();
         }
 
-        public void UpdateButtonEnabled()
+        private void UpdateButtonEnabled()
         {
             if (TemperatureGroups.IsOnCoolDown(CurrentTempGroup) && CanCool)
                 CanCool = false;
