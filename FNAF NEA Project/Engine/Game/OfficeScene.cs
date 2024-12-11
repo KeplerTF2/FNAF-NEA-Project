@@ -40,7 +40,6 @@ namespace FNAF_NEA_Project.Engine.Game
             Scroll = new ScrollObject("Scroll", 0, 1536, -768, 0, true, true);
             Office = new ScrollSprite("Office", "Scroll");
             Freddy = new ScrollSprite("freddy", "Scroll");
-            //sprite = new AnimatedSprite("test", new AnimationData(new string[] { "TestAnim/load1", "TestAnim/load2", "TestAnim/load3", "TestAnim/load4" }, 12, false));
             Freddy.dp.Pos.X = 240;
             Freddy.dp.Pos.Y = 240;
             Freddy.ZIndex = 1;

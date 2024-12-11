@@ -114,5 +114,21 @@ namespace FNAF_NEA_Project.Engine
         {
             ActiveTools[tool] = value;
         }
+
+        public void RemovePower(float value)
+        {
+            float OldAmount = Amount;
+
+            Amount -= value;
+
+            // Invokes power out event if amount reaches 0
+            if (Amount < 0) { PowerOutReached?.Invoke(); Amount = 0; }
+
+            // Change label if needed
+            else if ((int)OldAmount != (int)Amount)
+            {
+                DrawText.Text = (int)Amount + "%";
+            }
+        }
     }
 }
