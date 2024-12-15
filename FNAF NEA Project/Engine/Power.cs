@@ -17,11 +17,14 @@ namespace FNAF_NEA_Project.Engine
     public class Power : IMonogame
     {
         private TextItem DrawText;
+        private TextItem LossText;
         private AnimatedSprite UsageBar;
         private float Amount = 101f;
         private int Usage = 1; // Num of bars
-        private float PowerLoss = 7f; // %/min
+        private float PowerLoss = 8f; // %/min
         private Dictionary<Tools, bool> ActiveTools = new Dictionary<Tools, bool>();
+        private float FadeAmount = 1f;
+        private bool ShouldFade = false;
 
         public static Power GlobalPower;
 
@@ -46,6 +49,7 @@ namespace FNAF_NEA_Project.Engine
         public void Draw(GameTime gameTime)
         {
             DrawManager.EnqueueItem(DrawText);
+            DrawManager.EnqueueItem(LossText);
             DrawManager.EnqueueItem(UsageBar);
         }
 
@@ -60,6 +64,12 @@ namespace FNAF_NEA_Project.Engine
             DrawText.dp.Scale = new Vector2(0.5f, 0.5f);
             DrawText.dp.Pos = new Vector2(16, (216 * 4) - 102);
             DrawText.ZIndex = 6;
+
+            LossText = new TextItem("DefaultFont", "-1%");
+            LossText.dp.Scale = new Vector2(0.5f, 0.5f);
+            LossText.dp.Pos = new Vector2(112, (216 * 4) - 102);
+            LossText.ZIndex = 6;
+            LossText.dp.Colour = new Color(0);
 
             // Usage bar sprite setup logic
             UsageBar = new AnimatedSprite("usage", new AnimationData("PowerUsage/", 6));
@@ -91,6 +101,19 @@ namespace FNAF_NEA_Project.Engine
             else if ((int)OldAmount != (int)Amount)
             {
                 DrawText.Text = (int)Amount + "%";
+            }
+
+            // Updates fade amount
+            if (ShouldFade)
+            {
+                FadeAmount -= (float)gameTime.ElapsedGameTime.TotalSeconds / 2.5f;
+                LossText.dp.Colour = new Color(FadeAmount, FadeAmount / 4f, 0f, FadeAmount);
+                if (FadeAmount <= 0f)
+                {
+                    FadeAmount = 1f;
+                    LossText.dp.Colour = new Color(0);
+                    ShouldFade = false;
+                }
             }
         }
 
@@ -129,6 +152,12 @@ namespace FNAF_NEA_Project.Engine
             {
                 DrawText.Text = (int)Amount + "%";
             }
+
+            // Minus text
+            LossText.Text = "-" + (int)MathF.Max(value, 1f) + "%";
+            LossText.dp.Colour = new Color(1f, 0.25f, 0f, 1f);
+            ShouldFade = true;
+            FadeAmount = 1f;
         }
     }
 }

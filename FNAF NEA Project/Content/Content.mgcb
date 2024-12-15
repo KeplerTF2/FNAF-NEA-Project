@@ -37,6 +37,12 @@
 /processorParam:Quality=Best
 /build:Audio/doorFX.wav
 
+#begin Audio/HallwayFlash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/HallwayFlash.wav
+
 #begin Audio/IceBreak.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -331,6 +337,42 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:freddy.png
+
+#begin HallwayFlash.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HallwayFlash.png
+
+#begin HallwayLight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HallwayLight.png
+
+#begin HallwayLightCooldown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HallwayLightCooldown.png
 
 #begin Office.png
 /importer:TextureImporter

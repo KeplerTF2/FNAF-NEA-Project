@@ -21,6 +21,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public Building Building = new Building();
         public Door LeftDoor = new Door(DoorSide.LEFT);
         public Door RightDoor = new Door(DoorSide.RIGHT);
+        public HallwayLight HallwayLight = new HallwayLight();
         private AudioEffect Ambience1 = new AudioEffect("Ambience1", "Audio/nighttime_ambience");
         private AudioEffect Ambience2 = new AudioEffect("Ambience2", "Audio/camera_light");
         private bool AmbiencePlaying = false;
