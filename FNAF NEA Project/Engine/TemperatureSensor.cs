@@ -41,19 +41,19 @@ namespace FNAF_NEA_Project.Engine
         {
             // Load BG Sprite
             TempBarBGSprite = new SpriteItem("TempBar");
-            TempBarBGSprite.ZIndex = 3;
+            TempBarBGSprite.ZIndex = 4;
             TempBarBGSprite.dp.Scale = new Vector2(4);
             TempBarBGSprite.dp.Pos = new Vector2(1344, 32);
 
             // Load FG Sprite
             TempBarFGSprite = new SpriteItem("TempBarFull");
-            TempBarFGSprite.ZIndex = 3;
+            TempBarFGSprite.ZIndex = 4;
             TempBarFGSprite.dp.Scale = new Vector2(4);
             SetSensorReading(0);
 
             // Cool Disabled Button
             CoolDisabled = new SpriteItem("CoolDisabled");
-            CoolDisabled.ZIndex = 3;
+            CoolDisabled.ZIndex = 4;
             CoolDisabled.dp.Scale = new Vector2(4);
             CoolDisabled.dp.Pos = new Vector2(1344, 32);
             CoolDisabled.Visible = false;

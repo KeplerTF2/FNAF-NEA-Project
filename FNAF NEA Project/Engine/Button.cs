@@ -71,5 +71,13 @@ namespace FNAF_NEA_Project.Engine
                 else if (Mouse.GetState().LeftButton == ButtonState.Released && ButtonPressed) { ButtonPressed = false; MouseReleased?.Invoke(); }
             }
         }
+
+        public void SetPos(Vector2 pos)
+        {
+            Rectangle NewRect = Rect;
+            NewRect.X = (int)pos.X;
+            NewRect.Y = (int)pos.Y;
+            SetRect(NewRect);
+        }
     }
 }

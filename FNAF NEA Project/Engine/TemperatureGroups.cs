@@ -79,11 +79,11 @@ namespace FNAF_NEA_Project.Engine
         {
             // Inits relevant temperature groups
             Groups.Add('A', new Temperature(60f / 120f)); // Cam 03
-            Groups.Add('B', new Temperature(60f / 80f)); // Cam 01
+            Groups.Add('B', new Temperature(60f / 90f)); // Cam 01
             Groups.Add('C', new Temperature(60f / 100f)); // Cam 04
-            Groups.Add('D', new Temperature(60f / 100f)); // Cam 07
+            Groups.Add('D', new Temperature(60f / 110f)); // Cam 07
             Groups.Add('E', new Temperature(60f / 80f)); // Cam 06
-            Groups.Add('F', new Temperature(60f / 80f)); // Cam 02
+            Groups.Add('F', new Temperature(60f / 85f)); // Cam 02
             Groups.Add('G', new Temperature(60f / 60f)); // Cam 05
             Groups.Add('_', new Temperature()); // Office
 

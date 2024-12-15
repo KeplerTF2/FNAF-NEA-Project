@@ -41,7 +41,7 @@ namespace FNAF_NEA_Project.Engine
             DrawText = new TextItem("DefaultFont", "12:00 AM");
             DrawText.dp.Scale = new Vector2(0.5f, 0.5f);
             DrawText.dp.Pos = new Vector2(10, 5);
-            DrawText.ZIndex = 5;
+            DrawText.ZIndex = 6;
         }
 
         public void Update(GameTime gameTime)

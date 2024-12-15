@@ -56,21 +56,21 @@ namespace FNAF_NEA_Project.Engine
         {
             Text = new TextItem("DefaultFont", string.Format("{0:00}", Num));
             Text.dp.Pos = Pos + new Vector2(16, 8);
-            Text.ZIndex = 4;
+            Text.ZIndex = 5;
             Text.dp.Scale = new Vector2(1f / 3f);
             Text.Visible = false;
 
             Rect = new RectItem(64, 48);
             Rect.dp.Pos = Pos;
             Rect.dp.Colour = Color.Gray;
-            Rect.ZIndex = 4;
+            Rect.ZIndex = 5;
             Rect.Visible = false;
         }
 
         // Calculates new power
         public void Update(GameTime gameTime)
         {
-
+            
         }
 
         public void SetVisible(bool value)

@@ -59,13 +59,13 @@ namespace FNAF_NEA_Project.Engine
             DrawText = new TextItem("DefaultFont", "100%");
             DrawText.dp.Scale = new Vector2(0.5f, 0.5f);
             DrawText.dp.Pos = new Vector2(16, (216 * 4) - 102);
-            DrawText.ZIndex = 5;
+            DrawText.ZIndex = 6;
 
             // Usage bar sprite setup logic
             UsageBar = new AnimatedSprite("usage", new AnimationData("PowerUsage/", 6));
             UsageBar.dp.Scale = new Vector2(4);
             UsageBar.dp.Pos = new Vector2(16, (216 * 4) - 56);
-            UsageBar.ZIndex = 5;
+            UsageBar.ZIndex = 6;
             UsageBar.Frame = 1;
         }
 

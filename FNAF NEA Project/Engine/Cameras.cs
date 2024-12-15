@@ -49,6 +49,10 @@ namespace FNAF_NEA_Project.Engine
 
         public void Draw(GameTime gameTime)
         {
+            // Updates animated sprites
+            CamBG.Update(gameTime);
+            LoadAnim.Update(gameTime);
+
             DrawManager.EnqueueItem(CamBG);
             DrawManager.EnqueueItem(CamIndicator);
             DrawManager.EnqueueItem(LoadAnim);
@@ -66,30 +70,30 @@ namespace FNAF_NEA_Project.Engine
         {
             // Creates the camera background sprite
             CamBG = new AnimatedSprite("flip", new AnimationData("CamFlip/", 5));
-            CamBG.ZIndex = 2;
+            CamBG.ZIndex = 3;
             CamBG.dp.Scale = new Vector2(4);
             CamBG.AnimationFinished += event_FlipAnimFinished;
 
             // Creates the camera map sprite
             CamMap = new SpriteItem("CamMap");
-            CamMap.ZIndex = 3;
+            CamMap.ZIndex = 4;
             CamMap.dp.Scale = new Vector2(4);
             CamMap.Visible = false;
 
             // Creates the load animation sprite
             LoadAnim = new AnimatedSprite("load", new AnimationData(new string[] { "CamLoad/0", "CamLoad/1", "CamLoad/2", "CamLoad/2", "CamLoad/3" }, 12));
-            LoadAnim.ZIndex = 2;
+            LoadAnim.ZIndex = 3;
             LoadAnim.dp.Scale = new Vector2(4);
             LoadAnim.Frame = 4;
 
             // Creates the trigger indicator sprite
             CamIndicator = new SpriteItem("CamIndicator");
-            CamIndicator.ZIndex = 5;
+            CamIndicator.ZIndex = 6;
             CamIndicator.dp.Pos = new Vector2((384 * 2) - (576 / 2), (216 * 4) - 68);
 
             // Creates the text displaying which cam we are on
             CamLabel = new TextItem("DefaultFont", "Cam 01 - Parts & Service");
-            CamLabel.ZIndex = 3;
+            CamLabel.ZIndex = 4;
             CamLabel.Visible = false;
             CamLabel.dp.Scale = new Vector2(0.5f);
             CamLabel.dp.Pos = new Vector2(512, 32);
@@ -97,10 +101,6 @@ namespace FNAF_NEA_Project.Engine
 
         public void Update(GameTime gameTime)
         {
-            // Updates animated sprites
-            CamBG.Update(gameTime);
-            LoadAnim.Update(gameTime);
-
             // Keybind Input Logic
             if (InputManager.GetKeyState("FlipCam").JustDown) { event_FlipCamera(); }
         }
