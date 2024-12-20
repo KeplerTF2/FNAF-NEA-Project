@@ -18,15 +18,18 @@ namespace FNAF_NEA_Project.Engine
     {
         private TextItem DrawText;
         private TextItem LossText;
+        private RectItem BlackOutSprite;
         private AnimatedSprite UsageBar;
-        private float Amount = 101f;
+        private float Amount = 101f;//101f;
         private int Usage = 1; // Num of bars
         private float PowerLoss = 8f; // %/min
         private Dictionary<Tools, bool> ActiveTools = new Dictionary<Tools, bool>();
         private float FadeAmount = 1f;
         private bool ShouldFade = false;
+        private AudioEffect PowerOutSound = new AudioEffect("PowerOutSound", "Audio/powerdown", 0.75f);
 
         public static Power GlobalPower;
+        public static bool PowerOut = false;
 
         public event Notify PowerOutReached;
 
@@ -51,10 +54,12 @@ namespace FNAF_NEA_Project.Engine
             DrawManager.EnqueueItem(DrawText);
             DrawManager.EnqueueItem(LossText);
             DrawManager.EnqueueItem(UsageBar);
+            DrawManager.EnqueueItem(BlackOutSprite);
         }
 
         public void Initialize()
         {
+            SetupDictionary();
         }
 
         public void LoadContent()
@@ -77,30 +82,58 @@ namespace FNAF_NEA_Project.Engine
             UsageBar.dp.Pos = new Vector2(16, (216 * 4) - 56);
             UsageBar.ZIndex = 6;
             UsageBar.Frame = 1;
+
+            // Sprite that darkens the player view
+            BlackOutSprite = new RectItem(1536 + 1, 864 + 1);
+            BlackOutSprite.ZIndex = 10;
+            BlackOutSprite.dp.Colour = new Color(0f, 0f, 0f, 0.5f);
+            BlackOutSprite.Visible = false;
         }
 
         // Calculates new power
         public void Update(GameTime gameTime)
         {
-            float OldAmount = Amount;
-
-            // Remove Usage * PowerLoss per minute if Usage is above 0
-            if (Usage != 0)
-                Amount -= Usage * PowerLoss / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            // Otherwise add 20%/min to power
-            else
-                Amount += 20f / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // Invokes power out event if amount reaches 0
-            if (Amount < 0) { PowerOutReached?.Invoke(); Amount = 0; }
-
-            // Caps power at 100% (effectively 101%, but just under so that the text says 100%)
-            if (Amount > 100.99f) { Amount = 100.99f; }
-
-            // Change label if needed
-            else if ((int)OldAmount != (int)Amount)
+            // Don't do power logic if power is out
+            if (!PowerOut)
             {
-                DrawText.Text = (int)Amount + "%";
+                float OldAmount = Amount;
+
+                // Remove Usage * PowerLoss per minute if Usage is above 0
+                if (Usage != 0)
+                    Amount -= Usage * PowerLoss / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                // Otherwise add 20%/min to power
+                else
+                    Amount += 20f / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // Invokes power out event if amount reaches 0
+                if (Amount < 0)
+                {
+                    // Core power outage logic
+                    Amount = 0;
+                    PowerOutReached?.Invoke();
+                    PowerOut = true;
+
+                    // Plays power outage sound
+                    PowerOutSound.Play();
+
+                    // Sets UI to be invisible
+                    LossText.Visible = false;
+                    DrawText.Visible = false;
+                    UsageBar.Visible = false;
+
+                    // Darkens the screen
+                    BlackOutSprite.Visible = true;
+
+                }
+
+                // Caps power at 100% (effectively 101%, but just under so that the text says 100%)
+                if (Amount > 100.99f) { Amount = 100.99f; }
+
+                // Change label if needed
+                else if ((int)OldAmount != (int)Amount)
+                {
+                    DrawText.Text = (int)Amount + "%";
+                }
             }
 
             // Updates fade amount
@@ -120,16 +153,30 @@ namespace FNAF_NEA_Project.Engine
         // Calculates how much power should be used
         public void CalculateUsage()
         {
+            // Base usage
             Usage = 1;
+
+            // Add one usage per tool
             foreach (Tools tool in ActiveTools.Keys)
             {
-                if (tool == Tools.GENERATOR)
-                {
-                    if (ActiveTools[tool]) Usage -= 2;
-                }
-                else if (ActiveTools[tool]) Usage++;
+                if ((tool != Tools.GENERATOR) && ActiveTools[tool]) Usage++;
             }
+
+            // Handle power generator seperately
+            if (ActiveTools[Tools.GENERATOR])
+            {
+                if (Usage > 2) Usage--;
+                else Usage = 0;
+            }
+
+            // Show correct sprite
             UsageBar.Frame = Math.Max(Math.Min(Usage, 6), 0);
+        }
+
+        // Returns current power usage
+        public int GetUsage()
+        {
+            return Usage;
         }
 
         // Updates if a tool is being used or not

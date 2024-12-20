@@ -65,5 +65,11 @@ namespace FNAF_NEA_Project.Engine
             // Checks if end time has been reached
             if (ActualTime >= EndTime) EndTimeReached?.Invoke();
         }
+
+        public void PowerOutage()
+        {
+            // Make the time invisible, but still have it count up
+            DrawText.Visible = false;
+        }
     }
 }

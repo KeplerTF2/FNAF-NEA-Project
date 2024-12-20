@@ -23,6 +23,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public Door RightDoor = new Door(DoorSide.RIGHT);
         public HallwayLight HallwayLight = new HallwayLight();
         private AudioEffect Ambience1 = new AudioEffect("Ambience1", "Audio/nighttime_ambience");
+        private AudioEffect Ambience1Amp = new AudioEffect("Ambience1Amp", "Audio/nighttime_ambience");
         private AudioEffect Ambience2 = new AudioEffect("Ambience2", "Audio/camera_light");
         private bool AmbiencePlaying = false;
 
@@ -35,6 +36,7 @@ namespace FNAF_NEA_Project.Engine.Game
             DebugPosCollector.Initialize();
 
             Time.EndTimeReached += event_EndTimeReached;
+            Power.PowerOutReached += event_PowerOutage;
         }
 
         public override void LoadContent()
@@ -69,14 +71,20 @@ namespace FNAF_NEA_Project.Engine.Game
             Game1.ChangeScene(new NightWonScene());
         }
 
-        private void event_TestTrigger()
+        private void event_PowerOutage()
         {
-            Time.Update(new GameTime(new TimeSpan(0, 0, 20), new TimeSpan(0, 0, 20)));
-        }
+            // Calls power outage on relevant objects
+            HallwayLight.PowerOutage();
+            Cameras.PowerOutage();
+            LeftDoor.PowerOutage();
+            RightDoor.PowerOutage();
+            Time.PowerOutage();
 
-        private void event_TestTrigger2()
-        {
-            //sprite.Play();
+            // Stops ambient light sound
+            Ambience2.Stop();
+
+            // Amplifies ambient outside sound by creating another (you can't set volume above 1)
+            Ambience1Amp.Play(true);
         }
     }
 }

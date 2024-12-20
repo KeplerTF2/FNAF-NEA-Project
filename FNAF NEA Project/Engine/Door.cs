@@ -29,6 +29,7 @@ namespace FNAF_NEA_Project.Engine
         private Button DoorButton = new Button(new Rectangle(384, 192, 64, 64));
         private ScrollSprite ButtonClosedSprite;
         private ScrollSprite ButtonOpenSprite;
+        private ScrollSprite ButtonInactiveSprite;
         private static Dictionary<DoorSide, bool> SideClosed = new Dictionary<DoorSide, bool>() { { DoorSide.LEFT, false }, { DoorSide.RIGHT, false } };
         private ScrollObject Scroll;
         private AudioEffect DoorSound;
@@ -53,6 +54,7 @@ namespace FNAF_NEA_Project.Engine
             DrawManager.EnqueueItem(DoorSprite);
             DrawManager.EnqueueItem(ButtonClosedSprite);
             DrawManager.EnqueueItem(ButtonOpenSprite);
+            DrawManager.EnqueueItem(ButtonInactiveSprite);
         }
 
         public void Initialize()
@@ -82,6 +84,12 @@ namespace FNAF_NEA_Project.Engine
             ButtonOpenSprite.dp.Scale = new Vector2(4);
             ButtonOpenSprite.ZIndex = 2;
 
+            ButtonInactiveSprite = new ScrollSprite("DoorButtonInactive", "Scroll");
+            ButtonInactiveSprite.dp.Pos = GetButtonPos();
+            ButtonInactiveSprite.dp.Scale = new Vector2(4);
+            ButtonInactiveSprite.ZIndex = 2;
+            ButtonInactiveSprite.Visible = false;
+
             // Audio
             DoorSound.SetVolume(0.35f);
         }
@@ -89,8 +97,11 @@ namespace FNAF_NEA_Project.Engine
         public void Update(GameTime gameTime)
         {
             DoorButton.SetPos(GetButtonPos() + new Vector2(Scroll.GetScrollAmount(), 0));
-            if (DoorButton.GetActive() == Cameras.IsUsing())
-                DoorButton.SetActive(!Cameras.IsUsing());
+            if (!Power.PowerOut)
+            {
+                if (DoorButton.GetActive() == Cameras.IsUsing())
+                    DoorButton.SetActive(!Cameras.IsUsing());
+            }
         }
 
         public static bool IsSideClosed(DoorSide side)
@@ -159,6 +170,18 @@ namespace FNAF_NEA_Project.Engine
                 return new Vector2(704, 320);
             else
                 return new Vector2(1536, 320);
+        }
+
+        public void PowerOutage()
+        {
+            if (State == DoorState.CLOSED || State == DoorState.CLOSING)
+            {
+                event_DoorButtonPressed();
+            }
+            DoorButton.SetActive(false);
+            ButtonClosedSprite.Visible = false;
+            ButtonOpenSprite.Visible = false;
+            ButtonInactiveSprite.Visible = true;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using NEA_Project.Engine;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace FNAF_NEA_Project.Engine
         private Button GenButton = new Button(new Rectangle(1024, 64, 256, 128));
         private AudioEffect PowerGenPressSound = new AudioEffect("PowerGenPressSound", "Audio/press1");
         private AudioEffect PowerGenOnSound = new AudioEffect("PowerGenOnSound", "Audio/send");
+        private SoundEffectInstance PowerGenOnInstance;
         private bool CamUp = false;
         private bool Generating = false;
 
@@ -53,13 +55,15 @@ namespace FNAF_NEA_Project.Engine
             // Audio
             PowerGenPressSound.SetVolume(0.75f);
             PowerGenOnSound.SetVolume(0.15f);
+            PowerGenOnInstance = PowerGenOnSound.GetInstance();
 
             SetVisible(false);
         }
 
         public void Update(GameTime gameTime)
         {
-            //UpdateButtonEnabled();
+            // Updates pitch of the sound based off power usage
+            PowerGenOnInstance.Pitch = Power.GlobalPower.GetUsage() * -0.1f;
         }
 
         private void UpdateButtonEnabled()

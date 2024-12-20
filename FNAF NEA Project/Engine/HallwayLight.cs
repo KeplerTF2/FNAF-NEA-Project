@@ -73,8 +73,11 @@ namespace FNAF_NEA_Project.Engine
         public void Update(GameTime gameTime)
         {
             FlashButton.SetPos(new Vector2(1088 + Scroll.GetScrollAmount(), 64));
-            if (FlashButton.GetActive() == Cameras.IsUsing())
-                FlashButton.SetActive(!Cameras.IsUsing());
+            if (!Power.PowerOut)
+            {
+                if (FlashButton.GetActive() == Cameras.IsUsing())
+                    FlashButton.SetActive(!Cameras.IsUsing());
+            }
 
             if (OnCoolDown)
             {
@@ -85,8 +88,11 @@ namespace FNAF_NEA_Project.Engine
                 {
                     OnCoolDown = false;
                     CoolDown = 0f;
-                    FlashButtonSprite.Visible = true;
-                    FlashButtonUsedSprite.Visible = false;
+                    if (!Power.PowerOut)
+                    {
+                        FlashButtonSprite.Visible = true;
+                        FlashButtonUsedSprite.Visible = false;
+                    }
                     HallwaySprite.dp.Colour = new Color(0);
                 }
             }
@@ -111,6 +117,13 @@ namespace FNAF_NEA_Project.Engine
                 // Audio
                 FlashSound.Play();
             }
+        }
+
+        public void PowerOutage()
+        {
+            FlashButton.SetActive(false);
+            FlashButtonSprite.Visible = false;
+            FlashButtonUsedSprite.Visible = true;
         }
     }
 }

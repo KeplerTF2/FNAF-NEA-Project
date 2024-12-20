@@ -102,7 +102,7 @@ namespace FNAF_NEA_Project.Engine
         public void Update(GameTime gameTime)
         {
             // Keybind Input Logic
-            if (InputManager.GetKeyState("FlipCam").JustDown) { event_FlipCamera(); }
+            if (InputManager.GetKeyState("FlipCam").JustDown && !Power.PowerOut) { event_FlipCamera(); }
         }
 
         public void InitCamButtons()
@@ -180,6 +180,16 @@ namespace FNAF_NEA_Project.Engine
             TempSensor.SwitchCam(CamNum);
             PowerGen.SwitchCams();
             CamLabel.Text = "Cam " + string.Format("{0:00}", CamNum) + " - " + Building.GetRoom(CamNum).GetName();
+        }
+
+        public void PowerOutage()
+        {
+            if (Using)
+            {
+                event_FlipCamera();
+            }
+            CamIndicator.Visible = false;
+            CamTrigger.SetActive(false);
         }
     }
 }
