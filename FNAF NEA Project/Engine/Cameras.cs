@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 
-enum CamState
+public enum CamState
 {
     DOWN, GOING_UP, UP, GOING_DOWN
 }
@@ -31,8 +31,19 @@ namespace FNAF_NEA_Project.Engine
         private TemperatureSensor TempSensor = new TemperatureSensor();
         private PowerGenerator PowerGen = new PowerGenerator();
 
+        // Vars for scrolling sprites
+        private AnimatedSprite RoomSprite;
+        private static float ScrollAmount = 0f;
+        private float ScrollSpeed = 384f / 4f; // Pixels per second
+        private float MaxScrollAmount = -384f;
+        private float ScrollWait = 0f;
+        private float MaxScrollWait = 4f;
+        private bool IsScrolling = false;
+        private bool ScrollRight = true; // If false, scroll left
+
         // Audio Effects
         private AudioEffect FlipSound = new AudioEffect("CamFlip", "Audio/camera_load_short", 0.5f);
+        private AudioEffect TurnSound = new AudioEffect("CamTurn", "Audio/camera_turn", 0f);
         private AudioEffect BlipSound = new AudioEffect("CamBlip", "Audio/blip", 0.5f);
 
         public Cameras()
@@ -47,13 +58,23 @@ namespace FNAF_NEA_Project.Engine
             return Using;
         }
 
+        // Returns the state of the cams
+        public static CamState GetState()
+        {
+            return State;
+        }
+
         public void Draw(GameTime gameTime)
         {
             // Updates animated sprites
             CamBG.Update(gameTime);
             LoadAnim.Update(gameTime);
 
+            // Camera Scroll Logic
+            ScrollSprite(gameTime);
+
             DrawManager.EnqueueItem(CamBG);
+            DrawManager.EnqueueItem(RoomSprite);
             DrawManager.EnqueueItem(CamIndicator);
             DrawManager.EnqueueItem(LoadAnim);
             DrawManager.EnqueueItem(CamMap);
@@ -74,6 +95,13 @@ namespace FNAF_NEA_Project.Engine
             CamBG.dp.Scale = new Vector2(4);
             CamBG.AnimationFinished += event_FlipAnimFinished;
 
+            // Creates the sprite for the room being viewed
+            RoomSprite = new AnimatedSprite("RoomSprite", new AnimationData("CamBG/", 8));
+            RoomSprite.ZIndex = 3;
+            RoomSprite.dp.Scale = new Vector2(4);
+            RoomSprite.Frame = 1;
+            RoomSprite.Visible = false;
+
             // Creates the camera map sprite
             CamMap = new SpriteItem("CamMap");
             CamMap.ZIndex = 4;
@@ -82,7 +110,7 @@ namespace FNAF_NEA_Project.Engine
 
             // Creates the load animation sprite
             LoadAnim = new AnimatedSprite("load", new AnimationData(new string[] { "CamLoad/0", "CamLoad/1", "CamLoad/2", "CamLoad/2", "CamLoad/3" }, 12));
-            LoadAnim.ZIndex = 3;
+            LoadAnim.ZIndex = 4;
             LoadAnim.dp.Scale = new Vector2(4);
             LoadAnim.Frame = 4;
 
@@ -164,8 +192,11 @@ namespace FNAF_NEA_Project.Engine
         {
             CamMap.Visible = value;
             CamLabel.Visible = value;
+            RoomSprite.Visible = value;
             TempSensor.SetVisible(value);
             PowerGen.SetVisible(value);
+            if (value) TurnSound.SetVolume(0.5f);
+            else TurnSound.SetVolume(0f);
             foreach (CamButton cam in CamButtons)
             {
                 cam.SetVisible(value);
@@ -175,11 +206,17 @@ namespace FNAF_NEA_Project.Engine
         public void event_CamButtonPressed(int CamNum)
         {
             CurrentCamNum = CamNum;
+            RoomSprite.Frame = CamNum;
             LoadAnim.Play();
             BlipSound.Play();
             TempSensor.SwitchCam(CamNum);
             PowerGen.SwitchCams();
             CamLabel.Text = "Cam " + string.Format("{0:00}", CamNum) + " - " + Building.GetRoom(CamNum).GetName();
+
+            foreach (Animatronic Anim in Animatronic.AnimatronicDict.Values)
+            {
+                Anim.UpdateSprite();
+            }
         }
 
         public void PowerOutage()
@@ -190,6 +227,51 @@ namespace FNAF_NEA_Project.Engine
             }
             CamIndicator.Visible = false;
             CamTrigger.SetActive(false);
+        }
+
+        private void ScrollSprite(GameTime gameTime)
+        {
+            float Time = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (IsScrolling)
+            {
+                // Calculates new scroll amount
+                if (ScrollRight) ScrollAmount += Time * ScrollSpeed;
+                else ScrollAmount -= Time * ScrollSpeed;
+
+                // If scroll amount has reached a limit, stop scrolling and wait
+                if (ScrollAmount > 0)
+                {
+                    ScrollAmount = 0;
+                    IsScrolling = false;
+                }
+                else if (ScrollAmount < MaxScrollAmount)
+                {
+                    ScrollAmount = MaxScrollAmount;
+                    IsScrolling = false;
+                }
+
+                // Scrolls the room sprite
+                RoomSprite.dp.Pos.X = ScrollAmount;
+            }
+            else
+            {
+                // Increments wait time
+                ScrollWait += Time;
+
+                // When max wait time reached, start scrolling
+                if (ScrollWait > MaxScrollWait)
+                {
+                    ScrollWait = 0;
+                    IsScrolling = true;
+                    ScrollRight = !ScrollRight;
+                    TurnSound.Play();
+                }
+            }
+        }
+
+        public static float GetScrollAmount()
+        {
+            return ScrollAmount;
         }
     }
 }

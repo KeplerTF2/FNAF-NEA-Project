@@ -20,7 +20,7 @@ namespace FNAF_NEA_Project.Engine
         private TextItem LossText;
         private RectItem BlackOutSprite;
         private AnimatedSprite UsageBar;
-        private float Amount = 101f;//101f;
+        private float Amount = 101f;
         private int Usage = 1; // Num of bars
         private float PowerLoss = 8f; // %/min
         private Dictionary<Tools, bool> ActiveTools = new Dictionary<Tools, bool>();
@@ -101,9 +101,9 @@ namespace FNAF_NEA_Project.Engine
                 // Remove Usage * PowerLoss per minute if Usage is above 0
                 if (Usage != 0)
                     Amount -= Usage * PowerLoss / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                // Otherwise add 20%/min to power
+                // Otherwise add 15%/min to power
                 else
-                    Amount += 20f / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Amount += 15f / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 // Invokes power out event if amount reaches 0
                 if (Amount < 0)

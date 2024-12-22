@@ -14,6 +14,7 @@ namespace FNAF_NEA_Project.Engine
         private ScrollSprite FlashButtonUsedSprite;
         private ScrollSprite FlashButtonSprite;
         private ScrollSprite HallwaySprite;
+        private ScrollSprite FreddySprite;
         private static Dictionary<DoorSide, bool> SideClosed = new Dictionary<DoorSide, bool>() { { DoorSide.LEFT, false }, { DoorSide.RIGHT, false } };
         private ScrollObject Scroll;
         private AudioEffect FlashSound = new AudioEffect("FlashSound", "Audio/HallwayFlash");
@@ -36,6 +37,7 @@ namespace FNAF_NEA_Project.Engine
             DrawManager.EnqueueItem(FlashButtonUsedSprite);
             DrawManager.EnqueueItem(FlashButtonSprite);
             DrawManager.EnqueueItem(HallwaySprite);
+            DrawManager.EnqueueItem(FreddySprite);
         }
 
         public void Initialize()
@@ -66,6 +68,13 @@ namespace FNAF_NEA_Project.Engine
             HallwaySprite.ZIndex = 2;
             HallwaySprite.dp.Colour = new Color(0);
 
+            // Hallway Sprites
+            FreddySprite = new ScrollSprite("Hallway/Freddy", "Scroll");
+            FreddySprite.dp.Pos = new Vector2(864, 144);
+            FreddySprite.dp.Scale = new Vector2(4);
+            FreddySprite.ZIndex = 2;
+            FreddySprite.dp.Colour = new Color(0);
+
             // Audio
             FlashSound.SetVolume(0.35f);
         }
@@ -82,7 +91,11 @@ namespace FNAF_NEA_Project.Engine
             if (OnCoolDown)
             {
                 float AlphaValue = MathF.Max(0, (2 - CoolDown) / 2);
-                HallwaySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);
+
+                // Shows animatronics if there are any
+                if (Animatronic.AnimatronicDict["Freddy"].GetCurrentRoom() == 10) FreddySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);
+                else HallwaySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);
+
                 CoolDown += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (CoolDown >= MaxCoolDown)
                 {
@@ -94,6 +107,7 @@ namespace FNAF_NEA_Project.Engine
                         FlashButtonUsedSprite.Visible = false;
                     }
                     HallwaySprite.dp.Colour = new Color(0);
+                    FreddySprite.dp.Colour = new Color(0);
                 }
             }
         }

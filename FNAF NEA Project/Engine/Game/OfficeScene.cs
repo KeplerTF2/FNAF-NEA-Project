@@ -29,6 +29,9 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public AnimatedSprite sprite;
 
+        // Animatronics
+        public Freddy Freddy = new Freddy();
+
         public OfficeScene() { }
 
         public override void Initialize()
