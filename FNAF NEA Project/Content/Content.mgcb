@@ -19,6 +19,18 @@
 /processorParam:Quality=Best
 /build:Audio/blip.wav
 
+#begin Audio/Buzz.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Buzz.wav
+
+#begin Audio/BuzzTurnOn.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/BuzzTurnOn.wav
+
 #begin Audio/camera_light.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -127,18 +139,6 @@
 /processorParam:TextureFormat=Color
 /build:CamAnim/Freddy/3.png
 
-#begin CamAnim/Freddy/3.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:CamAnim/Freddy/3.png
-
 #begin CamAnim/Freddy/5.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -163,7 +163,7 @@
 /processorParam:TextureFormat=Color
 /build:CamAnim/Freddy/6.png
 
-#begin CamAnim/Freddy/6.png
+#begin CamAnim/Freddy/7.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -173,7 +173,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:CamAnim/Freddy/6.png
+/build:CamAnim/Freddy/7.png
 
 #begin CamAnim/Freddy/8.png
 /importer:TextureImporter
@@ -733,6 +733,54 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Square64.png
+
+#begin Static/0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Static/0.png
+
+#begin Static/1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Static/1.png
+
+#begin Static/2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Static/2.png
+
+#begin Static/3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Static/3.png
 
 #begin TempBar.png
 /importer:TextureImporter

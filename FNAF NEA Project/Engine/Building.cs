@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,15 +43,27 @@ namespace FNAF_NEA_Project.Engine
             _graph.SetConnection(6, 1, 1.5f);
             _graph.SetConnection(6, 3, 2f);
             _graph.SetConnection(6, 5, 1f);
+            _graph.SetConnection(6, 7, 1f);
             _graph.SetConnection(6, 8, 2f);
             _graph.SetConnection(6, 10, 1f);
             _graph.SetConnection(6, 12, 1.5f);
             _graph.SetConnection(7, 8, 1f);
             _graph.SetConnection(8, 9, 1f);
             _graph.SetConnection(11, 12, 1f);
-            _graph.SetConnection(13, 9, 1f);
-            _graph.SetConnection(13, 10, 1f);
-            _graph.SetConnection(13, 11, 1f);
+            _graph.SetConnection(13, 9, 0f, 1f);
+            _graph.SetConnection(13, 10, 0f, 1f);
+            _graph.SetConnection(13, 11, 0f, 1f);
+
+            // DEBUG, checking Dijkstras
+            foreach (int i in _graph.Dijkstra(2, 13))
+            {
+                if (i != -1)
+                {
+                    Room room = _graph.GetItem(i);
+                    Debug.Write(room.GetName() + ", ");
+                }
+            }
+            Debug.WriteLine("Dijkstras performed");
         }
 
         public static int CamNumToID(int ID)

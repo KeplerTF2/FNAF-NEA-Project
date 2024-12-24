@@ -40,13 +40,13 @@ namespace FNAF_NEA_Project.Engine
         {
             // Load BG Sprite
             BGSprite = new SpriteItem("PowerGen");
-            BGSprite.ZIndex = 4;
+            BGSprite.ZIndex = 5;
             BGSprite.dp.Scale = new Vector2(4);
             BGSprite.dp.Pos = new Vector2(1024, 64);
 
             // Load On Sprite
             OnSprite = new SpriteItem("PowerGenOn");
-            OnSprite.ZIndex = 4;
+            OnSprite.ZIndex = 5;
             OnSprite.dp.Scale = new Vector2(4);
             OnSprite.dp.Pos = new Vector2(1024, 64);
 

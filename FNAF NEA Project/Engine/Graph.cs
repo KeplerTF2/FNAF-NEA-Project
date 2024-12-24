@@ -1,6 +1,8 @@
-﻿using SharpDX.Direct3D9;
+﻿using NEA_Project.Engine;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +22,78 @@ namespace FNAF_NEA_Project.Engine
         {
             foreach (dynamic item in items)
                 AddItem(item);
+        }
+
+        // Find the shortest path from the source to the target
+        public List<int> Dijkstra(int SourceID, int TargetID)
+        {
+            Dictionary<int, float> Distance = new Dictionary<int, float>();
+            Dictionary<int, int> Previous = new Dictionary<int, int>();
+            List<int> UncheckedVertices = new List<int>();
+
+            foreach (int Vertex in ItemDict.Keys)
+            {
+                Distance[Vertex] = float.PositiveInfinity;
+                Previous[Vertex] = -1;
+                UncheckedVertices.Add(Vertex);
+            }
+            Distance[SourceID] = 0;
+
+            while (UncheckedVertices.Count > 0)
+            {
+                // Finds the closest vertex to the source
+                int ClosestVertex = -1;
+                float MinDist = float.PositiveInfinity;
+                foreach (int V in UncheckedVertices)
+                {
+                    if (Distance[V] < MinDist)
+                    {
+                        MinDist = Distance[V];
+                        ClosestVertex = V;
+                    }
+                }
+
+                // Quit loop if we find our target vertex
+                if (ClosestVertex == TargetID) break;
+
+                // Removes from unchecked vertices
+                UncheckedVertices.Remove(ClosestVertex);
+
+                // Calculates distances to next node
+                foreach (int V in ConnectionDict[ClosestVertex].Keys)
+                {
+                    // Only consider vertices that haven't been checked already
+                    if (UncheckedVertices.Contains(V))
+                    {
+                        // If alternate distance found is shorter, use that one
+                        if (ConnectionDict[ClosestVertex][V] != 0)
+                        {
+                            float AltDist = Distance[ClosestVertex] + ConnectionDict[ClosestVertex][V];
+                            if (AltDist < Distance[V])
+                            {
+                                Distance[V] = AltDist;
+                                Previous[V] = ClosestVertex;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Find shortest path once all distances found
+            int CurrentVertex = TargetID;
+            List<int> Path = new List<int>();
+            if (Previous[CurrentVertex] != -1 || CurrentVertex == SourceID)
+            {
+                while (CurrentVertex != -1)
+                {
+                    Path.Add(CurrentVertex);
+                    CurrentVertex = Previous[CurrentVertex];
+                }
+            }
+
+            Path.Reverse();
+
+            return Path;
         }
 
         public dynamic GetItem(int ID)

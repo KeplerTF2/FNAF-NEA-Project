@@ -15,7 +15,7 @@ namespace FNAF_NEA_Project.Engine
         protected int CurrentRoom;
         protected bool KillInOffice;
         protected AnimatedSprite CamSprite;
-        protected int[] VisibleRooms = new int[] { 0, 2, 3, 5, 6, 8, 12 }; // Default rooms that can be seen from the cameras
+        protected int[] VisibleRooms = new int[] { 0, 2, 3, 5, 6, 7, 8, 12 }; // Default rooms that can be seen from the cameras
 
         public static Dictionary<string, Animatronic> AnimatronicDict = new Dictionary<string, Animatronic>();
 

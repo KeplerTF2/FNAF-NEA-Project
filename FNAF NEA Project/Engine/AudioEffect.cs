@@ -117,5 +117,10 @@ namespace FNAF_NEA_Project.Engine
         {
             SoundEffectInstance.Volume = volume;
         }
+
+        public SoundState GetState()
+        {
+            return SoundEffectInstance.State; 
+        }
     }
 }

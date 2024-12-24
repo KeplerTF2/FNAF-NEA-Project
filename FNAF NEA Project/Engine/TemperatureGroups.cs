@@ -34,7 +34,7 @@ namespace FNAF_NEA_Project.Engine
         public void UpdateValue(GameTime gameTime)
         {
             if (!OnCoolDown)
-            { 
+            {
                 Value += Rate / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (Value > 1.0f) Value = 1.0f;
             }
@@ -42,7 +42,17 @@ namespace FNAF_NEA_Project.Engine
             {
                 // Cools temperature
                 Value -= 0.2f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (Value < 0.0f) Value = 0.0f;
+                if (Value < 0.0f)
+                { 
+                    Value = 0.0f;
+
+                    // End cooldown timer prematurely if on faulty temp
+                    if (Challenges.FaultyTemp)
+                    {
+                        CoolDownTimer = 0f;
+                        OnCoolDown = false;
+                    }
+                }
 
                 // Handles cool down code
                 CoolDownTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -78,12 +88,12 @@ namespace FNAF_NEA_Project.Engine
         public TemperatureGroups()
         {
             // Inits relevant temperature groups
-            Groups.Add('A', new Temperature(60f / 120f)); // Cam 03
-            Groups.Add('B', new Temperature(60f / 90f)); // Cam 01
-            Groups.Add('C', new Temperature(60f / 100f)); // Cam 04
-            Groups.Add('D', new Temperature(60f / 110f)); // Cam 07
-            Groups.Add('E', new Temperature(60f / 80f)); // Cam 06
-            Groups.Add('F', new Temperature(60f / 85f)); // Cam 02
+            Groups.Add('A', new Temperature(60f / 150f)); // Cam 03
+            Groups.Add('B', new Temperature(60f / 105f)); // Cam 01
+            Groups.Add('C', new Temperature(60f / 120f)); // Cam 04
+            Groups.Add('D', new Temperature(60f / 135f)); // Cam 07
+            Groups.Add('E', new Temperature(60f / 75f)); // Cam 06
+            Groups.Add('F', new Temperature(60f / 90f)); // Cam 02
             Groups.Add('G', new Temperature(60f / 60f)); // Cam 05
             Groups.Add('_', new Temperature()); // Office
 

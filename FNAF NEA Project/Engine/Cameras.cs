@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct3D9;
 
 public enum CamState
 {
@@ -23,6 +24,7 @@ namespace FNAF_NEA_Project.Engine
         private MouseTrigger CamTrigger = new MouseTrigger(new Rectangle((384 * 2) - (576 / 2), (216 * 4) - 68, 576, 80));
         private AnimatedSprite CamBG;
         private AnimatedSprite LoadAnim;
+        private AnimatedSprite StaticAnim;
         private SpriteItem CamIndicator;
         private SpriteItem CamMap;
         private TextItem CamLabel;
@@ -30,6 +32,8 @@ namespace FNAF_NEA_Project.Engine
         public static int CurrentCamNum = 1;
         private TemperatureSensor TempSensor = new TemperatureSensor();
         private PowerGenerator PowerGen = new PowerGenerator();
+
+        private float StaticFade = 0.1f;
 
         // Vars for scrolling sprites
         private AnimatedSprite RoomSprite;
@@ -45,6 +49,7 @@ namespace FNAF_NEA_Project.Engine
         private AudioEffect FlipSound = new AudioEffect("CamFlip", "Audio/camera_load_short", 0.5f);
         private AudioEffect TurnSound = new AudioEffect("CamTurn", "Audio/camera_turn", 0f);
         private AudioEffect BlipSound = new AudioEffect("CamBlip", "Audio/blip", 0.5f);
+        private AudioEffect BuzzSound = new AudioEffect("Buzz", "Audio/Buzz", 0f);
 
         public Cameras()
         {
@@ -69,12 +74,14 @@ namespace FNAF_NEA_Project.Engine
             // Updates animated sprites
             CamBG.Update(gameTime);
             LoadAnim.Update(gameTime);
+            StaticAnim.Update(gameTime);
 
             // Camera Scroll Logic
             ScrollSprite(gameTime);
 
             DrawManager.EnqueueItem(CamBG);
             DrawManager.EnqueueItem(RoomSprite);
+            DrawManager.EnqueueItem(StaticAnim);
             DrawManager.EnqueueItem(CamIndicator);
             DrawManager.EnqueueItem(LoadAnim);
             DrawManager.EnqueueItem(CamMap);
@@ -108,6 +115,14 @@ namespace FNAF_NEA_Project.Engine
             CamMap.dp.Scale = new Vector2(4);
             CamMap.Visible = false;
 
+            // Creates the static sprite
+            StaticAnim = new AnimatedSprite("StaticSprite", new AnimationData("Static/", 4, 10, true));
+            StaticAnim.ZIndex = 4;
+            StaticAnim.dp.Scale = new Vector2(4);
+            StaticAnim.dp.Colour = new Color(0.1f, 0.1f, 0.1f, 0.1f);
+            StaticAnim.Visible = false;
+            StaticAnim.Play();
+
             // Creates the load animation sprite
             LoadAnim = new AnimatedSprite("load", new AnimationData(new string[] { "CamLoad/0", "CamLoad/1", "CamLoad/2", "CamLoad/2", "CamLoad/3" }, 12));
             LoadAnim.ZIndex = 4;
@@ -131,6 +146,49 @@ namespace FNAF_NEA_Project.Engine
         {
             // Keybind Input Logic
             if (InputManager.GetKeyState("FlipCam").JustDown && !Power.PowerOut) { event_FlipCamera(); }
+
+            // Updates opacity of static
+            if (StaticFade > 0.1f)
+            {
+                // Change how long static fades depending on challenges enabled
+                if (Challenges.HeavyStatic)
+                    StaticFade -= (float)gameTime.ElapsedGameTime.TotalSeconds / 2f;
+                else
+                    StaticFade -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                float TempFade = MathF.Min(StaticFade, 1f);
+
+                StaticAnim.dp.Colour = new Color(TempFade, TempFade, TempFade, TempFade);
+                if (State == CamState.UP) BuzzSound.SetVolume(TempFade);
+            }
+
+            // Audio
+            if (BuzzSound.GetState() != Microsoft.Xna.Framework.Audio.SoundState.Playing)
+            {
+                BuzzSound.Play(true);
+            }
+
+            if ((FlipSound.GetState() != Microsoft.Xna.Framework.Audio.SoundState.Playing) && CamBG.Frame == 2 && State == CamState.GOING_UP)
+            {
+                FlipSound.Play();
+            }
+        }
+
+        public void SetStaticOpacity(float value)
+        {
+            // Limits value above 0.1 and to below or at the current value
+            value = MathF.Max(value, 0.1f);
+            value = MathF.Max(value, StaticFade);
+
+            // Sets static opacity
+            if (value > StaticFade)
+            {
+                StaticFade = value;
+            }
+
+            float TempFade = MathF.Min(StaticFade, 1f);
+
+            StaticAnim.dp.Colour = new Color(TempFade, TempFade, TempFade, TempFade);
         }
 
         public void InitCamButtons()
@@ -156,24 +214,22 @@ namespace FNAF_NEA_Project.Engine
         {
             Using = !Using; // Sets Using variable
 
-            // Audio
-            FlipSound.Play();
-
             // Camera background sprite logic
             CamBG.PlayBackwards = !Using;
-            CamBG.SetPlaying(true);
+            CamBG.Play();
 
             // Power usage logic
             Power.GlobalPower.SetToolStatus(Tools.CAMS, Using);
             Power.GlobalPower.CalculateUsage();
 
             // Sets the cameras' state to going up or going down
-            if (Using) { State = CamState.GOING_UP; }
+            if (Using) { State = CamState.GOING_UP; FlipSound.Stop(); }
             else 
             {
                 State = CamState.GOING_DOWN;
                 LoadAnim.Reset(false);
                 SetCamsVisible(false);
+                FlipSound.Play();
             }
         }
 
@@ -183,6 +239,8 @@ namespace FNAF_NEA_Project.Engine
             if (Using) { 
                 State = CamState.UP;
                 LoadAnim.Play();
+                if (Challenges.HeavyStatic) SetStaticOpacity(1f);
+                else SetStaticOpacity(0.75f);
                 SetCamsVisible(true);
             }
             else { State = CamState.DOWN; }
@@ -190,13 +248,26 @@ namespace FNAF_NEA_Project.Engine
 
         public void SetCamsVisible(bool value)
         {
+            // Sprites
             CamMap.Visible = value;
             CamLabel.Visible = value;
             RoomSprite.Visible = value;
+            StaticAnim.Visible = value;
             TempSensor.SetVisible(value);
             PowerGen.SetVisible(value);
-            if (value) TurnSound.SetVolume(0.5f);
-            else TurnSound.SetVolume(0f);
+
+            // Audio
+            if (value)
+            {
+                TurnSound.SetVolume(0.5f);
+            }
+            else
+            {
+                TurnSound.SetVolume(0f);
+                BuzzSound.SetVolume(0f);
+            }
+
+            // Cam Byttons
             foreach (CamButton cam in CamButtons)
             {
                 cam.SetVisible(value);
@@ -207,6 +278,8 @@ namespace FNAF_NEA_Project.Engine
         {
             CurrentCamNum = CamNum;
             RoomSprite.Frame = CamNum;
+            if (Challenges.HeavyStatic) SetStaticOpacity(1f);
+            else SetStaticOpacity(0.5f);
             LoadAnim.Play();
             BlipSound.Play();
             TempSensor.SwitchCam(CamNum);
@@ -272,6 +345,12 @@ namespace FNAF_NEA_Project.Engine
         public static float GetScrollAmount()
         {
             return ScrollAmount;
+        }
+
+        public void ShowAnimMovement(int CamFrom, int CamTo)
+        {
+            if ((!Challenges.SilentSteps) || (Challenges.SilentSteps && (CurrentCamNum == CamFrom || CurrentCamNum == CamTo)))
+                SetStaticOpacity(1.5f);
         }
     }
 }
