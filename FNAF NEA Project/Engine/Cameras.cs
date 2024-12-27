@@ -17,6 +17,7 @@ namespace FNAF_NEA_Project.Engine
 {
     public class Cameras : IMonogame
     {
+        private static Cameras _cameras;
         private static bool Using = false;
         private static CamState State = CamState.DOWN;
         private float TriggerTimer = 0f;
@@ -54,6 +55,7 @@ namespace FNAF_NEA_Project.Engine
         public Cameras()
         {
             InitCamButtons();
+            _cameras = this;
             MonogameIManager.AddObject(this);
         }
 
@@ -347,10 +349,10 @@ namespace FNAF_NEA_Project.Engine
             return ScrollAmount;
         }
 
-        public void ShowAnimMovement(int CamFrom, int CamTo)
+        public static void ShowAnimMovement(int CamFrom, int CamTo)
         {
             if ((!Challenges.SilentSteps) || (Challenges.SilentSteps && (CurrentCamNum == CamFrom || CurrentCamNum == CamTo)))
-                SetStaticOpacity(1.5f);
+                _cameras.SetStaticOpacity(1.5f);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FNAF_NEA_Project.Engine.Game;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -76,6 +77,12 @@ namespace FNAF_NEA_Project.Engine
         public abstract void LoadContent();
 
         public abstract void Update(GameTime gameTime);
+
+        public void Jumpscare()
+        {
+            // FOR NOW, JUST GO STRAIGHT TO LOSE SCENE
+            Game1.ChangeScene(new NightLostScene());
+        }
 
         // Mathematical formula that returns a reasonable time to wait based off difficulty. Difficulty can go below 1 or above 20 || NOTE: formula on desmos, put into document
         public static float GetTime(float TimeAt20, int Difficulty)

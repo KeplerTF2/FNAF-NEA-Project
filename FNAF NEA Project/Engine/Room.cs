@@ -38,5 +38,10 @@ namespace FNAF_NEA_Project.Engine
         {
             return Name;
         }
+
+        public char GetTempGroup()
+        {
+            return TempGroup;
+        }
     }
 }

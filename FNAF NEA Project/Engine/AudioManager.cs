@@ -40,5 +40,17 @@ namespace FNAF_NEA_Project.Engine
             else
                 return null;
         }
+
+        public static void ClearSounds()
+        {
+            foreach (SoundEffectInstance SoundEffect in SoundEffectInstances.Values)
+            {
+                SoundEffect.Stop();
+                SoundEffect.Dispose();
+            }
+
+            SoundEffects = new Dictionary<string, SoundEffect>();
+            SoundEffectInstances = new Dictionary<string, SoundEffectInstance>();
+        }
     }
 }

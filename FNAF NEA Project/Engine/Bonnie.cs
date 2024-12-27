@@ -11,7 +11,7 @@ using System.Timers;
 
 namespace FNAF_NEA_Project.Engine
 {
-    public class Freddy : Animatronic
+    public class Bonnie : Animatronic
     {
         Timer MoveTimer = new Timer(1000);
         Timer ReturnTimer = new Timer(3000);
@@ -22,16 +22,16 @@ namespace FNAF_NEA_Project.Engine
         float MaxDoorTime = 5f;
         int NextRoom;
         Random random = new Random();
-        int[] ReturnRooms = new int[] { 5, 0, 1, 2, 3, 4 };
+        int[] ReturnRooms = new int[] { 5, 0, 1, 2 };
         bool Returning = false;
-        Entrance NextEntrance = Entrance.LEFT_DOOR;
 
         // Audio
-        private AudioEffect MoveSound = new AudioEffect("MoveFreddy", "Audio/metalwalk1", 0.25f);
+        private AudioEffect MoveSound = new AudioEffect("MoveBonnie", "Audio/metalwalk1", 0.25f);
 
-        public Freddy()
+        public Bonnie()
         {
-            BaseTime = GetTime(6, Difficulty);
+            VisibleRooms = new int[] { 0, 2, 3, 5, 6, 7, 8 };
+            BaseTime = GetTime(5.43f, Difficulty);
             MoveTimer.AutoReset = true;
             MoveTimer.Start();
             MoveTimer.Elapsed += UpdateNextMovement;
@@ -42,11 +42,12 @@ namespace FNAF_NEA_Project.Engine
             MonogameIManager.AddObject(this);
         }
 
-        public Freddy(int AI)
+        public Bonnie(int AI)
         {
+            VisibleRooms = new int[] { 0, 2, 3, 5, 6, 7, 8 };
             Difficulty = AI;
 
-            BaseTime = GetTime(6, Difficulty);
+            BaseTime = GetTime(6.43f, Difficulty);
             MoveTimer.AutoReset = true;
             MoveTimer.Start();
             MoveTimer.Elapsed += UpdateNextMovement;
@@ -69,7 +70,7 @@ namespace FNAF_NEA_Project.Engine
         public override void Initialize()
         {
             CurrentRoom = 2;
-            Name = "Freddy";
+            Name = "Bonnie";
             AnimatronicDict.Add(Name, this);
             UpdateNextMovement();
         }
@@ -78,6 +79,7 @@ namespace FNAF_NEA_Project.Engine
         {
             CreateCamSprite();
             UpdateSprite();
+            MoveSound.GetInstance().Pitch = -0.15f;
         }
 
         public override void Update(GameTime gameTime)
@@ -102,22 +104,12 @@ namespace FNAF_NEA_Project.Engine
 
         private void UpdateNextMovement()
         {
-            // Finds target room for Freddy
             if (CurrentRoom != 13)
             {
-                int Target = 13;
-                if (CurrentRoom != 9 && CurrentRoom != 10 && CurrentRoom != 11)
-                {
-                    switch (NextEntrance)
-                    {
-                        case Entrance.LEFT_DOOR:
-                            Target = 9; break;
-                        case Entrance.RIGHT_DOOR:
-                            Target = 10; break;
-                        case Entrance.HALLWAY:
-                            Target = 11; break;
-                    }
-                }
+                // Finds target room for Bonnie
+                int Target = 9;
+                if (CurrentRoom == 9)
+                    Target = 13;
                 NextRoom = Building.GetNextRoom(CurrentRoom, Target);
                 MaxTime = Building.GetTempRoomTime(CurrentRoom, NextRoom) * BaseTime;
             }
@@ -155,7 +147,6 @@ namespace FNAF_NEA_Project.Engine
                 if (CurrentRoom != 10 && Challenges.SilentSteps)
                     MoveSound.Play();
 
-                NextEntrance = (Entrance)random.Next(3);
                 DoorTime = 0f;
                 NextRoom = ReturnRooms[random.Next(ReturnRooms.Length)];
                 Move();

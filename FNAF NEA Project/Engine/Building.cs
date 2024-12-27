@@ -11,6 +11,7 @@ namespace FNAF_NEA_Project.Engine
     public class Building
     {
         public static Graph _graph;
+        public static Building _building;
 
         public Building()
         {
@@ -54,16 +55,7 @@ namespace FNAF_NEA_Project.Engine
             _graph.SetConnection(13, 10, 0f, 1f);
             _graph.SetConnection(13, 11, 0f, 1f);
 
-            // DEBUG, checking Dijkstras
-            foreach (int i in _graph.Dijkstra(2, 13))
-            {
-                if (i != -1)
-                {
-                    Room room = _graph.GetItem(i);
-                    Debug.Write(room.GetName() + ", ");
-                }
-            }
-            Debug.WriteLine("Dijkstras performed");
+            _building = this;
         }
 
         public static int CamNumToID(int ID)
@@ -81,9 +73,78 @@ namespace FNAF_NEA_Project.Engine
             return -1;
         }
 
+        public static int IDToCamNum(int CamNum)
+        {
+            switch (CamNum)
+            {
+                case 0: return 1;
+                case 5: return 2;
+                case 3: return 3;
+                case 6: return 4;
+                case 7: return 5;
+                case 8: return 6;
+                case 12: return 7;
+            }
+            return -1;
+        }
+
         public static Room GetRoom(int CamNum)
         {
             return _graph.GetItem(CamNumToID(CamNum));
+        }
+
+        public static int GetNextRoom(int SourceID, int TargetID = 13)
+        {
+            if (_building.GetTempGraph().Dijkstra(SourceID, TargetID).Count > 1)
+                return _building.GetTempGraph().Dijkstra(SourceID, TargetID)[1];
+            else if (_building.GetTempGraph().Dijkstra(SourceID, TargetID).Count == 1)
+                return _building.GetTempGraph().Dijkstra(SourceID, TargetID)[0];
+            else
+                return -1;
+        }
+
+        public static float GetTempRoomTime(int Room1, int Room2)
+        {
+            return _building.GetTempGraph().GetConnection(Room1, Room2);
+        }
+
+        // Returns a graph that takes temperature of rooms into account
+        private Graph GetTempGraph()
+        {
+            Graph graph = new Graph();
+
+            // Creates clone of graph
+            foreach (int Node1 in _graph.GetConnectionDict().Keys)
+                graph.AddItem(_graph.GetItem(Node1));
+
+            // Set connections after adding items, or else the graph will try assigning to non-existant rooms
+            foreach (int Node1 in _graph.GetConnectionDict().Keys)
+                graph.SetConnection(Node1, _graph.GetConnectionDict()[Node1]);
+
+            // Applies temperature modifiers
+            foreach (int Node1 in graph.GetConnectionDict().Keys)
+            {
+                foreach (int Node2 in graph.GetConnectionDict()[Node1].Keys)
+                {
+                    Room Room1 = graph.GetItem(Node1);
+                    Room Room2 = graph.GetItem(Node2);
+
+                    // Get temperature movement multiplers
+                    float Room1Mult = (TemperatureGroups.GetTemperature(Room1.GetTempGroup()) / -2f) + 1f;
+                    float Room2Mult = (TemperatureGroups.GetTemperature(Room2.GetTempGroup()) / -2f) + 1f;
+
+                    // Get overall multipler
+                    float Value = (Room1Mult + Room2Mult) / 2f;
+
+                    // Applies multiplier to graph (making sure not to apply multiplier twice)
+                    if (Node1 != 13 && Node2 != 13)
+                        graph.SetConnection(Node1, Node2, graph.GetConnection(Node1, Node2) * Value, graph.GetConnection(Node2, Node1));
+                    else
+                        graph.SetConnection(Node1, Node2, graph.GetConnection(Node1, Node2) * Value, graph.GetConnection(Node2, Node1));
+                }
+            }
+
+            return graph;
         }
     }
 }

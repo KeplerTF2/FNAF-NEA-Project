@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace FNAF_NEA_Project.Engine.Game
 {
+    public enum Entrance
+    {
+        LEFT_DOOR, HALLWAY, RIGHT_DOOR
+    }
+
     public class OfficeScene : Scene
     {
         public ScrollObject Scroll;
@@ -30,7 +35,8 @@ namespace FNAF_NEA_Project.Engine.Game
         public AnimatedSprite sprite;
 
         // Animatronics
-        public Freddy Freddy = new Freddy();
+        public Freddy Freddy = new Freddy(20);
+        public Bonnie Bonnie = new Bonnie(20);
 
         public OfficeScene() { }
 
@@ -40,6 +46,9 @@ namespace FNAF_NEA_Project.Engine.Game
 
             Time.EndTimeReached += event_EndTimeReached;
             Power.PowerOutReached += event_PowerOutage;
+
+            // Animatronics that can be flashed by the hallway light
+            HallwayLight.Flashed += Freddy.HallwayFlashed;
         }
 
         public override void LoadContent()

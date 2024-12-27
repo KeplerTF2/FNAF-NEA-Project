@@ -37,6 +37,7 @@ namespace FNAF_NEA_Project
 
         private static void ChangeScene()
         {
+            AudioManager.ClearSounds();
             MouseCursorManager.ResetData();
             MonogameIManager.Clear();
             CurrentScene = SceneToChangeTo;

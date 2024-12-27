@@ -128,11 +128,13 @@ namespace FNAF_NEA_Project.Engine
             {
                 State = DoorState.CLOSING;
                 DoorSprite.PlayForwards();
+                SideClosed[Side] = true;
             }
             else
             {
                 State = DoorState.OPENING;
                 DoorSprite.PlayReversed();
+                SideClosed[Side] = false;
             }
 
             // Button Sprite

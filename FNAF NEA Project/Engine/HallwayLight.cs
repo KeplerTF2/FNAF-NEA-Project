@@ -10,6 +10,8 @@ namespace FNAF_NEA_Project.Engine
 {
     public class HallwayLight : IMonogame
     {
+        public event Notify Flashed;
+
         private Button FlashButton = new Button(new Rectangle(1088, 64, 128, 64));
         private ScrollSprite FlashButtonUsedSprite;
         private ScrollSprite FlashButtonSprite;
@@ -124,6 +126,7 @@ namespace FNAF_NEA_Project.Engine
                 OnCoolDown = true;
                 FlashButtonSprite.Visible = false;
                 FlashButtonUsedSprite.Visible = true;
+                Flashed?.Invoke();
 
                 // Power
                 Power.GlobalPower.RemovePower(1f);
