@@ -11,8 +11,15 @@ using System.Timers;
 
 namespace FNAF_NEA_Project.Engine
 {
-    public class Bonnie : Animatronic
+    // Animatronics that roam the cameras and attack via the door and hallways
+    public class MainAnimatronic : Animatronic
     {
+        // Defaults
+        public static Entrance[] AllEntrances = new Entrance[] { Entrance.LEFT_DOOR, Entrance.HALLWAY, Entrance.RIGHT_DOOR };
+        public static int[] DefaultVisRooms = new int[] { 0, 2, 3, 5, 6, 7, 8, 12 };
+        public static int[] DefaultReturnRooms = new int[] { 5, 0, 1, 2, 3, 4 };
+
+        // Variables
         Timer MoveTimer = new Timer(1000);
         Timer ReturnTimer = new Timer(3000);
         float BaseTime = 5f;
@@ -22,16 +29,32 @@ namespace FNAF_NEA_Project.Engine
         float MaxDoorTime = 5f;
         int NextRoom;
         Random random = new Random();
-        int[] ReturnRooms = new int[] { 5, 0, 1, 2 };
+        int[] ReturnRooms = DefaultReturnRooms;
         bool Returning = false;
+        Entrance NextEntrance = Entrance.LEFT_DOOR;
+        Entrance[] AvailableEntrances = new Entrance[] { Entrance.LEFT_DOOR, Entrance.HALLWAY, Entrance.RIGHT_DOOR };
 
         // Audio
-        private AudioEffect MoveSound = new AudioEffect("MoveBonnie", "Audio/metalwalk1", 0.25f);
+        private AudioEffect MoveSound;
+        private float SoundPitch = 0f;
 
-        public Bonnie()
+        public MainAnimatronic(int AI, string Name, float MovementTime, Entrance[] AvailableEntrances, int[] ReturnRooms, int[] VisibleRooms, string SoundName = "Audio/metalwalk1", float SoundPitch = 0f, float SoundVolume = 0.25f, int StartingRoom = 2)
         {
-            VisibleRooms = new int[] { 0, 2, 3, 5, 6, 7, 8 };
-            BaseTime = GetTime(5.43f, Difficulty);
+            // Assigns variables
+            Difficulty = AI;
+            this.Name = Name;
+            this.AvailableEntrances = AvailableEntrances;
+            this.ReturnRooms = ReturnRooms;
+            this.VisibleRooms = VisibleRooms;
+            this.SoundPitch = SoundPitch;
+            CurrentRoom = StartingRoom;
+            NextEntrance = AvailableEntrances[0];
+
+            // Create movement sound
+            MoveSound = new AudioEffect("Move" + Name, SoundName, SoundVolume);
+
+            // Create timers
+            BaseTime = GetTime(MovementTime, Difficulty);
             MoveTimer.AutoReset = true;
             MoveTimer.Start();
             MoveTimer.Elapsed += UpdateNextMovement;
@@ -39,15 +62,27 @@ namespace FNAF_NEA_Project.Engine
             ReturnTimer.AutoReset = false;
             ReturnTimer.Elapsed += Return;
 
+            // Adds to monogame interface manager
             MonogameIManager.AddObject(this);
         }
 
-        public Bonnie(int AI)
+        public MainAnimatronic(int AI, string Name, float MovementTime, Entrance AvailableEntrance, int[] ReturnRooms, int[] VisibleRooms, string SoundName = "Audio/metalwalk1", float SoundPitch = 0f, float SoundVolume = 0.25f, int StartingRoom = 2)
         {
-            VisibleRooms = new int[] { 0, 2, 3, 5, 6, 7, 8 };
+            // Assigns variables
             Difficulty = AI;
+            this.Name = Name;
+            AvailableEntrances = new Entrance[] { AvailableEntrance };
+            this.ReturnRooms = ReturnRooms;
+            this.VisibleRooms = VisibleRooms;
+            this.SoundPitch = SoundPitch;
+            CurrentRoom = StartingRoom;
+            NextEntrance = AvailableEntrance;
 
-            BaseTime = GetTime(6.43f, Difficulty);
+            // Create movement sound
+            MoveSound = new AudioEffect("Move" + Name, SoundName, SoundVolume);
+
+            // Create timers
+            BaseTime = GetTime(MovementTime, Difficulty);
             MoveTimer.AutoReset = true;
             MoveTimer.Start();
             MoveTimer.Elapsed += UpdateNextMovement;
@@ -55,6 +90,7 @@ namespace FNAF_NEA_Project.Engine
             ReturnTimer.AutoReset = false;
             ReturnTimer.Elapsed += Return;
 
+            // Adds to monogame interface manager
             MonogameIManager.AddObject(this);
         }
 
@@ -69,8 +105,6 @@ namespace FNAF_NEA_Project.Engine
 
         public override void Initialize()
         {
-            CurrentRoom = 2;
-            Name = "Bonnie";
             AnimatronicDict.Add(Name, this);
             UpdateNextMovement();
         }
@@ -79,7 +113,7 @@ namespace FNAF_NEA_Project.Engine
         {
             CreateCamSprite();
             UpdateSprite();
-            MoveSound.GetInstance().Pitch = -0.15f;
+            MoveSound.GetInstance().Pitch = SoundPitch;
         }
 
         public override void Update(GameTime gameTime)
@@ -104,12 +138,22 @@ namespace FNAF_NEA_Project.Engine
 
         private void UpdateNextMovement()
         {
+            // Finds target room
             if (CurrentRoom != 13)
             {
-                // Finds target room for Bonnie
-                int Target = 9;
-                if (CurrentRoom == 9)
-                    Target = 13;
+                int Target = 13;
+                if (CurrentRoom != 9 && CurrentRoom != 10 && CurrentRoom != 11)
+                {
+                    switch (NextEntrance)
+                    {
+                        case Entrance.LEFT_DOOR:
+                            Target = 9; break;
+                        case Entrance.HALLWAY:
+                            Target = 10; break;
+                        case Entrance.RIGHT_DOOR:
+                            Target = 11; break;
+                    }
+                }
                 NextRoom = Building.GetNextRoom(CurrentRoom, Target);
                 MaxTime = Building.GetTempRoomTime(CurrentRoom, NextRoom) * BaseTime;
             }
@@ -147,6 +191,7 @@ namespace FNAF_NEA_Project.Engine
                 if (CurrentRoom != 10 && Challenges.SilentSteps)
                     MoveSound.Play();
 
+                NextEntrance = AvailableEntrances[random.Next(AvailableEntrances.Length)];
                 DoorTime = 0f;
                 NextRoom = ReturnRooms[random.Next(ReturnRooms.Length)];
                 Move();

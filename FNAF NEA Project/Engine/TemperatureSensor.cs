@@ -113,7 +113,7 @@ namespace FNAF_NEA_Project.Engine
         public void CoolRoom()
         {
             TemperatureGroups.CoolGradual(CurrentTempGroup);
-            Power.GlobalPower.RemovePower(1f);
+            Power.GlobalPower.RemovePower(0.75f);
             CoolSound.Play();
         }
     }

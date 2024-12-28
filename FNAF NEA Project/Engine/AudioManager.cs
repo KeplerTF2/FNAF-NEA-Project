@@ -46,7 +46,7 @@ namespace FNAF_NEA_Project.Engine
             foreach (SoundEffectInstance SoundEffect in SoundEffectInstances.Values)
             {
                 SoundEffect.Stop();
-                SoundEffect.Dispose();
+                //SoundEffect.Dispose();
             }
 
             SoundEffects = new Dictionary<string, SoundEffect>();

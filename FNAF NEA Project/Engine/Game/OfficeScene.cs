@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FNAF_NEA_Project.Engine.Game
 {
@@ -35,8 +36,10 @@ namespace FNAF_NEA_Project.Engine.Game
         public AnimatedSprite sprite;
 
         // Animatronics
-        public Freddy Freddy = new Freddy(20);
-        public Bonnie Bonnie = new Bonnie(20);
+        public MainAnimatronic Freddy = new MainAnimatronic(0, "Freddy", 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms);
+        public MainAnimatronic Bonnie = new MainAnimatronic(0, "Bonnie", 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2", -0.2f);
+        public MainAnimatronic Chica = new MainAnimatronic(20, "Chica", 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3", 0.2f, 0.3f);
+        public MainAnimatronic Foxy = new MainAnimatronic(20, "Foxy", 8.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1);
 
         public OfficeScene() { }
 
@@ -49,6 +52,7 @@ namespace FNAF_NEA_Project.Engine.Game
 
             // Animatronics that can be flashed by the hallway light
             HallwayLight.Flashed += Freddy.HallwayFlashed;
+            HallwayLight.Flashed += Foxy.HallwayFlashed;
         }
 
         public override void LoadContent()

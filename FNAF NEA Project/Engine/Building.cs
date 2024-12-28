@@ -131,7 +131,11 @@ namespace FNAF_NEA_Project.Engine
 
                     // Get temperature movement multiplers
                     float Room1Mult = (TemperatureGroups.GetTemperature(Room1.GetTempGroup()) / -2f) + 1f;
+                    if (Room1.GetTempGroup() == 1f)
+                        Room1Mult = 1f / 3f;
                     float Room2Mult = (TemperatureGroups.GetTemperature(Room2.GetTempGroup()) / -2f) + 1f;
+                    if (Room2.GetTempGroup() == 1f)
+                        Room2Mult = 1f / 3f;
 
                     // Get overall multipler
                     float Value = (Room1Mult + Room2Mult) / 2f;

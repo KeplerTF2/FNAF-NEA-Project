@@ -17,6 +17,8 @@ namespace FNAF_NEA_Project.Engine
         private ScrollSprite FlashButtonSprite;
         private ScrollSprite HallwaySprite;
         private ScrollSprite FreddySprite;
+        private ScrollSprite FoxySprite;
+        private ScrollSprite FreddyFoxySprite;
         private static Dictionary<DoorSide, bool> SideClosed = new Dictionary<DoorSide, bool>() { { DoorSide.LEFT, false }, { DoorSide.RIGHT, false } };
         private ScrollObject Scroll;
         private AudioEffect FlashSound = new AudioEffect("FlashSound", "Audio/HallwayFlash");
@@ -40,6 +42,8 @@ namespace FNAF_NEA_Project.Engine
             DrawManager.EnqueueItem(FlashButtonSprite);
             DrawManager.EnqueueItem(HallwaySprite);
             DrawManager.EnqueueItem(FreddySprite);
+            DrawManager.EnqueueItem(FoxySprite);
+            DrawManager.EnqueueItem(FreddyFoxySprite);
         }
 
         public void Initialize()
@@ -77,6 +81,18 @@ namespace FNAF_NEA_Project.Engine
             FreddySprite.ZIndex = 2;
             FreddySprite.dp.Colour = new Color(0);
 
+            FoxySprite = new ScrollSprite("Hallway/Foxy", "Scroll");
+            FoxySprite.dp.Pos = new Vector2(864, 144);
+            FoxySprite.dp.Scale = new Vector2(4);
+            FoxySprite.ZIndex = 2;
+            FoxySprite.dp.Colour = new Color(0);
+
+            FreddyFoxySprite = new ScrollSprite("Hallway/FreddyFoxy", "Scroll");
+            FreddyFoxySprite.dp.Pos = new Vector2(864, 144);
+            FreddyFoxySprite.dp.Scale = new Vector2(4);
+            FreddyFoxySprite.ZIndex = 2;
+            FreddyFoxySprite.dp.Colour = new Color(0);
+
             // Audio
             FlashSound.SetVolume(0.35f);
         }
@@ -95,7 +111,12 @@ namespace FNAF_NEA_Project.Engine
                 float AlphaValue = MathF.Max(0, (2 - CoolDown) / 2);
 
                 // Shows animatronics if there are any
-                if (Animatronic.AnimatronicDict["Freddy"].GetCurrentRoom() == 10) FreddySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);
+                bool ShowFreddy = Animatronic.AnimatronicDict["Freddy"].GetCurrentRoom() == 10;
+                bool ShowFoxy = Animatronic.AnimatronicDict["Foxy"].GetCurrentRoom() == 10;
+
+                if (ShowFreddy && ShowFoxy) FreddyFoxySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);
+                else if (ShowFoxy) FoxySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);
+                else if (ShowFreddy) FreddySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);
                 else HallwaySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);
 
                 CoolDown += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -110,6 +131,8 @@ namespace FNAF_NEA_Project.Engine
                     }
                     HallwaySprite.dp.Colour = new Color(0);
                     FreddySprite.dp.Colour = new Color(0);
+                    FoxySprite.dp.Colour = new Color(0);
+                    FreddyFoxySprite.dp.Colour = new Color(0);
                 }
             }
         }
