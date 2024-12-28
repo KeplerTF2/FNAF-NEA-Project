@@ -36,10 +36,11 @@ namespace FNAF_NEA_Project.Engine.Game
         public AnimatedSprite sprite;
 
         // Animatronics
-        public MainAnimatronic Freddy = new MainAnimatronic(0, "Freddy", 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms);
-        public MainAnimatronic Bonnie = new MainAnimatronic(0, "Bonnie", 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2", -0.2f);
-        public MainAnimatronic Chica = new MainAnimatronic(20, "Chica", 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3", 0.2f, 0.3f);
-        public MainAnimatronic Foxy = new MainAnimatronic(20, "Foxy", 8.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1);
+        public MainAnimatronic Freddy = new MainAnimatronic(10, "Freddy", 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms, "Audio/metalwalk1");
+        public MainAnimatronic Bonnie = new MainAnimatronic(10, "Bonnie", 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2");
+        public MainAnimatronic Chica = new MainAnimatronic(10, "Chica", 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3");
+        public MainAnimatronic Foxy = new MainAnimatronic(10, "Foxy", 8.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1);
+        public GoldenFreddy GoldenFreddy = new GoldenFreddy(10);
 
         public OfficeScene() { }
 
@@ -53,6 +54,10 @@ namespace FNAF_NEA_Project.Engine.Game
             // Animatronics that can be flashed by the hallway light
             HallwayLight.Flashed += Freddy.HallwayFlashed;
             HallwayLight.Flashed += Foxy.HallwayFlashed;
+
+            // Golden Freddy attacks
+            GoldenFreddy.Attacked += event_GoldenFreddyAttacked;
+            Cameras.PowerGen.Repaired += event_PowerGenFixed;
         }
 
         public override void LoadContent()
@@ -80,6 +85,20 @@ namespace FNAF_NEA_Project.Engine.Game
                 Ambience1.Play(true);
                 Ambience2.Play(true);
             }
+        }
+
+        private void event_GoldenFreddyAttacked()
+        {
+            Power.SetToolStatus(Tools.GOLDEN_FREDDY, true);
+            Power.CalculateUsage();
+            Cameras.PowerGen.Break();
+        }
+
+        private void event_PowerGenFixed()
+        {
+            Power.SetToolStatus(Tools.GOLDEN_FREDDY, false);
+            Power.CalculateUsage();
+            GoldenFreddy.OnPowerGenRepair();
         }
 
         private void event_EndTimeReached()

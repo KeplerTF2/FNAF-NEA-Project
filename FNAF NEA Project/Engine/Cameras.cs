@@ -32,7 +32,7 @@ namespace FNAF_NEA_Project.Engine
         private CamButton[] CamButtons;
         public static int CurrentCamNum = 1;
         private TemperatureSensor TempSensor = new TemperatureSensor();
-        private PowerGenerator PowerGen = new PowerGenerator();
+        public PowerGenerator PowerGen = new PowerGenerator();
 
         private float StaticFade = 0.1f;
 

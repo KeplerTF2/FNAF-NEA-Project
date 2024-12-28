@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 public enum Tools
 {
-    CAMS, LEFT_DOOR, RIGHT_DOOR, FLASHLIGHT, GENERATOR
+    CAMS, LEFT_DOOR, RIGHT_DOOR, GOLDEN_FREDDY, GENERATOR
 }
 
 namespace FNAF_NEA_Project.Engine
@@ -45,7 +45,7 @@ namespace FNAF_NEA_Project.Engine
             ActiveTools.Add(Tools.CAMS, false);
             ActiveTools.Add(Tools.LEFT_DOOR, false);
             ActiveTools.Add(Tools.RIGHT_DOOR, false);
-            ActiveTools.Add(Tools.FLASHLIGHT, false);
+            ActiveTools.Add(Tools.GOLDEN_FREDDY, false);
             ActiveTools.Add(Tools.GENERATOR, false);
         }
 

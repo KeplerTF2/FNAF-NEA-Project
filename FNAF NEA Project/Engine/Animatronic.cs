@@ -39,7 +39,6 @@ namespace FNAF_NEA_Project.Engine
         {
             if (VisibleRooms.Contains(Building.CamNumToID(Cameras.CurrentCamNum)))
             {
-                Debug.WriteLine("reached");
                 CamSprite.SetAnimation(CurrentRoom.ToString());
             }
         }

@@ -61,6 +61,12 @@
 /processorParam:Quality=Best
 /build:Audio/doorFX.wav
 
+#begin Audio/golden_laugh.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/golden_laugh.ogg
+
 #begin Audio/HallwayFlash.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -109,11 +115,29 @@
 /processorParam:Quality=Best
 /build:Audio/press1.mp3
 
-#begin Audio/running.wav
+#begin Audio/repair.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Audio/running.wav
+/build:Audio/repair.wav
+
+#begin Audio/running_metal.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/running_metal.wav
+
+#begin Audio/running_squeak.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/running_squeak.wav
+
+#begin Audio/running.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/running.mp3
 
 #begin Audio/send.wav
 /importer:WavImporter
@@ -408,6 +432,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:CamAnim/Freddy/8.png
+
+#begin CamAnim/GoldenFreddy/7.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:CamAnim/GoldenFreddy/7.png
 
 #begin CamBG/0.png
 /importer:TextureImporter
@@ -967,6 +1003,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PowerUsage/5.png
+
+#begin Repair.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Repair.png
 
 #begin Square64.png
 /importer:TextureImporter

@@ -11,14 +11,21 @@ namespace FNAF_NEA_Project.Engine
 {
     public class PowerGenerator : IMonogame
     {
+        public event Notify Repaired;
+
         private SpriteItem BGSprite;
+        private SpriteItem RepairSprite;
         private SpriteItem OnSprite;
         private Button GenButton = new Button(new Rectangle(1024, 64, 256, 128));
-        private AudioEffect PowerGenPressSound = new AudioEffect("PowerGenPressSound", "Audio/press1");
-        private AudioEffect PowerGenOnSound = new AudioEffect("PowerGenOnSound", "Audio/send");
-        private SoundEffectInstance PowerGenOnInstance;
+        private Button RepairButton = new Button(new Rectangle(1052, 212, 200, 44), false);
         private bool CamUp = false;
         private bool Generating = false;
+        private bool Broken = false;
+
+        private AudioEffect PowerGenPressSound = new AudioEffect("PowerGenPressSound", "Audio/press1");
+        private AudioEffect PowerGenOnSound = new AudioEffect("PowerGenOnSound", "Audio/send");
+        private AudioEffect RepairSound = new AudioEffect("Repair", "Audio/BuzzTurnOn", 0.8f);
+        private SoundEffectInstance PowerGenOnInstance;
 
         public PowerGenerator()
         {
@@ -29,11 +36,13 @@ namespace FNAF_NEA_Project.Engine
         {
             DrawManager.EnqueueItem(BGSprite);
             DrawManager.EnqueueItem(OnSprite);
+            DrawManager.EnqueueItem(RepairSprite);
         }
 
         public void Initialize()
         {
             GenButton.MousePressed += ToggleGenerator;
+            RepairButton.MousePressed += Repair;
         }
 
         public void LoadContent()
@@ -49,12 +58,19 @@ namespace FNAF_NEA_Project.Engine
             OnSprite.ZIndex = 5;
             OnSprite.dp.Scale = new Vector2(4);
             OnSprite.dp.Pos = new Vector2(1024, 64);
+            OnSprite.Visible = false;
 
-            OnSprite.Visible = false; // TEMP
+            // Repair Sprite
+            RepairSprite = new SpriteItem("Repair");
+            RepairSprite.ZIndex = 5;
+            RepairSprite.dp.Scale = new Vector2(4);
+            RepairSprite.dp.Pos = new Vector2(1024, 64);
+            RepairSprite.Visible = false;
 
             // Audio
             PowerGenPressSound.SetVolume(0.75f);
             PowerGenOnSound.SetVolume(0.15f);
+            RepairSound.GetInstance().Pitch = 0.25f;
             PowerGenOnInstance = PowerGenOnSound.GetInstance();
 
             SetVisible(false);
@@ -77,6 +93,11 @@ namespace FNAF_NEA_Project.Engine
             if (OnSprite.Visible != ((Cameras.CurrentCamNum == 5) && CamUp && Generating))
             {
                 OnSprite.Visible = (Cameras.CurrentCamNum == 5) && CamUp && Generating;
+            }
+            if (RepairButton.GetActive() != (BGSprite.Visible && Broken))
+            {
+                RepairButton.SetActive(BGSprite.Visible && Broken);
+                RepairSprite.Visible = BGSprite.Visible && Broken;
             }
         }
 
@@ -114,6 +135,20 @@ namespace FNAF_NEA_Project.Engine
             if (value) PowerGenOnSound.Play(true);
             else PowerGenOnSound.Stop();
             UpdateButtonEnabled();
+        }
+
+        public void Break()
+        {
+            Broken = true;
+            UpdateButtonEnabled();
+        }
+
+        public void Repair()
+        {
+            Broken = false;
+            UpdateButtonEnabled();
+            Repaired?.Invoke();
+            RepairSound.Play();
         }
     }
 }

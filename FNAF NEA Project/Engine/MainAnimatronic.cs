@@ -106,6 +106,7 @@ namespace FNAF_NEA_Project.Engine
         public override void Initialize()
         {
             AnimatronicDict.Add(Name, this);
+            NextEntrance = AvailableEntrances[random.Next(AvailableEntrances.Length)];
             UpdateNextMovement();
         }
 
@@ -125,7 +126,6 @@ namespace FNAF_NEA_Project.Engine
                     DoorTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     if (DoorTime > MaxDoorTime)
                         Return();
-                    Debug.WriteLine("Door closed!");
                 }
                 else
                 {
@@ -166,6 +166,9 @@ namespace FNAF_NEA_Project.Engine
 
         private void Move()
         {
+            if (Challenges.OutputCheat && (CurrentRoom == 9 || CurrentRoom == 10 || CurrentRoom == 11))
+                Debug.WriteLine(Name + " has left");
+
             Cameras.ShowAnimMovement(Building.IDToCamNum(CurrentRoom), Building.IDToCamNum(NextRoom));
             CurrentRoom = NextRoom;
             CurrentTime = 0f;
@@ -175,6 +178,9 @@ namespace FNAF_NEA_Project.Engine
                 MoveSound.Play();
             if (CurrentRoom == 13)
                 Jumpscare();
+
+            if (Challenges.OutputCheat && (CurrentRoom == 9 || CurrentRoom == 10 || CurrentRoom == 11))
+                Debug.WriteLine(Name + " is attacking in " + NextEntrance);
         }
 
         public void HallwayFlashed()

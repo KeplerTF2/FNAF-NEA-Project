@@ -1,0 +1,105 @@
+﻿using FNAF_NEA_Project.Engine.Game;
+using Microsoft.Xna.Framework;
+using NEA_Project.Engine;
+using SharpDX.DirectWrite;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
+
+namespace FNAF_NEA_Project.Engine
+{
+    public class GoldenFreddy : Animatronic
+    {
+        public event Notify Attacked;
+
+        Timer MoveTimer = new Timer(1000);
+        float BaseTime = 5f;
+        float MaxTime = 5f;
+        float CurrentTime = 0f;
+        bool Attacking = false;
+        private AudioEffect LaughSound = new AudioEffect("Laugh", "Audio/golden_laugh", 0.5f);
+
+        public GoldenFreddy(int AI)
+        {
+            Difficulty = AI;
+            VisibleRooms = new int[] { 7 };
+            CurrentRoom = -1;
+            Name = "GoldenFreddy";
+
+            BaseTime = GetTime(20f, Difficulty);
+            MoveTimer.AutoReset = true;
+            MoveTimer.Start();
+            MoveTimer.Elapsed += UpdateNextMovement;
+
+            UpdateNextMovement();
+
+            MonogameIManager.AddObject(this);
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            if (ShouldDrawCamSprite())
+            {
+                CamSprite.dp.Pos.X = Cameras.GetScrollAmount();
+                DrawManager.EnqueueItem(CamSprite);
+            }
+        }
+
+        public override void Initialize()
+        {
+            AnimatronicDict.Add(Name, this);
+        }
+
+        public override void LoadContent()
+        {
+            CreateCamSprite();
+            UpdateSprite();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (Difficulty != 0 && !Attacking)
+            {
+                CurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (CurrentTime > MaxTime)
+                {
+                    Attacking = true;
+                    CurrentTime = 0f;
+                    CurrentRoom = 7;
+                    LaughSound.Play();
+                    Attacked?.Invoke();
+                    UpdateSprite();
+                    Cameras.ShowAnimMovement(Building.IDToCamNum(7), Building.IDToCamNum(7));
+
+                    if (Challenges.OutputCheat)
+                        Debug.WriteLine("Golden Freddy attacked");
+                }
+            }
+        }
+
+        private void UpdateNextMovement()
+        {
+            MaxTime = Building.GetTempRoomTime(7, 8) * BaseTime;
+        }
+
+        private void UpdateNextMovement(object sender, ElapsedEventArgs e)
+        {
+            UpdateNextMovement();
+        }
+
+        public void OnPowerGenRepair()
+        {
+            Attacking = false;
+            CurrentRoom = -1;
+            UpdateSprite();
+            Cameras.ShowAnimMovement(Building.IDToCamNum(7), Building.IDToCamNum(7));
+
+            if (Challenges.OutputCheat)
+                Debug.WriteLine("Golden left");
+        }
+    }
+}
