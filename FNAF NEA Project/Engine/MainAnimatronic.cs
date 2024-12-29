@@ -36,6 +36,7 @@ namespace FNAF_NEA_Project.Engine
 
         // Audio
         private AudioEffect MoveSound;
+        private AudioEffect BangSound;
         private float SoundPitch = 0f;
 
         public MainAnimatronic(int AI, string Name, float MovementTime, Entrance[] AvailableEntrances, int[] ReturnRooms, int[] VisibleRooms, string SoundName = "Audio/metalwalk1", float SoundPitch = 0f, float SoundVolume = 0.25f, int StartingRoom = 2)
@@ -52,6 +53,7 @@ namespace FNAF_NEA_Project.Engine
 
             // Create movement sound
             MoveSound = new AudioEffect("Move" + Name, SoundName, SoundVolume);
+            BangSound = new AudioEffect("Banging" + Name, "Audio/banging", 0.35f);
 
             // Create timers
             BaseTime = GetTime(MovementTime, Difficulty);
@@ -80,6 +82,7 @@ namespace FNAF_NEA_Project.Engine
 
             // Create movement sound
             MoveSound = new AudioEffect("Move" + Name, SoundName, SoundVolume);
+            BangSound = new AudioEffect("Banging" + Name, "Audio/banging", 0.35f);
 
             // Create timers
             BaseTime = GetTime(MovementTime, Difficulty);
@@ -101,6 +104,8 @@ namespace FNAF_NEA_Project.Engine
                 CamSprite.dp.Pos.X = Cameras.GetScrollAmount();
                 DrawManager.EnqueueItem(CamSprite);
             }
+
+            DrawManager.EnqueueItem(JumpscareSprite);
         }
 
         public override void Initialize()
@@ -112,9 +117,10 @@ namespace FNAF_NEA_Project.Engine
 
         public override void LoadContent()
         {
-            CreateCamSprite();
+            CreateSprite();
             UpdateSprite();
             MoveSound.GetInstance().Pitch = SoundPitch;
+            BangSound.GetInstance().Pitch = -0.25f;
         }
 
         public override void Update(GameTime gameTime)
@@ -169,13 +175,14 @@ namespace FNAF_NEA_Project.Engine
             if (Challenges.OutputCheat && (CurrentRoom == 9 || CurrentRoom == 10 || CurrentRoom == 11))
                 Debug.WriteLine(Name + " has left");
 
+            if ((!Challenges.SilentSteps) && (CurrentRoom != 9) && (CurrentRoom != 11))
+                MoveSound.Play();
+
             Cameras.ShowAnimMovement(Building.IDToCamNum(CurrentRoom), Building.IDToCamNum(NextRoom));
             CurrentRoom = NextRoom;
             CurrentTime = 0f;
             UpdateNextMovement();
             UpdateSprite();
-            if (!Challenges.SilentSteps)
-                MoveSound.Play();
             if (CurrentRoom == 13)
                 Jumpscare();
 
@@ -193,9 +200,9 @@ namespace FNAF_NEA_Project.Engine
         {
             if (CurrentRoom == 9 || CurrentRoom == 10 || CurrentRoom == 11)
             {
-                // Footsteps on silent steps challenge ONLY if moving away from doors
-                if (CurrentRoom != 10 && Challenges.SilentSteps)
-                    MoveSound.Play();
+                // Door banging
+                if (CurrentRoom != 10)
+                    BangSound.Play();
 
                 NextEntrance = AvailableEntrances[random.Next(AvailableEntrances.Length)];
                 DoorTime = 0f;

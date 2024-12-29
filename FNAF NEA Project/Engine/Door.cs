@@ -180,6 +180,11 @@ namespace FNAF_NEA_Project.Engine
             {
                 event_DoorButtonPressed();
             }
+            RemoveInput();
+        }
+
+        public void RemoveInput()
+        {
             DoorButton.SetActive(false);
             ButtonClosedSprite.Visible = false;
             ButtonOpenSprite.Visible = false;

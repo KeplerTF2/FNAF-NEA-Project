@@ -1,22 +1,31 @@
 ﻿using FNAF_NEA_Project.Engine.Game;
 using Microsoft.Xna.Framework;
+using NEA_Project.Engine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace FNAF_NEA_Project.Engine
 {
     public abstract class Animatronic: IMonogame
     {
+        public event Notify Jumpscared;
+        Timer SceneSwitchTimer = new Timer(1500);
+
         protected int Difficulty;
         protected string Name;
         protected int CurrentRoom;
         protected bool KillInOffice;
+        protected bool HasJumpscare = true;
+        protected bool IsJumpscaring = false;
         protected AnimatedSprite CamSprite;
+        protected SpriteItem JumpscareSprite;
         protected int[] VisibleRooms = new int[] { 0, 2, 3, 5, 6, 7, 8, 12 }; // Default rooms that can be seen from the cameras
+        private AudioEffect JumpSound = new AudioEffect("Jump", "Audio/jumpscare", 1f);
 
         public static Dictionary<string, Animatronic> AnimatronicDict = new Dictionary<string, Animatronic>();
 
@@ -56,8 +65,18 @@ namespace FNAF_NEA_Project.Engine
                 return false;
         }
 
-        protected void CreateCamSprite()
+        // Creates camera and jumpscare sprites
+        protected void CreateSprite()
         {
+            if (HasJumpscare)
+            {
+                // Jumpscare sprite
+                JumpscareSprite = new SpriteItem("Jumpscare/" + Name);
+                JumpscareSprite.ZIndex = 10;
+                JumpscareSprite.dp.Scale = new Vector2(4);
+                JumpscareSprite.Visible = false;
+            }
+
             // Creates the sprite for the animatronic when on cams
             CamSprite = new AnimatedSprite();
             CamSprite.ZIndex = 3;
@@ -79,8 +98,26 @@ namespace FNAF_NEA_Project.Engine
 
         public void Jumpscare()
         {
-            // FOR NOW, JUST GO STRAIGHT TO LOSE SCENE
+            if (!(IsJumpscaring || OfficeScene.IsJumpscared))
+            {
+                IsJumpscaring = true;
+                JumpSound.Play();
+                JumpscareSprite.Visible = true;
+                Jumpscared?.Invoke();
+
+                SceneSwitchTimer.Elapsed += SwitchScene;
+                SceneSwitchTimer.Start();
+            }
+        }
+
+        private void SwitchScene()
+        {
             Game1.ChangeScene(new NightLostScene());
+        }
+
+        private void SwitchScene(object sender, ElapsedEventArgs e)
+        {
+            SwitchScene();
         }
 
         // Mathematical formula that returns a reasonable time to wait based off difficulty. Difficulty can go below 1 or above 20 || NOTE: formula on desmos, put into document

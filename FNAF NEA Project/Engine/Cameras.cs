@@ -351,8 +351,8 @@ namespace FNAF_NEA_Project.Engine
 
         public static void ShowAnimMovement(int CamFrom, int CamTo)
         {
-            if ((!Challenges.SilentSteps) || (Challenges.SilentSteps && (CurrentCamNum == CamFrom || CurrentCamNum == CamTo)))
-                _cameras.SetStaticOpacity(1.25f);
+            if (CurrentCamNum == CamFrom || CurrentCamNum == CamTo)
+                _cameras.SetStaticOpacity(1.5f);
         }
     }
 }

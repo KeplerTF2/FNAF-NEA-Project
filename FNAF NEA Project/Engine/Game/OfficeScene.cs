@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NEA_Project.Engine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,8 +40,10 @@ namespace FNAF_NEA_Project.Engine.Game
         public MainAnimatronic Freddy = new MainAnimatronic(10, "Freddy", 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms, "Audio/metalwalk1");
         public MainAnimatronic Bonnie = new MainAnimatronic(10, "Bonnie", 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2");
         public MainAnimatronic Chica = new MainAnimatronic(10, "Chica", 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3");
-        public MainAnimatronic Foxy = new MainAnimatronic(10, "Foxy", 8.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1);
+        public MainAnimatronic Foxy = new MainAnimatronic(10, "Foxy", 7.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1);
         public GoldenFreddy GoldenFreddy = new GoldenFreddy(10);
+        public Helpy Helpy = new Helpy(10);
+        public static bool IsJumpscared = false;
 
         public OfficeScene() { }
 
@@ -68,6 +71,12 @@ namespace FNAF_NEA_Project.Engine.Game
             Scroll = new ScrollObject("Scroll", 0, 1536, -768, 0, true, true);
             Office = new ScrollSprite("Office", "Scroll");
             Office.dp.Scale = new Vector2(4);
+
+            foreach (Animatronic animatronic in Animatronic.AnimatronicDict.Values)
+            {
+                animatronic.Jumpscared += event_OnJumpscare;
+                Debug.WriteLine("Added event to " + animatronic.GetName());
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -120,6 +129,21 @@ namespace FNAF_NEA_Project.Engine.Game
 
             // Amplifies ambient outside sound by creating another (you can't set volume above 1)
             Ambience1Amp.Play(true);
+        }
+
+        private void event_OnJumpscare()
+        {
+            IsJumpscared = true;
+
+            // Reuse some power outages because they do what we want (deactivate input and hud)
+            HallwayLight.PowerOutage();
+            Cameras.PowerOutage();
+            Time.PowerOutage();
+            Power.DoPowerOut(true);
+            Scroll.SetOut((int)Scroll.GetScrollAmount(), (int)Scroll.GetScrollAmount());
+
+            LeftDoor.RemoveInput();
+            RightDoor.RemoveInput();
         }
     }
 }

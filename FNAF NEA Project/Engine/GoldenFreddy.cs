@@ -29,6 +29,7 @@ namespace FNAF_NEA_Project.Engine
             VisibleRooms = new int[] { 7 };
             CurrentRoom = -1;
             Name = "GoldenFreddy";
+            HasJumpscare = false;
 
             BaseTime = GetTime(20f, Difficulty);
             MoveTimer.AutoReset = true;
@@ -56,7 +57,7 @@ namespace FNAF_NEA_Project.Engine
 
         public override void LoadContent()
         {
-            CreateCamSprite();
+            CreateSprite();
             UpdateSprite();
         }
 

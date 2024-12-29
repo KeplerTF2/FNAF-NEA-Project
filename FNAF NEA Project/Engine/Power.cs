@@ -90,6 +90,31 @@ namespace FNAF_NEA_Project.Engine
             BlackOutSprite.Visible = false;
         }
 
+        public void DoPowerOut(bool HideUIOnly = false)
+        {
+            // Only if we should do a complete powerout, and not just hide UI
+            if (!HideUIOnly)
+            {
+                // Core power outage logic
+                Amount = 0;
+                PowerOut = true;
+
+                // Invokes event
+                PowerOutReached?.Invoke();
+
+                // Plays power outage sound
+                PowerOutSound.Play();
+
+                // Darkens the screen
+                BlackOutSprite.Visible = true;
+            }
+
+            // Sets UI to be invisible
+            LossText.Visible = false;
+            DrawText.Visible = false;
+            UsageBar.Visible = false;
+        }
+
         // Calculates new power
         public void Update(GameTime gameTime)
         {
@@ -97,33 +122,25 @@ namespace FNAF_NEA_Project.Engine
             if (!PowerOut)
             {
                 float OldAmount = Amount;
+                float AmountChange;
 
                 // Remove Usage * PowerLoss per minute if Usage is above 0
                 if (Usage != 0)
-                    Amount -= Usage * PowerLoss / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    AmountChange = -(Usage * PowerLoss / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds);
                 // Otherwise add 15%/min to power
                 else
-                    Amount += 15f / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    AmountChange = 15f / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // Double amount lost if golden freddy is active
+                if (ActiveTools[Tools.GOLDEN_FREDDY])
+                    AmountChange *= 2;
+
+                Amount += AmountChange;
 
                 // Invokes power out event if amount reaches 0
                 if (Amount < 0)
                 {
-                    // Core power outage logic
-                    Amount = 0;
-                    PowerOutReached?.Invoke();
-                    PowerOut = true;
-
-                    // Plays power outage sound
-                    PowerOutSound.Play();
-
-                    // Sets UI to be invisible
-                    LossText.Visible = false;
-                    DrawText.Visible = false;
-                    UsageBar.Visible = false;
-
-                    // Darkens the screen
-                    BlackOutSprite.Visible = true;
-
+                    DoPowerOut();
                 }
 
                 // Caps power at 100% (effectively 101%, but just under so that the text says 100%)
