@@ -11,6 +11,9 @@ using System.Timers;
 
 namespace FNAF_NEA_Project.Engine
 {
+    // TODO: Investigate 2 bugs:
+    // 1) Causes Foxy to attack hallway, leave, then attack again
+    // 2) Causes animatronics at the door to bypass the door
     // Animatronics that roam the cameras and attack via the door and hallways
     public class MainAnimatronic : Animatronic
     {
@@ -145,7 +148,7 @@ namespace FNAF_NEA_Project.Engine
         private void UpdateNextMovement()
         {
             // Finds target room
-            if (CurrentRoom != 13)
+            if (CurrentRoom != 13 && !Returning)
             {
                 int Target = 13;
                 if (CurrentRoom != 9 && CurrentRoom != 10 && CurrentRoom != 11)

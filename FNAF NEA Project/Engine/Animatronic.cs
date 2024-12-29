@@ -25,7 +25,7 @@ namespace FNAF_NEA_Project.Engine
         protected AnimatedSprite CamSprite;
         protected SpriteItem JumpscareSprite;
         protected int[] VisibleRooms = new int[] { 0, 2, 3, 5, 6, 7, 8, 12 }; // Default rooms that can be seen from the cameras
-        private AudioEffect JumpSound = new AudioEffect("Jump", "Audio/jumpscare", 1f);
+        private AudioEffect JumpSound = new AudioEffect("Jump", "Audio/jumpscare", 0.8f);
 
         public static Dictionary<string, Animatronic> AnimatronicDict = new Dictionary<string, Animatronic>();
 

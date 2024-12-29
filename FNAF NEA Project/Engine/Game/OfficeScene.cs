@@ -37,12 +37,12 @@ namespace FNAF_NEA_Project.Engine.Game
         public AnimatedSprite sprite;
 
         // Animatronics
-        public MainAnimatronic Freddy = new MainAnimatronic(10, "Freddy", 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms, "Audio/metalwalk1");
-        public MainAnimatronic Bonnie = new MainAnimatronic(10, "Bonnie", 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2");
-        public MainAnimatronic Chica = new MainAnimatronic(10, "Chica", 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3");
-        public MainAnimatronic Foxy = new MainAnimatronic(10, "Foxy", 7.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1);
-        public GoldenFreddy GoldenFreddy = new GoldenFreddy(10);
-        public Helpy Helpy = new Helpy(10);
+        public MainAnimatronic Freddy = new MainAnimatronic(20, "Freddy", 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms, "Audio/metalwalk1");
+        public MainAnimatronic Bonnie = new MainAnimatronic(20, "Bonnie", 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2");
+        public MainAnimatronic Chica = new MainAnimatronic(20, "Chica", 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3");
+        public MainAnimatronic Foxy = new MainAnimatronic(20, "Foxy", 7.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1);
+        public GoldenFreddy GoldenFreddy = new GoldenFreddy(20);
+        public Helpy Helpy = new Helpy(20);
         public static bool IsJumpscared = false;
 
         public OfficeScene() { }
