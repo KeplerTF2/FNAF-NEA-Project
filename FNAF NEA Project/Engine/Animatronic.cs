@@ -11,13 +11,17 @@ using System.Timers;
 
 namespace FNAF_NEA_Project.Engine
 {
+    public enum Animatronics 
+    {
+        Freddy, Bonnie, Chica, Foxy, GoldenFreddy, Helpy
+    }
     public abstract class Animatronic: IMonogame
     {
         public event Notify Jumpscared;
         Timer SceneSwitchTimer = new Timer(1500);
 
         protected int Difficulty;
-        protected string Name;
+        protected Animatronics Name;
         protected int CurrentRoom;
         protected bool KillInOffice;
         protected bool HasJumpscare = true;
@@ -27,7 +31,7 @@ namespace FNAF_NEA_Project.Engine
         protected int[] VisibleRooms = new int[] { 0, 2, 3, 5, 6, 7, 8, 12 }; // Default rooms that can be seen from the cameras
         private AudioEffect JumpSound = new AudioEffect("Jump", "Audio/jumpscare", 0.8f);
 
-        public static Dictionary<string, Animatronic> AnimatronicDict = new Dictionary<string, Animatronic>();
+        public static Dictionary<Animatronics, Animatronic> AnimatronicDict = new Dictionary<Animatronics, Animatronic>();
 
         public int GetDifficulty()
         {
@@ -36,7 +40,7 @@ namespace FNAF_NEA_Project.Engine
 
         public string GetName()
         {
-            return Name;
+            return Name.ToString();
         }
 
         public int GetCurrentRoom()

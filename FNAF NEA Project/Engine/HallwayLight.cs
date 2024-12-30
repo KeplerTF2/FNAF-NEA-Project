@@ -111,8 +111,8 @@ namespace FNAF_NEA_Project.Engine
                 float AlphaValue = MathF.Max(0, (2 - CoolDown) / 2);
 
                 // Shows animatronics if there are any
-                bool ShowFreddy = Animatronic.AnimatronicDict["Freddy"].GetCurrentRoom() == 10;
-                bool ShowFoxy = Animatronic.AnimatronicDict["Foxy"].GetCurrentRoom() == 10;
+                bool ShowFreddy = Animatronic.AnimatronicDict[Animatronics.Freddy].GetCurrentRoom() == 10;
+                bool ShowFoxy = Animatronic.AnimatronicDict[Animatronics.Foxy].GetCurrentRoom() == 10;
 
                 if (ShowFreddy && ShowFoxy) FreddyFoxySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);
                 else if (ShowFoxy) FoxySprite.dp.Colour = new Color(AlphaValue, AlphaValue, AlphaValue, AlphaValue);

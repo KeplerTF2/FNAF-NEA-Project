@@ -33,7 +33,7 @@ namespace FNAF_NEA_Project.Engine
             Difficulty = AI;
             VisibleRooms = new int[] { };
             CurrentRoom = -1;
-            Name = "Helpy";
+            Name = Animatronics.Helpy;
 
             BaseTime = GetTime(18.76f, Difficulty);
 

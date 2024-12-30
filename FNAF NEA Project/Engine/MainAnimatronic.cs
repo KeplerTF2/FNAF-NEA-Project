@@ -43,7 +43,7 @@ namespace FNAF_NEA_Project.Engine
         private AudioEffect BangSound;
         private float SoundPitch = 0f;
 
-        public MainAnimatronic(int AI, string Name, float MovementTime, Entrance[] AvailableEntrances, int[] ReturnRooms, int[] VisibleRooms, string SoundName = "Audio/metalwalk1", float SoundPitch = 0f, float SoundVolume = 0.25f, int StartingRoom = 2)
+        public MainAnimatronic(int AI, Animatronics Name, float MovementTime, Entrance[] AvailableEntrances, int[] ReturnRooms, int[] VisibleRooms, string SoundName = "Audio/metalwalk1", float SoundPitch = 0f, float SoundVolume = 0.25f, int StartingRoom = 2)
         {
             // Assigns variables
             Difficulty = AI;
@@ -72,7 +72,7 @@ namespace FNAF_NEA_Project.Engine
             MonogameIManager.AddObject(this);
         }
 
-        public MainAnimatronic(int AI, string Name, float MovementTime, Entrance AvailableEntrance, int[] ReturnRooms, int[] VisibleRooms, string SoundName = "Audio/metalwalk1", float SoundPitch = 0f, float SoundVolume = 0.25f, int StartingRoom = 2)
+        public MainAnimatronic(int AI, Animatronics Name, float MovementTime, Entrance AvailableEntrance, int[] ReturnRooms, int[] VisibleRooms, string SoundName = "Audio/metalwalk1", float SoundPitch = 0f, float SoundVolume = 0.25f, int StartingRoom = 2)
         {
             // Assigns variables
             Difficulty = AI;
@@ -114,6 +114,7 @@ namespace FNAF_NEA_Project.Engine
 
         public override void Initialize()
         {
+            CurrentTime = (float)Random.Shared.NextDouble() * -5f;
             AnimatronicDict.Add(Name, this);
             NextEntrance = AvailableEntrances[random.Next(AvailableEntrances.Length)];
             UpdateNextMovement();

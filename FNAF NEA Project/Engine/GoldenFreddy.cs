@@ -28,7 +28,7 @@ namespace FNAF_NEA_Project.Engine
             Difficulty = AI;
             VisibleRooms = new int[] { 7 };
             CurrentRoom = -1;
-            Name = "GoldenFreddy";
+            Name = Animatronics.GoldenFreddy;
             HasJumpscare = false;
 
             BaseTime = GetTime(20f, Difficulty);

@@ -17,12 +17,19 @@ namespace FNAF_NEA_Project.Engine
         private int Hour = 12;
         private bool IsAM = true;
         private float TimeScale = 60f; // How much faster this clock should run compared to real time
-        private float EndTime = 360;
+        private float EndTime = 3;//0;
+        private int NightNum = 1;
 
         public event Notify EndTimeReached;
 
         public Clock()
         {
+            MonogameIManager.AddObject(this);
+        }
+
+        public Clock(int NightNum)
+        {
+            this.NightNum = NightNum;
             MonogameIManager.AddObject(this);
         }
 
@@ -38,7 +45,7 @@ namespace FNAF_NEA_Project.Engine
         public void LoadContent()
         {
             // Text setup logic
-            DrawText = new TextItem("DefaultFont", "12:00 AM");
+            DrawText = new TextItem("DefaultFont", "Night " + NightNum + "\n12:00 AM");
             DrawText.dp.Scale = new Vector2(0.5f, 0.5f);
             DrawText.dp.Pos = new Vector2(10, 5);
             DrawText.ZIndex = 6;
@@ -59,7 +66,7 @@ namespace FNAF_NEA_Project.Engine
                 IsAM = (int)(ActualTime / 720f) % 2 == 0;
 
                 // Sets the label
-                DrawText.Text = String.Format("{0:00}:{1:00} " + (IsAM ? "AM" : "PM"), Hour, Minute);
+                DrawText.Text = String.Format("Night " + NightNum + "\n{0:00}:{1:00} " + (IsAM ? "AM" : "PM"), Hour, Minute);
             }
 
             // Checks if end time has been reached

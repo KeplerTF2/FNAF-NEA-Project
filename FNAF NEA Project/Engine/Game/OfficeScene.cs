@@ -18,9 +18,10 @@ namespace FNAF_NEA_Project.Engine.Game
 
     public class OfficeScene : Scene
     {
+        public int NightNum;
         public ScrollObject Scroll;
         public ScrollSprite Office;
-        public Clock Time = new Clock();
+        public Clock Time;
         public Power Power = new Power();
         public DebugPosCollector DebugPosCollector = new DebugPosCollector(false);
         public Cameras Cameras = new Cameras();
@@ -37,15 +38,81 @@ namespace FNAF_NEA_Project.Engine.Game
         public AnimatedSprite sprite;
 
         // Animatronics
-        public MainAnimatronic Freddy = new MainAnimatronic(20, "Freddy", 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms, "Audio/metalwalk1");
-        public MainAnimatronic Bonnie = new MainAnimatronic(20, "Bonnie", 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2");
-        public MainAnimatronic Chica = new MainAnimatronic(20, "Chica", 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3");
-        public MainAnimatronic Foxy = new MainAnimatronic(20, "Foxy", 7.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1);
-        public GoldenFreddy GoldenFreddy = new GoldenFreddy(20);
-        public Helpy Helpy = new Helpy(20);
+        public MainAnimatronic Freddy;
+        public MainAnimatronic Bonnie;
+        public MainAnimatronic Chica;
+        public MainAnimatronic Foxy;
+        public GoldenFreddy GoldenFreddy;
+        public Helpy Helpy;
         public static bool IsJumpscared = false;
 
-        public OfficeScene() { }
+        public OfficeScene()
+        {
+            Freddy = new MainAnimatronic(0, Animatronics.Freddy, 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms, "Audio/metalwalk1");
+            Bonnie = new MainAnimatronic(0, Animatronics.Bonnie, 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2");
+            Chica = new MainAnimatronic(0, Animatronics.Chica, 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3");
+            Foxy = new MainAnimatronic(0, Animatronics.Foxy, 7.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1);
+            GoldenFreddy = new GoldenFreddy(0);
+            Helpy = new Helpy(0);
+
+            Time = new Clock();
+        }
+
+        public OfficeScene(Dictionary<Animatronics, int> AIDict, int NightNum)
+        {
+            this.NightNum = NightNum;
+            Global.NightNum = NightNum;
+            Time = new Clock(NightNum);
+
+            // Goes through the dictionary and assigns
+            foreach (Animatronics Name in AIDict.Keys)
+            {
+                switch (Name)
+                {
+                    case Animatronics.Freddy:
+                        Freddy = new MainAnimatronic(AIDict[Name], Name, 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms, "Audio/metalwalk1"); break;
+                    case Animatronics.Bonnie:
+                        Bonnie = new MainAnimatronic(AIDict[Name], Name, 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2"); break;
+                    case Animatronics.Chica:
+                        Chica = new MainAnimatronic(AIDict[Name], Name, 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3"); break;
+                    case Animatronics.Foxy:
+                        Foxy = new MainAnimatronic(AIDict[Name], Name, 7.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1); break;
+                    case Animatronics.GoldenFreddy:
+                        GoldenFreddy = new GoldenFreddy(AIDict[Name]); break;
+                    case Animatronics.Helpy:
+                        Helpy = new Helpy(AIDict[Name]); break;
+                }
+            }
+        }
+
+        public OfficeScene(int NightNum)
+        {
+            this.NightNum = NightNum;
+            Global.NightNum = NightNum;
+            Time = new Clock(NightNum);
+
+            Dictionary<Animatronics, int> AIDict = NightSettings.GetAIS(NightNum);
+
+            // Goes through the dictionary and assigns
+            foreach (Animatronics Name in AIDict.Keys)
+            {
+                switch (Name)
+                {
+                    case Animatronics.Freddy:
+                        Freddy = new MainAnimatronic(AIDict[Name], Name, 6.43f, MainAnimatronic.AllEntrances, MainAnimatronic.DefaultReturnRooms, MainAnimatronic.DefaultVisRooms, "Audio/metalwalk1"); break;
+                    case Animatronics.Bonnie:
+                        Bonnie = new MainAnimatronic(AIDict[Name], Name, 6f, Entrance.LEFT_DOOR, new int[] { 5, 0, 1, 2 }, new int[] { 0, 2, 3, 5, 6, 7, 8 }, "Audio/metalwalk2"); break;
+                    case Animatronics.Chica:
+                        Chica = new MainAnimatronic(AIDict[Name], Name, 5.47f, Entrance.RIGHT_DOOR, new int[] { 1, 2, 3, 4 }, new int[] { 0, 2, 3, 6, 12 }, "Audio/metalwalk3"); break;
+                    case Animatronics.Foxy:
+                        Foxy = new MainAnimatronic(AIDict[Name], Name, 7.17f, Entrance.HALLWAY, new int[] { 0, 1, 2, 3 }, new int[] { 0, 2, 3, 6 }, "Audio/running", 0f, 0.25f, 1); break;
+                    case Animatronics.GoldenFreddy:
+                        GoldenFreddy = new GoldenFreddy(AIDict[Name]); break;
+                    case Animatronics.Helpy:
+                        Helpy = new Helpy(AIDict[Name]); break;
+                }
+            }
+        }
 
         public override void Initialize()
         {
@@ -112,6 +179,8 @@ namespace FNAF_NEA_Project.Engine.Game
 
         private void event_EndTimeReached()
         {
+            if (Global.NightNum < 6)
+                Global.NightNum++;
             Game1.ChangeScene(new NightWonScene());
         }
 

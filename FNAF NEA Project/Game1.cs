@@ -4,12 +4,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NEA_Project.Engine;
+using System.Collections.Generic;
 
 namespace FNAF_NEA_Project
 {
     // Delegates
     public delegate void Notify();
     public delegate void NotifyInt(int value);
+
+    // BIG TODO: Make it so that changing scenes actually deletes everything prior! Probably involves making anything static, non-static
 
     public class Game1 : Game
     {
@@ -26,7 +29,7 @@ namespace FNAF_NEA_Project
             IsMouseVisible = true;
             CurrentGame = this;
 
-            CurrentScene = new OfficeScene();
+            CurrentScene = new OfficeScene(1);
         }
 
         public static void ChangeScene(Scene scene)
