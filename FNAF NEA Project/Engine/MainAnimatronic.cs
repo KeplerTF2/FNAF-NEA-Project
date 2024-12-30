@@ -11,9 +11,9 @@ using System.Timers;
 
 namespace FNAF_NEA_Project.Engine
 {
-    // TODO: Investigate 2 bugs:
-    // 1) Causes Foxy to attack hallway, leave, then attack again
-    // 2) Causes animatronics at the door to bypass the door
+    // TODO: Investigate 1 bugs:
+    // 1) Causes Foxy to attack hallway, leave, then attack again (fixed..?)
+
     // Animatronics that roam the cameras and attack via the door and hallways
     public class MainAnimatronic : Animatronic
     {
@@ -34,6 +34,7 @@ namespace FNAF_NEA_Project.Engine
         Random random = new Random();
         int[] ReturnRooms = DefaultReturnRooms;
         bool Returning = false;
+        bool DoorInFace = false;
         Entrance NextEntrance = Entrance.LEFT_DOOR;
         Entrance[] AvailableEntrances = new Entrance[] { Entrance.LEFT_DOOR, Entrance.HALLWAY, Entrance.RIGHT_DOOR };
 
@@ -128,9 +129,10 @@ namespace FNAF_NEA_Project.Engine
 
         public override void Update(GameTime gameTime)
         {
+            DoorInFace = (CurrentRoom == 9 && Door.IsSideClosed(DoorSide.LEFT)) || (CurrentRoom == 11 && Door.IsSideClosed(DoorSide.RIGHT));
             if (Difficulty != 0 && !Returning)
             {
-                if ((CurrentRoom == 9 && Door.IsSideClosed(DoorSide.LEFT)) || (CurrentRoom == 11 && Door.IsSideClosed(DoorSide.RIGHT)))
+                if (DoorInFace)
                 {
                     DoorTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     if (DoorTime > MaxDoorTime)
@@ -148,7 +150,7 @@ namespace FNAF_NEA_Project.Engine
         private void UpdateNextMovement()
         {
             // Finds target room
-            if (CurrentRoom != 13 && !Returning)
+            if ((CurrentRoom != 13) && (!Returning) && (!DoorInFace))
             {
                 int Target = 13;
                 if (CurrentRoom != 9 && CurrentRoom != 10 && CurrentRoom != 11)

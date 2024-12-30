@@ -8,9 +8,9 @@ namespace FNAF_NEA_Project.Engine
 {
     public static class Challenges
     {
-        public static bool HeavyStatic = false;
-        public static bool FaultyTemp = false;
-        public static bool SilentSteps = false;
+        public static bool HeavyStatic = true;
+        public static bool FaultyTemp = true;
+        public static bool SilentSteps = true;
 
         public static bool OutputCheat = true;
     }

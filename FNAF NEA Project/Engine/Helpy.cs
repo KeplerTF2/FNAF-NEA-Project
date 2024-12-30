@@ -25,7 +25,7 @@ namespace FNAF_NEA_Project.Engine
         private AudioEffect LaughSound = new AudioEffect("LaughHelpy", "Audio/golden_laugh", 0.6f);
         private AudioEffect BoopSound = new AudioEffect("Boop", "Audio/nosepush", 0.75f);
         private AnimatedSprite HelpySprite;
-        private Button NoseButton = new Button(new Rectangle(2304 + 76, 576 + 56, 40, 16));
+        private Button NoseButton = new Button(new Rectangle(2304 + 76, 576 + 52, 40, 24));
         ScrollObject Scroll;
 
         public Helpy(int AI)
@@ -113,7 +113,7 @@ namespace FNAF_NEA_Project.Engine
             // Only update button pos on Update instead of Draw to reduce on processing
             if (Attacking)
             {
-                NoseButton.SetPos(new Vector2(XPos + 76 + Scroll.GetScrollAmount(), YPos + 56));
+                NoseButton.SetPos(new Vector2(XPos + 76 + Scroll.GetScrollAmount(), YPos + 52));
             }
 
             // Update if the nose should be active
