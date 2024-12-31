@@ -17,7 +17,7 @@ namespace FNAF_NEA_Project.Engine
         private int Hour = 12;
         private bool IsAM = true;
         private float TimeScale = 60f; // How much faster this clock should run compared to real time
-        private float EndTime = 3;//0;
+        private float EndTime = 360;
         private int NightNum = 1;
 
         public event Notify EndTimeReached;

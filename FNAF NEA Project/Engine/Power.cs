@@ -2,6 +2,7 @@
 using NEA_Project.Engine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -27,16 +28,14 @@ namespace FNAF_NEA_Project.Engine
         private float FadeAmount = 1f;
         private bool ShouldFade = false;
         private AudioEffect PowerOutSound = new AudioEffect("PowerOutSound", "Audio/powerdown", 0.75f);
-
-        public static Power GlobalPower;
-        public static bool PowerOut = false;
+        public bool PowerOut = false;
 
         public event Notify PowerOutReached;
 
         public Power() 
         {
+            Debug.WriteLine("Creating POWER!!!");
             MonogameIManager.AddObject(this);
-            GlobalPower = this;
         }
 
         // Sets up dictionary that keeps track of whats being used

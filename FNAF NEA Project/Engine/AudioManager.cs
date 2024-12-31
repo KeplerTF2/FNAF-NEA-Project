@@ -43,9 +43,9 @@ namespace FNAF_NEA_Project.Engine
 
         public static void ClearSounds()
         {
-            foreach (SoundEffectInstance SoundEffect in SoundEffectInstances.Values)
+            foreach (SoundEffect SoundEffect in SoundEffects.Values)
             {
-                SoundEffect.Stop();
+                SoundEffect.Dispose();
                 //SoundEffect.Dispose();
             }
 

@@ -30,7 +30,6 @@ namespace FNAF_NEA_Project.Engine
         private ScrollSprite ButtonClosedSprite;
         private ScrollSprite ButtonOpenSprite;
         private ScrollSprite ButtonInactiveSprite;
-        private static Dictionary<DoorSide, bool> SideClosed = new Dictionary<DoorSide, bool>() { { DoorSide.LEFT, false }, { DoorSide.RIGHT, false } };
         private ScrollObject Scroll;
         private AudioEffect DoorSound;
 
@@ -97,16 +96,16 @@ namespace FNAF_NEA_Project.Engine
         public void Update(GameTime gameTime)
         {
             DoorButton.SetPos(GetButtonPos() + new Vector2(Scroll.GetScrollAmount(), 0));
-            if (!Power.PowerOut)
+            if (!Game1.GetOfficeScene().Power.PowerOut)
             {
-                if (DoorButton.GetActive() == Cameras.IsUsing())
-                    DoorButton.SetActive(!Cameras.IsUsing());
+                if (DoorButton.GetActive() == Game1.GetOfficeScene().Cameras.IsUsing())
+                    DoorButton.SetActive(!Game1.GetOfficeScene().Cameras.IsUsing());
             }
         }
 
-        public static bool IsSideClosed(DoorSide side)
+        public bool IsClosed()
         {
-            return SideClosed[side];
+            return (State == DoorState.CLOSED) || (State == DoorState.CLOSING);
         }
 
         private void event_DoorAnimFinished()
@@ -128,13 +127,11 @@ namespace FNAF_NEA_Project.Engine
             {
                 State = DoorState.CLOSING;
                 DoorSprite.PlayForwards();
-                SideClosed[Side] = true;
             }
             else
             {
                 State = DoorState.OPENING;
                 DoorSprite.PlayReversed();
-                SideClosed[Side] = false;
             }
 
             // Button Sprite
@@ -145,14 +142,14 @@ namespace FNAF_NEA_Project.Engine
             switch (Side)
             {
                 case DoorSide.LEFT:
-                    Power.GlobalPower.SetToolStatus(Tools.LEFT_DOOR, State == DoorState.CLOSED || State == DoorState.CLOSING);
+                    Game1.GetOfficeScene().Power.SetToolStatus(Tools.LEFT_DOOR, State == DoorState.CLOSED || State == DoorState.CLOSING);
                     break;
                 case DoorSide.RIGHT:
-                    Power.GlobalPower.SetToolStatus(Tools.RIGHT_DOOR, State == DoorState.CLOSED || State == DoorState.CLOSING);
+                    Game1.GetOfficeScene().Power.SetToolStatus(Tools.RIGHT_DOOR, State == DoorState.CLOSED || State == DoorState.CLOSING);
                     break;
             }
 
-            Power.GlobalPower.CalculateUsage();
+            Game1.GetOfficeScene().Power.CalculateUsage();
 
             // Audio
             DoorSound.Play();

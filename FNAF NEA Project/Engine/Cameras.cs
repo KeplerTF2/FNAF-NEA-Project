@@ -17,9 +17,8 @@ namespace FNAF_NEA_Project.Engine
 {
     public class Cameras : IMonogame
     {
-        private static Cameras _cameras;
-        private static bool Using = false;
-        private static CamState State = CamState.DOWN;
+        private bool Using = false;
+        private CamState State = CamState.DOWN;
         private float TriggerTimer = 0f;
         private bool TriggerAvailable = true;
         private MouseTrigger CamTrigger = new MouseTrigger(new Rectangle((384 * 2) - (576 / 2), (216 * 4) - 68, 576, 80));
@@ -30,15 +29,15 @@ namespace FNAF_NEA_Project.Engine
         private SpriteItem CamMap;
         private TextItem CamLabel;
         private CamButton[] CamButtons;
-        public static int CurrentCamNum = 1;
         private TemperatureSensor TempSensor = new TemperatureSensor();
+        public int CurrentCamNum = 1;
         public PowerGenerator PowerGen = new PowerGenerator();
 
         private float StaticFade = 0.1f;
 
         // Vars for scrolling sprites
         private AnimatedSprite RoomSprite;
-        private static float ScrollAmount = 0f;
+        private float ScrollAmount = 0f;
         private float ScrollSpeed = 384f / 4f; // Pixels per second
         private float MaxScrollAmount = -384f;
         private float ScrollWait = 0f;
@@ -55,18 +54,17 @@ namespace FNAF_NEA_Project.Engine
         public Cameras()
         {
             InitCamButtons();
-            _cameras = this;
             MonogameIManager.AddObject(this);
         }
 
         // Returns if cameras are in use
-        public static bool IsUsing()
+        public bool IsUsing()
         {
             return Using;
         }
 
         // Returns the state of the cams
-        public static CamState GetState()
+        public CamState GetState()
         {
             return State;
         }
@@ -147,7 +145,7 @@ namespace FNAF_NEA_Project.Engine
         public void Update(GameTime gameTime)
         {
             // Keybind Input Logic
-            if (InputManager.GetKeyState("FlipCam").JustDown && !Power.PowerOut) { event_FlipCamera(); }
+            if (InputManager.GetKeyState("FlipCam").JustDown && !Game1.GetOfficeScene().Power.PowerOut) { event_FlipCamera(); }
 
             // Updates opacity of static
             if (StaticFade > 0.1f)
@@ -221,8 +219,8 @@ namespace FNAF_NEA_Project.Engine
             CamBG.Play();
 
             // Power usage logic
-            Power.GlobalPower.SetToolStatus(Tools.CAMS, Using);
-            Power.GlobalPower.CalculateUsage();
+            Game1.GetOfficeScene().Power.SetToolStatus(Tools.CAMS, Using);
+            Game1.GetOfficeScene().Power.CalculateUsage();
 
             // Sets the cameras' state to going up or going down
             if (Using) { State = CamState.GOING_UP; FlipSound.Stop(); }
@@ -286,7 +284,7 @@ namespace FNAF_NEA_Project.Engine
             BlipSound.Play();
             TempSensor.SwitchCam(CamNum);
             PowerGen.SwitchCams();
-            CamLabel.Text = "Cam " + string.Format("{0:00}", CamNum) + " - " + Building.GetRoom(CamNum).GetName();
+            CamLabel.Text = "Cam " + string.Format("{0:00}", CamNum) + " - " + Game1.GetOfficeScene().Building.GetRoom(CamNum).GetName();
 
             foreach (Animatronic Anim in Animatronic.AnimatronicDict.Values)
             {
@@ -344,15 +342,15 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
-        public static float GetScrollAmount()
+        public float GetScrollAmount()
         {
             return ScrollAmount;
         }
 
-        public static void ShowAnimMovement(int CamFrom, int CamTo)
+        public void ShowAnimMovement(int CamFrom, int CamTo)
         {
             if (CurrentCamNum == CamFrom || CurrentCamNum == CamTo)
-                _cameras.SetStaticOpacity(1.5f);
+                SetStaticOpacity(1.5f);
         }
     }
 }

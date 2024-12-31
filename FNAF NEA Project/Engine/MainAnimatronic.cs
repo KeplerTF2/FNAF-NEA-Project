@@ -101,11 +101,20 @@ namespace FNAF_NEA_Project.Engine
             MonogameIManager.AddObject(this);
         }
 
+        public override void DisposeTimers()
+        {
+            MoveTimer.Stop();
+            MoveTimer.Dispose();
+
+            ReturnTimer.Stop();
+            ReturnTimer.Dispose();
+        }
+
         public override void Draw(GameTime gameTime)
         {
             if (ShouldDrawCamSprite())
             {
-                CamSprite.dp.Pos.X = Cameras.GetScrollAmount();
+                CamSprite.dp.Pos.X = Game1.GetOfficeScene().Cameras.GetScrollAmount();
                 DrawManager.EnqueueItem(CamSprite);
             }
 
@@ -130,7 +139,7 @@ namespace FNAF_NEA_Project.Engine
 
         public override void Update(GameTime gameTime)
         {
-            DoorInFace = (CurrentRoom == 9 && Door.IsSideClosed(DoorSide.LEFT)) || (CurrentRoom == 11 && Door.IsSideClosed(DoorSide.RIGHT));
+            DoorInFace = (CurrentRoom == 9 && Game1.GetOfficeScene().LeftDoor.IsClosed()) || (CurrentRoom == 11 && Game1.GetOfficeScene().RightDoor.IsClosed());
             if (Difficulty != 0 && !Returning)
             {
                 if (DoorInFace)
@@ -166,8 +175,8 @@ namespace FNAF_NEA_Project.Engine
                             Target = 11; break;
                     }
                 }
-                NextRoom = Building.GetNextRoom(CurrentRoom, Target);
-                MaxTime = Building.GetTempRoomTime(CurrentRoom, NextRoom) * BaseTime;
+                NextRoom = Game1.GetOfficeScene().Building.GetNextRoom(CurrentRoom, Target);
+                MaxTime = Game1.GetOfficeScene().Building.GetTempRoomTime(CurrentRoom, NextRoom) * BaseTime;
             }
         }
 
@@ -184,7 +193,7 @@ namespace FNAF_NEA_Project.Engine
             if ((!Challenges.SilentSteps) && (CurrentRoom != 9) && (CurrentRoom != 11))
                 MoveSound.Play();
 
-            Cameras.ShowAnimMovement(Building.IDToCamNum(CurrentRoom), Building.IDToCamNum(NextRoom));
+            Game1.GetOfficeScene().Cameras.ShowAnimMovement(Building.IDToCamNum(CurrentRoom), Building.IDToCamNum(NextRoom));
             CurrentRoom = NextRoom;
             CurrentTime = 0f;
             UpdateNextMovement();

@@ -113,6 +113,12 @@ namespace FNAF_NEA_Project.Engine
             SoundEffectInstance.Stop(Immediate);
         }
 
+        public void Dispose()
+        {
+            Stop(true);
+            SoundEffectInstance.Dispose();
+        }
+
         public void SetVolume(float volume)
         {
             SoundEffectInstance.Volume = volume;

@@ -83,7 +83,7 @@ namespace FNAF_NEA_Project.Engine
 
     public class TemperatureGroups: IMonogame
     {
-        private static Dictionary<char, Temperature> Groups = new Dictionary<char, Temperature>();
+        private Dictionary<char, Temperature> Groups = new Dictionary<char, Temperature>();
 
         public TemperatureGroups()
         {
@@ -121,22 +121,22 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
-        public static float GetTemperature(char c)
+        public float GetTemperature(char c)
         {
             return Groups[c].GetValue();
         }
 
-        public static void CoolInstant(char c)
+        public void CoolInstant(char c)
         {
             Groups[c].ResetValue();
         }
 
-        public static void CoolGradual(char c)
+        public void CoolGradual(char c)
         {
             Groups[c].PutOnCoolDown();
         }
 
-        public static bool IsOnCoolDown(char c)
+        public bool IsOnCoolDown(char c)
         {
             return Groups[c].IsOnCoolDown();
         }

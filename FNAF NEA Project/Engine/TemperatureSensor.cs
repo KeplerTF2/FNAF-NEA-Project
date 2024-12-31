@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FNAF_NEA_Project.Engine.Game;
+using Microsoft.Xna.Framework;
 using NEA_Project.Engine;
 using SharpDX.MediaFoundation;
 using System;
@@ -19,6 +20,7 @@ namespace FNAF_NEA_Project.Engine
         private AudioEffect CoolSound = new AudioEffect("CoolSound", "Audio/IceBreak");
         private bool CanCool = true;
         private bool CamUp = false;
+        private TemperatureGroups TempGroup;
 
         public TemperatureSensor() 
         {
@@ -35,6 +37,11 @@ namespace FNAF_NEA_Project.Engine
         public void Initialize()
         {
             CoolButton.MousePressed += CoolRoom;
+
+            if (Game1.CurrentGame.CurrentScene.GetType() == typeof(OfficeScene))
+            {
+                TempGroup = ((OfficeScene)Game1.CurrentGame.CurrentScene).TempGroups;
+            }
         }
 
         public void LoadContent()
@@ -66,15 +73,15 @@ namespace FNAF_NEA_Project.Engine
 
         public void Update(GameTime gameTime)
         {
-            SetSensorReading(TemperatureGroups.GetTemperature(CurrentTempGroup));
+            SetSensorReading(TempGroup.GetTemperature(CurrentTempGroup));
             UpdateButtonEnabled();
         }
 
         private void UpdateButtonEnabled()
         {
-            if (TemperatureGroups.IsOnCoolDown(CurrentTempGroup) && CanCool)
+            if (TempGroup.IsOnCoolDown(CurrentTempGroup) && CanCool)
                 CanCool = false;
-            else if (!TemperatureGroups.IsOnCoolDown(CurrentTempGroup) && !CanCool)
+            else if (!TempGroup.IsOnCoolDown(CurrentTempGroup) && !CanCool)
                 CanCool = true;
 
             // Only make the button active IF the cameras are up
@@ -112,8 +119,8 @@ namespace FNAF_NEA_Project.Engine
 
         public void CoolRoom()
         {
-            TemperatureGroups.CoolGradual(CurrentTempGroup);
-            Power.GlobalPower.RemovePower(0.75f);
+            TempGroup.CoolGradual(CurrentTempGroup);
+            Game1.GetOfficeScene().Power.RemovePower(0.75f);
             CoolSound.Play();
         }
     }

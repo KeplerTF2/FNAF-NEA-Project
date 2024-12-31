@@ -181,7 +181,7 @@ namespace FNAF_NEA_Project.Engine.Game
         {
             if (Global.NightNum < 6)
                 Global.NightNum++;
-            Game1.ChangeScene(new NightWonScene());
+            Game1.CurrentGame.RequestChangeScene(Scenes.NIGHTWIN);
         }
 
         private void event_PowerOutage()

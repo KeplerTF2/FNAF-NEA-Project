@@ -79,20 +79,20 @@ namespace FNAF_NEA_Project.Engine
         public void Update(GameTime gameTime)
         {
             // Updates pitch of the sound based off power usage
-            PowerGenOnInstance.Pitch = Power.GlobalPower.GetUsage() * -0.1f;
+            PowerGenOnInstance.Pitch = Game1.GetOfficeScene().Power.GetUsage() * -0.1f;
         }
 
         private void UpdateButtonEnabled()
         {
             // Only make the button active IF the cameras are up
-            if (GenButton.GetActive() != ((Cameras.CurrentCamNum == 5) && CamUp))
+            if (GenButton.GetActive() != ((Game1.GetOfficeScene().Cameras.CurrentCamNum == 5) && CamUp))
             {
-                GenButton.SetActive((Cameras.CurrentCamNum == 5) && CamUp);
-                BGSprite.Visible = (Cameras.CurrentCamNum == 5) && CamUp;
+                GenButton.SetActive((Game1.GetOfficeScene().Cameras.CurrentCamNum == 5) && CamUp);
+                BGSprite.Visible = (Game1.GetOfficeScene().Cameras.CurrentCamNum == 5) && CamUp;
             }
-            if (OnSprite.Visible != ((Cameras.CurrentCamNum == 5) && CamUp && Generating))
+            if (OnSprite.Visible != ((Game1.GetOfficeScene().Cameras.CurrentCamNum == 5) && CamUp && Generating))
             {
-                OnSprite.Visible = (Cameras.CurrentCamNum == 5) && CamUp && Generating;
+                OnSprite.Visible = (Game1.GetOfficeScene().Cameras.CurrentCamNum == 5) && CamUp && Generating;
             }
             if (RepairButton.GetActive() != (BGSprite.Visible && Broken))
             {
@@ -103,7 +103,7 @@ namespace FNAF_NEA_Project.Engine
 
         public void SwitchCams()
         {
-            if (Cameras.CurrentCamNum != 5 && Generating)
+            if (Game1.GetOfficeScene().Cameras.CurrentCamNum != 5 && Generating)
                 SetGenerator(false);
             UpdateButtonEnabled();
         }
@@ -129,8 +129,8 @@ namespace FNAF_NEA_Project.Engine
         public void SetGenerator(bool value)
         {
             Generating = value;
-            Power.GlobalPower.SetToolStatus(Tools.GENERATOR, value);
-            Power.GlobalPower.CalculateUsage();
+            Game1.GetOfficeScene().Power.SetToolStatus(Tools.GENERATOR, value);
+            Game1.GetOfficeScene().Power.CalculateUsage();
             PowerGenPressSound.Play();
             if (value) PowerGenOnSound.Play(true);
             else PowerGenOnSound.Stop();

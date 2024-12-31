@@ -36,16 +36,20 @@ namespace FNAF_NEA_Project.Engine
             MoveTimer.Start();
             MoveTimer.Elapsed += UpdateNextMovement;
 
-            UpdateNextMovement();
-
             MonogameIManager.AddObject(this);
+        }
+
+        public override void DisposeTimers()
+        {
+            MoveTimer.Stop();
+            MoveTimer.Dispose();
         }
 
         public override void Draw(GameTime gameTime)
         {
             if (ShouldDrawCamSprite())
             {
-                CamSprite.dp.Pos.X = Cameras.GetScrollAmount();
+                CamSprite.dp.Pos.X = Game1.GetOfficeScene().Cameras.GetScrollAmount();
                 DrawManager.EnqueueItem(CamSprite);
             }
         }
@@ -53,6 +57,7 @@ namespace FNAF_NEA_Project.Engine
         public override void Initialize()
         {
             AnimatronicDict.Add(Name, this);
+            UpdateNextMovement();
         }
 
         public override void LoadContent()
@@ -74,7 +79,7 @@ namespace FNAF_NEA_Project.Engine
                     LaughSound.Play();
                     Attacked?.Invoke();
                     UpdateSprite();
-                    Cameras.ShowAnimMovement(Building.IDToCamNum(7), Building.IDToCamNum(7));
+                    Game1.GetOfficeScene().Cameras.ShowAnimMovement(Building.IDToCamNum(7), Building.IDToCamNum(7));
 
                     if (Challenges.OutputCheat)
                         Debug.WriteLine("Golden Freddy attacked");
@@ -84,7 +89,7 @@ namespace FNAF_NEA_Project.Engine
 
         private void UpdateNextMovement()
         {
-            MaxTime = Building.GetTempRoomTime(7, 8) * BaseTime;
+            MaxTime = Game1.GetOfficeScene().Building.GetTempRoomTime(7, 8) * BaseTime;
         }
 
         private void UpdateNextMovement(object sender, ElapsedEventArgs e)
@@ -97,7 +102,7 @@ namespace FNAF_NEA_Project.Engine
             Attacking = false;
             CurrentRoom = -1;
             UpdateSprite();
-            Cameras.ShowAnimMovement(Building.IDToCamNum(7), Building.IDToCamNum(7));
+            Game1.GetOfficeScene().Cameras.ShowAnimMovement(Building.IDToCamNum(7), Building.IDToCamNum(7));
 
             if (Challenges.OutputCheat)
                 Debug.WriteLine("Golden left");

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FNAF_NEA_Project.Engine.Game;
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,12 +10,20 @@ using System.Threading.Tasks;
 namespace FNAF_NEA_Project.Engine
 {
     // Contains a graph of all rooms
-    public class Building
+    public class Building : IMonogame
     {
-        public static Graph _graph;
-        public static Building _building;
+        public Graph _graph;
 
         public Building()
+        {
+            MonogameIManager.AddObject(this);
+        }
+
+        public void Draw(GameTime gameTime)
+        {
+        }
+
+        public void Initialize()
         {
             _graph = new Graph();
 
@@ -54,8 +64,14 @@ namespace FNAF_NEA_Project.Engine
             _graph.SetConnection(13, 9, 0f, 1f);
             _graph.SetConnection(13, 10, 0f, 1f);
             _graph.SetConnection(13, 11, 0f, 1f);
+        }
 
-            _building = this;
+        public void LoadContent()
+        {
+        }
+
+        public void Update(GameTime gameTime)
+        {
         }
 
         public static int CamNumToID(int ID)
@@ -89,24 +105,24 @@ namespace FNAF_NEA_Project.Engine
             return -1;
         }
 
-        public static Room GetRoom(int CamNum)
+        public Room GetRoom(int CamNum)
         {
             return _graph.GetItem(CamNumToID(CamNum));
         }
 
-        public static int GetNextRoom(int SourceID, int TargetID = 13)
+        public int GetNextRoom(int SourceID, int TargetID = 13)
         {
-            if (_building.GetTempGraph().Dijkstra(SourceID, TargetID).Count > 1)
-                return _building.GetTempGraph().Dijkstra(SourceID, TargetID)[1];
-            else if (_building.GetTempGraph().Dijkstra(SourceID, TargetID).Count == 1)
-                return _building.GetTempGraph().Dijkstra(SourceID, TargetID)[0];
+            if (GetTempGraph().Dijkstra(SourceID, TargetID).Count > 1)
+                return GetTempGraph().Dijkstra(SourceID, TargetID)[1];
+            else if (GetTempGraph().Dijkstra(SourceID, TargetID).Count == 1)
+                return GetTempGraph().Dijkstra(SourceID, TargetID)[0];
             else
                 return -1;
         }
 
-        public static float GetTempRoomTime(int Room1, int Room2)
+        public float GetTempRoomTime(int Room1, int Room2)
         {
-            return _building.GetTempGraph().GetConnection(Room1, Room2);
+            return GetTempGraph().GetConnection(Room1, Room2);
         }
 
         // Returns a graph that takes temperature of rooms into account
@@ -131,10 +147,10 @@ namespace FNAF_NEA_Project.Engine
                     Room Room2 = graph.GetItem(Node2);
 
                     // Get temperature movement multiplers
-                    float Room1Mult = (TemperatureGroups.GetTemperature(Room1.GetTempGroup()) / -2f) + 1f;
+                    float Room1Mult = (Game1.GetOfficeScene().TempGroups.GetTemperature(Room1.GetTempGroup()) / -2f) + 1f;
                     if (Room1.GetTempGroup() == 1f)
                         Room1Mult = 1f / 3f;
-                    float Room2Mult = (TemperatureGroups.GetTemperature(Room2.GetTempGroup()) / -2f) + 1f;
+                    float Room2Mult = (Game1.GetOfficeScene().TempGroups.GetTemperature(Room2.GetTempGroup()) / -2f) + 1f;
                     if (Room2.GetTempGroup() == 1f)
                         Room2Mult = 1f / 3f;
 

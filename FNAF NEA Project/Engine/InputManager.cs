@@ -50,6 +50,11 @@ namespace FNAF_NEA_Project.Engine
             Keys.Remove(name);
         }
 
+        public static void Clear()
+        {
+            Keys = new Dictionary<string, KeyState>();
+        }
+
         // For every keybind, perform logic to check if it's pressed,
         // and if it's been recent pressed or released
         public static void Update()

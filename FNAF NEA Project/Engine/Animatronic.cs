@@ -50,7 +50,7 @@ namespace FNAF_NEA_Project.Engine
 
         public void UpdateSprite()
         {
-            if (VisibleRooms.Contains(Building.CamNumToID(Cameras.CurrentCamNum)))
+            if (VisibleRooms.Contains(Building.CamNumToID(Game1.GetOfficeScene().Cameras.CurrentCamNum)))
             {
                 CamSprite.SetAnimation(CurrentRoom.ToString());
             }
@@ -61,9 +61,9 @@ namespace FNAF_NEA_Project.Engine
             if (VisibleRooms.Contains(CurrentRoom))
             {
                 if (CurrentRoom != 2)
-                    return (CurrentRoom == Building.CamNumToID(Cameras.CurrentCamNum)) && (Cameras.GetState() == CamState.UP);
+                    return (CurrentRoom == Building.CamNumToID(Game1.GetOfficeScene().Cameras.CurrentCamNum)) && (Game1.GetOfficeScene().Cameras.GetState() == CamState.UP);
                 else // Special case for if an animatronic is on stage
-                    return (Cameras.CurrentCamNum == 3) && (Cameras.GetState() == CamState.UP);
+                    return (Game1.GetOfficeScene().Cameras.CurrentCamNum == 3) && (Game1.GetOfficeScene().Cameras.GetState() == CamState.UP);
             }
             else
                 return false;
@@ -100,6 +100,16 @@ namespace FNAF_NEA_Project.Engine
 
         public abstract void Update(GameTime gameTime);
 
+        public abstract void DisposeTimers();
+
+        public static void DisposeAllTimers()
+        {
+            foreach (Animatronic animatronic in AnimatronicDict.Values)
+            {
+                animatronic.DisposeTimers();
+            }
+        }
+
         public void Jumpscare()
         {
             if (!(IsJumpscaring || OfficeScene.IsJumpscared))
@@ -116,7 +126,7 @@ namespace FNAF_NEA_Project.Engine
 
         private void SwitchScene()
         {
-            Game1.ChangeScene(new NightLostScene());
+            Game1.CurrentGame.RequestChangeScene(Scenes.NIGHTLOSE);
         }
 
         private void SwitchScene(object sender, ElapsedEventArgs e)

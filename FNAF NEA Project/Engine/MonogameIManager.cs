@@ -55,7 +55,7 @@ namespace FNAF_NEA_Project.Engine
         // Calls the Update function for every object
         public static void Update(GameTime gameTime)
         {
-            foreach (IMonogame obj in ObjectList) { obj.Update(gameTime); }
+            foreach (IMonogame obj in ObjectList) {  obj.Update(gameTime); }
         }
     }
 }

@@ -40,6 +40,8 @@ namespace FNAF_NEA_Project.Engine
             MonogameIManager.AddObject(this);
         }
 
+        public override void DisposeTimers() { }
+
         public override void Draw(GameTime gameTime)
         {
             // We want to calculate pos here for a smoother running anim
@@ -117,7 +119,7 @@ namespace FNAF_NEA_Project.Engine
             }
 
             // Update if the nose should be active
-            NoseButton.SetActive(!Cameras.IsUsing() && Attacking);
+            NoseButton.SetActive(!Game1.GetOfficeScene().Cameras.IsUsing() && Attacking);
         }
 
         public void OnNoseBooped()

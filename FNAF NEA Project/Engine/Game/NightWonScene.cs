@@ -20,6 +20,7 @@ namespace FNAF_NEA_Project.Engine.Game
         {
             text.dp.Pos = new Vector2(640 - 160, 360 - 60);
             timer.Elapsed += NextNight;
+            timer.AutoReset = false;
             timer.Start();
         }
 
@@ -42,11 +43,12 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public void NextNight()
         {
-            Game1.ChangeScene(new OfficeScene(Global.NightNum));
+            Game1.CurrentGame.RequestChangeScene(Scenes.OFFICE);
         }
 
         public void NextNight(object sender, EventArgs e)
         {
+            timer.Dispose();
             NextNight();
         }
     }

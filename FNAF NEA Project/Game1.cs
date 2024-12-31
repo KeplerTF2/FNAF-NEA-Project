@@ -12,15 +12,23 @@ namespace FNAF_NEA_Project
     public delegate void Notify();
     public delegate void NotifyInt(int value);
 
+    public enum Scenes
+    {
+        EMPTY, OFFICE, NIGHTWIN, NIGHTLOSE, MAIN_MENU
+    }
+
     // BIG TODO: Make it so that changing scenes actually deletes everything prior! Probably involves making anything static, non-static
 
     public class Game1 : Game
     {
         public static Game1 CurrentGame;
-        private static Scene CurrentScene;
+        public Scene CurrentScene;
 
-        private static bool ShouldChangeScene = false;
-        private static Scene SceneToChangeTo;
+        private bool ShouldChangeScene = false;
+        private Scenes SceneToChangeTo;
+
+        private bool LoadingNextScene = false;
+        private bool ShouldClearData = false;
 
         public Game1()
         {
@@ -32,22 +40,87 @@ namespace FNAF_NEA_Project
             CurrentScene = new OfficeScene(1);
         }
 
-        public static void ChangeScene(Scene scene)
+        public OfficeScene GetLocalOfficeScene()
         {
-            SceneToChangeTo = scene;
-            ShouldChangeScene = true;
+            if (CurrentScene.GetType() == typeof(OfficeScene))
+            {
+                return (OfficeScene)CurrentScene;
+            }
+            return null;
         }
 
-        private static void ChangeScene()
+        public static OfficeScene GetOfficeScene()
         {
+            return CurrentGame.GetLocalOfficeScene();
+        }
+
+        public void RequestChangeScene(Scenes RequestedScene)
+        {
+            ShouldChangeScene = true;
+            SceneToChangeTo = RequestedScene;
+        }
+
+        private void ChangeScene(Scenes RequestedScene)
+        {
+            ClearData();
+
+            Scene scene;
+            switch (RequestedScene)
+            {
+                case Scenes.OFFICE:
+                    scene = new OfficeScene(Global.NightNum);
+                    break;
+                case Scenes.NIGHTWIN:
+                    scene = new NightWonScene();
+                    break;
+                case Scenes.NIGHTLOSE:
+                    scene = new NightLostScene();
+                    break;
+                default:
+                    scene = new Scene();
+                    break;
+            }
+
+            CurrentScene = scene;
+
+            CurrentScene.Initialize();
+            MonogameIManager.Initialize();
+
+            CurrentScene.LoadContent();
+            MonogameIManager.LoadContent();
+
+            SceneToChangeTo = Scenes.EMPTY;
+            LoadingNextScene = false;
+            ShouldChangeScene = false;
+        }
+
+        private void ChangeScene()
+        {
+            //CurrentScene = SceneToChangeTo;
+
+            //ClearData();
+
+            CurrentScene.Initialize();
+            MonogameIManager.Initialize();
+
+            CurrentScene.LoadContent();
+            MonogameIManager.LoadContent();
+
+            SceneToChangeTo = Scenes.EMPTY;
+            LoadingNextScene = false;
+            ShouldChangeScene = false;
+        }
+
+        private void ClearData()
+        {
+            Animatronic.DisposeAllTimers();
+            Animatronic.AnimatronicDict.Clear();
             AudioManager.ClearSounds();
             MouseCursorManager.ResetData();
+            ScrollObject.ClearList();
+            InputManager.Clear();
             MonogameIManager.Clear();
-            CurrentScene = SceneToChangeTo;
-            CurrentScene.Initialize();
-            CurrentScene.LoadContent();
-            ShouldChangeScene = false;
-            SceneToChangeTo = null;
+            MonogameGraphics._content.Unload();
         }
 
         protected override void Initialize()
@@ -84,20 +157,24 @@ namespace FNAF_NEA_Project
 
         protected override void Update(GameTime gameTime)
         {
-            InputManager.Update(); // Should always come before any game logic!
+            if (!ShouldChangeScene)
+            {
+                InputManager.Update(); // Should always come before any game logic!
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    Exit();
 
-            // TODO: Add your update logic here
-            GlobalCamera.WindowSize = Window.ClientBounds.Size;
+                //if (ShouldChangeScene) ChangeScene();
 
-            CurrentScene.Update(gameTime);
+                // TODO: Add your update logic here
+                GlobalCamera.WindowSize = Window.ClientBounds.Size;
 
-            MonogameIManager.Update(gameTime);
-            MouseCursorManager.Update(gameTime);
+                CurrentScene.Update(gameTime);
 
-            if (ShouldChangeScene) ChangeScene();
+                MonogameIManager.Update(gameTime);
+                MouseCursorManager.Update(gameTime);
+            }
+            else ChangeScene(SceneToChangeTo);
 
             base.Update(gameTime);
         }

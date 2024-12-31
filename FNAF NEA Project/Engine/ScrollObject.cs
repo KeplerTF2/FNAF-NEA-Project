@@ -69,6 +69,12 @@ namespace FNAF_NEA_Project.Engine
             return List;
         }
 
+        // Clears the list
+        public static void ClearList()
+        {
+            List.Clear();
+        }
+
         // Sets the range of input scroll
         public void SetRange(int min, int max)
         {

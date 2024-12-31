@@ -19,7 +19,6 @@ namespace FNAF_NEA_Project.Engine
         private ScrollSprite FreddySprite;
         private ScrollSprite FoxySprite;
         private ScrollSprite FreddyFoxySprite;
-        private static Dictionary<DoorSide, bool> SideClosed = new Dictionary<DoorSide, bool>() { { DoorSide.LEFT, false }, { DoorSide.RIGHT, false } };
         private ScrollObject Scroll;
         private AudioEffect FlashSound = new AudioEffect("FlashSound", "Audio/HallwayFlash");
         private float CoolDown = 0f;
@@ -100,10 +99,10 @@ namespace FNAF_NEA_Project.Engine
         public void Update(GameTime gameTime)
         {
             FlashButton.SetPos(new Vector2(1088 + Scroll.GetScrollAmount(), 64));
-            if (!Power.PowerOut)
+            if (!Game1.GetOfficeScene().Power.PowerOut)
             {
-                if (FlashButton.GetActive() == Cameras.IsUsing())
-                    FlashButton.SetActive(!Cameras.IsUsing());
+                if (FlashButton.GetActive() == Game1.GetOfficeScene().Cameras.IsUsing())
+                    FlashButton.SetActive(!Game1.GetOfficeScene().Cameras.IsUsing());
             }
 
             if (OnCoolDown)
@@ -124,7 +123,7 @@ namespace FNAF_NEA_Project.Engine
                 {
                     OnCoolDown = false;
                     CoolDown = 0f;
-                    if (!Power.PowerOut)
+                    if (!Game1.GetOfficeScene().Power.PowerOut)
                     {
                         FlashButtonSprite.Visible = true;
                         FlashButtonUsedSprite.Visible = false;
@@ -137,11 +136,6 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
-        public static bool IsSideClosed(DoorSide side)
-        {
-            return SideClosed[side];
-        }
-
         private void event_FlashButtonPressed()
         {
             if (!OnCoolDown)
@@ -152,7 +146,7 @@ namespace FNAF_NEA_Project.Engine
                 Flashed?.Invoke();
 
                 // Power
-                Power.GlobalPower.RemovePower(1f);
+                Game1.GetOfficeScene().Power.RemovePower(1f);
 
                 // Audio
                 FlashSound.Play();
