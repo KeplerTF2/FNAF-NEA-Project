@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace FNAF_NEA_Project.Engine.Game
 {
-    public static class Global
+    public static class SaveData
     {
         public static int NightNum = 1;
+        public static bool CustomNight = false;
+        public static bool MaxMode = false;
+        public static bool MaxModeAllChallenges = false;
     }
 }

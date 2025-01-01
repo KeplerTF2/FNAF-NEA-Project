@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using NEA_Project.Engine;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace FNAF_NEA_Project.Engine.Game
 {
@@ -61,7 +61,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public OfficeScene(Dictionary<Animatronics, int> AIDict, int NightNum)
         {
             this.NightNum = NightNum;
-            Global.NightNum = NightNum;
+            SaveData.NightNum = NightNum;
             Time = new Clock(NightNum);
 
             // Goes through the dictionary and assigns
@@ -88,7 +88,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public OfficeScene(int NightNum)
         {
             this.NightNum = NightNum;
-            Global.NightNum = NightNum;
+            SaveData.NightNum = NightNum;
             Time = new Clock(NightNum);
 
             Dictionary<Animatronics, int> AIDict = NightSettings.GetAIS(NightNum);
@@ -116,6 +116,8 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public override void Initialize()
         {
+            InputManager.AddKeyInput("MainMenu", Keys.Escape);
+
             DebugPosCollector.Initialize();
 
             Time.EndTimeReached += event_EndTimeReached;
@@ -161,6 +163,8 @@ namespace FNAF_NEA_Project.Engine.Game
                 Ambience1.Play(true);
                 Ambience2.Play(true);
             }
+
+            if (InputManager.GetKeyState("MainMenu").JustDown) MainMenu();
         }
 
         private void event_GoldenFreddyAttacked()
@@ -179,9 +183,18 @@ namespace FNAF_NEA_Project.Engine.Game
 
         private void event_EndTimeReached()
         {
-            if (Global.NightNum < 6)
-                Global.NightNum++;
-            Game1.CurrentGame.RequestChangeScene(Scenes.NIGHTWIN);
+            if (SaveData.NightNum < 6)
+            {
+                SaveData.NightNum++;
+                SaveFileHandler.WriteSaveData();
+                Game1.CurrentGame.RequestChangeScene(Scenes.NIGHTWIN);
+            }
+            else
+            {
+                if (SaveData.NightNum == 6) SaveData.CustomNight = true;
+                SaveFileHandler.WriteSaveData();
+                Game1.CurrentGame.RequestChangeScene(Scenes.MAIN_MENU);
+            }
         }
 
         private void event_PowerOutage()
@@ -213,6 +226,11 @@ namespace FNAF_NEA_Project.Engine.Game
 
             LeftDoor.RemoveInput();
             RightDoor.RemoveInput();
+        }
+
+        private void MainMenu()
+        {
+            Game1.CurrentGame.RequestChangeScene(Scenes.MAIN_MENU);
         }
     }
 }

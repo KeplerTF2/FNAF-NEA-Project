@@ -30,14 +30,15 @@ namespace FNAF_NEA_Project
         private bool LoadingNextScene = false;
         private bool ShouldClearData = false;
 
+        private int RequestedNightNum = 1;
+        private bool UseGlobalNightNum = true;
+
         public Game1()
         {
             MonogameGraphics.SetGraphicsDeviceManager(new GraphicsDeviceManager(this));
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             CurrentGame = this;
-
-            CurrentScene = new OfficeScene(1);
         }
 
         public OfficeScene GetLocalOfficeScene()
@@ -60,6 +61,14 @@ namespace FNAF_NEA_Project
             SceneToChangeTo = RequestedScene;
         }
 
+        public void RequestOfficeScene(int NightNum)
+        {
+            RequestedNightNum = NightNum;
+            UseGlobalNightNum = false;
+            ShouldChangeScene = true;
+            SceneToChangeTo = Scenes.OFFICE;
+        }
+
         private void ChangeScene(Scenes RequestedScene)
         {
             ClearData();
@@ -68,7 +77,13 @@ namespace FNAF_NEA_Project
             switch (RequestedScene)
             {
                 case Scenes.OFFICE:
-                    scene = new OfficeScene(Global.NightNum);
+                    if (UseGlobalNightNum)
+                        scene = new OfficeScene(SaveData.NightNum);
+                    else
+                    {
+                        scene = new OfficeScene(RequestedNightNum);
+                        UseGlobalNightNum = true;
+                    }
                     break;
                 case Scenes.NIGHTWIN:
                     scene = new NightWonScene();
@@ -76,29 +91,15 @@ namespace FNAF_NEA_Project
                 case Scenes.NIGHTLOSE:
                     scene = new NightLostScene();
                     break;
+                case Scenes.MAIN_MENU:
+                    scene = new MainMenu();
+                    break;
                 default:
                     scene = new Scene();
                     break;
             }
 
             CurrentScene = scene;
-
-            CurrentScene.Initialize();
-            MonogameIManager.Initialize();
-
-            CurrentScene.LoadContent();
-            MonogameIManager.LoadContent();
-
-            SceneToChangeTo = Scenes.EMPTY;
-            LoadingNextScene = false;
-            ShouldChangeScene = false;
-        }
-
-        private void ChangeScene()
-        {
-            //CurrentScene = SceneToChangeTo;
-
-            //ClearData();
 
             CurrentScene.Initialize();
             MonogameIManager.Initialize();
@@ -129,9 +130,10 @@ namespace FNAF_NEA_Project
             Window.AllowUserResizing = true;
             GlobalCamera.Size = new Vector2(1536, 864);
 
-            CurrentScene.Initialize();
+            //CurrentScene.Initialize();
 
             MonogameIManager.Initialize();
+
 
             //InputManager.AddKeyInput("fullscreen", Keys.F);
 
@@ -148,7 +150,9 @@ namespace FNAF_NEA_Project
             TextureManager.SetContentManager(Content);
 
             // Scenes
-            CurrentScene.LoadContent();
+            // CurrentScene.LoadContent();
+
+            ChangeScene(Scenes.MAIN_MENU);
 
             MonogameIManager.LoadContent();
 
@@ -160,9 +164,6 @@ namespace FNAF_NEA_Project
             if (!ShouldChangeScene)
             {
                 InputManager.Update(); // Should always come before any game logic!
-
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                    Exit();
 
                 //if (ShouldChangeScene) ChangeScene();
 

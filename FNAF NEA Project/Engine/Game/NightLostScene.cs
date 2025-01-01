@@ -5,18 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace FNAF_NEA_Project.Engine.Game
 {
     public class NightLostScene : Scene
     {
         public TextItem text = new TextItem("DefaultFont", "You Lose :(");
+        public Timer timer = new Timer(2000);
 
         public NightLostScene() { }
 
         public override void Initialize()
         {
             text.dp.Pos = new Vector2(640 - 160, 360 - 60);
+            timer.Elapsed += MainMenu;
+            timer.AutoReset = false;
+            timer.Start();
         }
 
         public override void LoadContent()
@@ -34,6 +39,17 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public override void Update(GameTime gameTime)
         {
+        }
+
+        public void MainMenu()
+        {
+            Game1.CurrentGame.RequestChangeScene(Scenes.MAIN_MENU);
+        }
+
+        public void MainMenu(object sender, EventArgs e)
+        {
+            timer.Dispose();
+            MainMenu();
         }
     }
 }

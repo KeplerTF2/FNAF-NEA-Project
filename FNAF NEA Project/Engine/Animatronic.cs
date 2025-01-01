@@ -120,6 +120,7 @@ namespace FNAF_NEA_Project.Engine
                 Jumpscared?.Invoke();
 
                 SceneSwitchTimer.Elapsed += SwitchScene;
+                SceneSwitchTimer.AutoReset = false;
                 SceneSwitchTimer.Start();
             }
         }
@@ -131,6 +132,7 @@ namespace FNAF_NEA_Project.Engine
 
         private void SwitchScene(object sender, ElapsedEventArgs e)
         {
+            SceneSwitchTimer.Dispose();
             SwitchScene();
         }
 
