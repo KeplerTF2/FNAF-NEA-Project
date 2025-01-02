@@ -44,7 +44,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public MainAnimatronic Foxy;
         public GoldenFreddy GoldenFreddy;
         public Helpy Helpy;
-        public static bool IsJumpscared = false;
+        public bool IsJumpscared = false;
 
         public OfficeScene()
         {
@@ -61,12 +61,13 @@ namespace FNAF_NEA_Project.Engine.Game
         public OfficeScene(Dictionary<Animatronics, int> AIDict, int NightNum)
         {
             this.NightNum = NightNum;
-            SaveData.NightNum = NightNum;
+            if (NightNum < 7) SaveData.NightNum = NightNum;
             Time = new Clock(NightNum);
 
             // Goes through the dictionary and assigns
             foreach (Animatronics Name in AIDict.Keys)
             {
+                Debug.WriteLine(Name + ": " + AIDict[Name]);
                 switch (Name)
                 {
                     case Animatronics.Freddy:
@@ -88,7 +89,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public OfficeScene(int NightNum)
         {
             this.NightNum = NightNum;
-            SaveData.NightNum = NightNum;
+            if (NightNum < 7) SaveData.NightNum = NightNum;
             Time = new Clock(NightNum);
 
             Dictionary<Animatronics, int> AIDict = NightSettings.GetAIS(NightNum);
@@ -183,18 +184,12 @@ namespace FNAF_NEA_Project.Engine.Game
 
         private void event_EndTimeReached()
         {
-            if (SaveData.NightNum < 6)
-            {
-                SaveData.NightNum++;
-                SaveFileHandler.WriteSaveData();
-                Game1.CurrentGame.RequestChangeScene(Scenes.NIGHTWIN);
-            }
-            else
-            {
-                if (SaveData.NightNum == 6) SaveData.CustomNight = true;
-                SaveFileHandler.WriteSaveData();
-                Game1.CurrentGame.RequestChangeScene(Scenes.MAIN_MENU);
-            }
+            SaveData.CurrentNightNum = NightNum;
+            if (NightNum < 6) SaveData.NightNum++;
+            else if (NightNum == 6) SaveData.CustomNight = true;
+
+            SaveFileHandler.WriteSaveData();
+            Game1.CurrentGame.RequestChangeScene(Scenes.NIGHTWIN);
         }
 
         private void event_PowerOutage()

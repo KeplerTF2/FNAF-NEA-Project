@@ -13,6 +13,8 @@ namespace FNAF_NEA_Project.Engine
     public class Button : MouseTrigger
     {
         public bool ButtonPressed = false;
+        public bool LMBPressed = false;
+        public bool ClickedOutside = false;
 
         public event Notify MousePressed;
         public event Notify MouseReleased;
@@ -65,10 +67,30 @@ namespace FNAF_NEA_Project.Engine
             base.Update(gameTime); // Checks if the mouse is within the button bounds
 
             // If valid, invoke relevant events if the left mouse button is clicked or not
-            if (Active && MouseInside)
+            if (Active)
             {
-                if (Mouse.GetState().LeftButton == ButtonState.Pressed && !ButtonPressed) { ButtonPressed = true; MousePressed?.Invoke(); }
-                else if (Mouse.GetState().LeftButton == ButtonState.Released && ButtonPressed) { ButtonPressed = false; MouseReleased?.Invoke(); }
+                if (Mouse.GetState().LeftButton == ButtonState.Pressed && !LMBPressed)
+                {
+                    LMBPressed = true;
+                    ClickedOutside = !MouseInside;
+                }
+                else if (Mouse.GetState().LeftButton == ButtonState.Released && LMBPressed)
+                {
+                    LMBPressed = false;
+                    ClickedOutside = false;
+                }
+
+                if (LMBPressed && ButtonPressed && (!MouseInside) && (!ClickedOutside))
+                {
+                    ButtonPressed = false;
+                    LMBPressed = false;
+                }
+
+                if (MouseInside && !ClickedOutside)
+                {
+                    if (LMBPressed && !ButtonPressed) { ButtonPressed = true; MousePressed?.Invoke(); }
+                    else if (!LMBPressed && ButtonPressed) { ButtonPressed = false; MouseReleased?.Invoke(); }
+                }
             }
         }
 

@@ -14,7 +14,7 @@ namespace FNAF_NEA_Project
 
     public enum Scenes
     {
-        EMPTY, OFFICE, NIGHTWIN, NIGHTLOSE, MAIN_MENU
+        EMPTY, OFFICE, NIGHTWIN, NIGHTLOSE, MAIN_MENU, CUSTOM_NIGHT
     }
 
     // BIG TODO: Make it so that changing scenes actually deletes everything prior! Probably involves making anything static, non-static
@@ -79,6 +79,11 @@ namespace FNAF_NEA_Project
                 case Scenes.OFFICE:
                     if (UseGlobalNightNum)
                         scene = new OfficeScene(SaveData.NightNum);
+                    else if (NightSettings.CustomAI.Count > 0)
+                    {
+                        scene = new OfficeScene(NightSettings.CustomAI, 7);
+                        UseGlobalNightNum = true;
+                    }
                     else
                     {
                         scene = new OfficeScene(RequestedNightNum);
@@ -93,6 +98,9 @@ namespace FNAF_NEA_Project
                     break;
                 case Scenes.MAIN_MENU:
                     scene = new MainMenu();
+                    break;
+                case Scenes.CUSTOM_NIGHT:
+                    scene = new CustomNight();
                     break;
                 default:
                     scene = new Scene();
@@ -110,6 +118,7 @@ namespace FNAF_NEA_Project
             SceneToChangeTo = Scenes.EMPTY;
             LoadingNextScene = false;
             ShouldChangeScene = false;
+            NightSettings.CustomAI.Clear();
         }
 
         private void ClearData()

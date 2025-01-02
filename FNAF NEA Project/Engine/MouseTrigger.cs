@@ -75,6 +75,11 @@ namespace FNAF_NEA_Project.Engine
             DebugRect.dp.Colour = colour;
         }
 
+        public void SetRectZIndex(int zIndex)
+        {
+            DebugRect.ZIndex = zIndex;
+        }
+
         // Returns if mouse is inside
         public bool IsMouseInTrigger()
         {
@@ -119,7 +124,7 @@ namespace FNAF_NEA_Project.Engine
 
         public virtual void Initialize()
         {
-            DebugRect.ZIndex = 31;
+            DebugRect.ZIndex = 0;
         }
 
         public void LoadContent()

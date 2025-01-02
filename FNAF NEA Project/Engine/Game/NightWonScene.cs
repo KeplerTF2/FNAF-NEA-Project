@@ -19,7 +19,7 @@ namespace FNAF_NEA_Project.Engine.Game
         public override void Initialize()
         {
             text.dp.Pos = new Vector2(640 - 160, 360 - 60);
-            timer.Elapsed += NextNight;
+            timer.Elapsed += Continue;
             timer.AutoReset = false;
             timer.Start();
         }
@@ -46,10 +46,16 @@ namespace FNAF_NEA_Project.Engine.Game
             Game1.CurrentGame.RequestChangeScene(Scenes.OFFICE);
         }
 
-        public void NextNight(object sender, EventArgs e)
+        public void MainMenu()
+        {
+            Game1.CurrentGame.RequestChangeScene(Scenes.MAIN_MENU);
+        }
+
+        public void Continue(object sender, EventArgs e)
         {
             timer.Dispose();
-            NextNight();
+            if (SaveData.CurrentNightNum < 6) NextNight();
+            else MainMenu();
         }
     }
 }

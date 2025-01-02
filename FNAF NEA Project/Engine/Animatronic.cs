@@ -112,7 +112,7 @@ namespace FNAF_NEA_Project.Engine
 
         public void Jumpscare()
         {
-            if (!(IsJumpscaring || OfficeScene.IsJumpscared))
+            if (!(IsJumpscaring || Game1.GetOfficeScene().IsJumpscared))
             {
                 IsJumpscaring = true;
                 JumpSound.Play();

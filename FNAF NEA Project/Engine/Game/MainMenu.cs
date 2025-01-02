@@ -21,6 +21,7 @@ namespace FNAF_NEA_Project.Engine.Game
 
         private Button NewGameButton = new Button(new Rectangle(64, 448 + 8, 208, 32));
         private Button CurrentGameButton = new Button(new Rectangle(64, 512 + 8, 270, 64));
+        private Button CustomNightButton = new Button(new Rectangle(64, 608 + 8, 256, 32));
         private Button QuitButton = new Button(new Rectangle(64, 736 + 8, 80, 32));
 
         public MainMenu() { }
@@ -48,15 +49,22 @@ namespace FNAF_NEA_Project.Engine.Game
 
             CustomNightText.dp.Scale = new Vector2(0.5f);
             CustomNightText.dp.Pos = new Vector2(64, 608);
-            CustomNightText.dp.Colour = Color.Gray;
 
             QuitText.dp.Scale = new Vector2(0.5f);
             QuitText.dp.Pos = new Vector2(64, 736);
 
             // All button properties
-            NewGameButton.MousePressed += NewGame;
-            CurrentGameButton.MousePressed += CurrentGame;
-            QuitButton.MousePressed += Quit;
+            NewGameButton.MouseReleased += NewGame;
+            CurrentGameButton.MouseReleased += CurrentGame;
+            CustomNightButton.MouseReleased += CustomNight;
+            QuitButton.MouseReleased += Quit;
+
+            // Deactivates custom night button if not unlocked
+            if (!SaveData.CustomNight)
+            {
+                CustomNightText.dp.Colour = Color.Gray;
+                CustomNightButton.SetActive(false);
+            }
         }
 
         public override void LoadContent()
@@ -97,6 +105,11 @@ namespace FNAF_NEA_Project.Engine.Game
         private void CurrentGame()
         {
             Game1.CurrentGame.RequestChangeScene(Scenes.OFFICE);
+        }
+
+        private void CustomNight()
+        {
+            Game1.CurrentGame.RequestChangeScene(Scenes.CUSTOM_NIGHT);
         }
 
         private void Quit()
