@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NEA_Project.Engine;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace FNAF_NEA_Project.Engine
         protected SpriteFont Font;
         protected string FontName;
         public string Text;
+        public bool Centred = false;
 
         public TextItem() { }
 
@@ -28,6 +30,14 @@ namespace FNAF_NEA_Project.Engine
         {
             this.FontName = FontName;
             this.Text = Text;
+            LoadContent();
+        }
+
+        public TextItem(string FontName, string Text, bool Centred)
+        {
+            this.FontName = FontName;
+            this.Text = Text;
+            this.Centred = Centred;
             LoadContent();
         }
 
@@ -48,7 +58,9 @@ namespace FNAF_NEA_Project.Engine
             if (Font != null && Visible)
             {
                 Vector2 scale = GlobalCamera.ApplyCameraScale(dp.Scale);
-                Vector2 pos = GlobalCamera.ApplyCameraPosition(dp.Pos);
+                Vector2 pos;
+                if (Centred) pos = GlobalCamera.ApplyCameraPosition(dp.Pos - (Font.MeasureString(Text) * dp.Scale / 2f));
+                else pos = GlobalCamera.ApplyCameraPosition(dp.Pos);
                 float rot = GlobalCamera.ApplyCameraRotation(dp.Rot);
                 Color colour = GlobalCamera.ApplyCameraColour(dp.Colour);
                 MonogameGraphics._spriteBatch.DrawString(Font, Text, pos, colour, rot, dp.Origin, scale, SpriteEffects.None, 1);

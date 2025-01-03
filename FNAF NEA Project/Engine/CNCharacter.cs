@@ -15,7 +15,7 @@ namespace FNAF_NEA_Project.Engine
         private SpriteItem BGSprite;
         private SpriteItem AnimatronicSprite;
         private SpriteItem ArrowSprite;
-        private TextItem DifficultyText = new TextItem("DefaultFont", "0");
+        private TextItem DifficultyText = new TextItem("DefaultFont", "0", true);
         private Animatronics Animatronic;
         private Button LeftButton;
         private Button RightButton;
@@ -62,7 +62,7 @@ namespace FNAF_NEA_Project.Engine
             ArrowSprite.dp.Pos = Pos;
             ArrowSprite.dp.Scale = new Vector2(4);
 
-            DifficultyText.dp.Pos = Pos + new Vector2(88, 200);
+            DifficultyText.dp.Pos = Pos + new Vector2(96, 224);
             DifficultyText.dp.Scale = new Vector2(0.5f);
         }
 

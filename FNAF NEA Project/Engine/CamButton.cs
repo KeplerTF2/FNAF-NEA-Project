@@ -54,8 +54,8 @@ namespace FNAF_NEA_Project.Engine
 
         public void LoadContent()
         {
-            Text = new TextItem("DefaultFont", string.Format("{0:00}", Num));
-            Text.dp.Pos = Pos + new Vector2(16, 8);
+            Text = new TextItem("DefaultFont", string.Format("{0:00}", Num), true);
+            Text.dp.Pos = Pos + new Vector2(32, 24);
             Text.ZIndex = 5;
             Text.dp.Scale = new Vector2(1f / 3f);
             Text.Visible = false;

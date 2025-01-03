@@ -135,11 +135,11 @@ namespace FNAF_NEA_Project.Engine
             CamIndicator.dp.Pos = new Vector2((384 * 2) - (576 / 2), (216 * 4) - 68);
 
             // Creates the text displaying which cam we are on
-            CamLabel = new TextItem("DefaultFont", "Cam 01 - Parts & Service");
+            CamLabel = new TextItem("DefaultFont", "Cam 01 - Parts & Service", true);
             CamLabel.ZIndex = 4;
             CamLabel.Visible = false;
             CamLabel.dp.Scale = new Vector2(0.5f);
-            CamLabel.dp.Pos = new Vector2(512, 32);
+            CamLabel.dp.Pos = new Vector2(768, 64);
         }
 
         public void Update(GameTime gameTime)
