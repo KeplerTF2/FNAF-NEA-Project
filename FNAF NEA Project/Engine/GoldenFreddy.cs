@@ -68,7 +68,7 @@ namespace FNAF_NEA_Project.Engine
 
         public override void Update(GameTime gameTime)
         {
-            if (Difficulty != 0 && !Attacking)
+            if (Difficulty != 0 && (!Attacking) && (!Game1.GetOfficeScene().InTutorial))
             {
                 CurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (CurrentTime > MaxTime)

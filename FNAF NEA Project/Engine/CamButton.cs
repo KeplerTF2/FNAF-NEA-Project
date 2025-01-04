@@ -54,8 +54,8 @@ namespace FNAF_NEA_Project.Engine
 
         public void LoadContent()
         {
-            Text = new TextItem("DefaultFont", string.Format("{0:00}", Num), true);
-            Text.dp.Pos = Pos + new Vector2(32, 24);
+            Text = new TextItem("PixelFont", string.Format("{0:00}", Num), true);
+            Text.dp.Pos = Pos + new Vector2(32, 28);
             Text.ZIndex = 5;
             Text.dp.Scale = new Vector2(1f / 3f);
             Text.Visible = false;
@@ -67,7 +67,6 @@ namespace FNAF_NEA_Project.Engine
             Rect.Visible = false;
         }
 
-        // Calculates new power
         public void Update(GameTime gameTime)
         {
             

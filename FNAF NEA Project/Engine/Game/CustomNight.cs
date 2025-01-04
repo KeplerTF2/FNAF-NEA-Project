@@ -12,6 +12,7 @@ namespace FNAF_NEA_Project.Engine.Game
     public class CustomNight : Scene
     {
         public TextItem text = new TextItem("DefaultFont", "Custom Night");
+        private Color DarkGray = new Color(0.25f, 0.25f, 0.25f);
 
         // Animatronics
         public CNCharacter Freddy = new CNCharacter(Animatronics.Freddy, new Vector2(128, 144));
@@ -21,8 +22,15 @@ namespace FNAF_NEA_Project.Engine.Game
         public CNCharacter GoldenFreddy = new CNCharacter(Animatronics.GoldenFreddy, new Vector2(384, 464));
         public CNCharacter Helpy = new CNCharacter(Animatronics.Helpy, new Vector2(640, 464));
 
-        public Button StartNightButton = new Button(new Rectangle(1000, 332, 300, 200), true, true);
-        public TextItem StartNightText = new TextItem("DefaultFont", "Start");
+        public Button StartNightButton = new Button(new Rectangle(1000, 532, 300, 200), true, true);
+        public TextItem StartNightText = new TextItem("PixelFont", "Start", true);
+
+        public Button HeavyStaticButton = new Button(new Rectangle(1000, 128, 300, 100), true, true);
+        public Button FaultyTempButton = new Button(new Rectangle(1000, 256, 300, 100), true, true);
+        public Button SilentStepsButton = new Button(new Rectangle(1000, 384, 300, 100), true, true);
+        public TextItem HeavyStaticText = new TextItem("PixelFont", "Heavy\nStatic", true);
+        public TextItem FaultyTempText = new TextItem("PixelFont", "Faulty\nTemp.", true);
+        public TextItem SilentStepsText = new TextItem("PixelFont", "Silent\nSteps", true);
 
         public CustomNight() { }
 
@@ -30,12 +38,43 @@ namespace FNAF_NEA_Project.Engine.Game
         {
             InputManager.AddKeyInput("MainMenu", Keys.Escape);
 
+            // Resets challenges
+            Challenges.SetAll(false);
+
             text.dp.Pos = new Vector2(640 - 160, 360 - 60);
+
             StartNightButton.MousePressed += StartNight;
             StartNightButton.SetRectColour(Color.Gray);
             StartNightButton.SetRectZIndex(0);
-            StartNightText.dp.Pos = new Vector2(1000, 332);
+
+            StartNightText.dp.Pos = new Vector2(1150, 632);
+            StartNightText.dp.Scale = new Vector2(0.6f);
             StartNightText.ZIndex = 5;
+
+            // Challenge Modifiers
+            HeavyStaticButton.MousePressed += ToggleHeavyStatic;
+            HeavyStaticButton.SetRectColour(DarkGray);
+            HeavyStaticButton.SetRectZIndex(0);
+
+            HeavyStaticText.dp.Pos = new Vector2(1150, 178);
+            HeavyStaticText.dp.Scale = new Vector2(1f / 3f);
+            HeavyStaticText.ZIndex = 5;
+
+            FaultyTempButton.MousePressed += ToggleFaultyTemp;
+            FaultyTempButton.SetRectColour(DarkGray);
+            FaultyTempButton.SetRectZIndex(0);
+
+            FaultyTempText.dp.Pos = new Vector2(1150, 306);
+            FaultyTempText.dp.Scale = new Vector2(1f / 3f);
+            FaultyTempText.ZIndex = 5;
+
+            SilentStepsButton.MousePressed += ToggleSilentSteps;
+            SilentStepsButton.SetRectColour(DarkGray);
+            SilentStepsButton.SetRectZIndex(0);
+
+            SilentStepsText.dp.Pos = new Vector2(1150, 434);
+            SilentStepsText.dp.Scale = new Vector2(1f / 3f);
+            SilentStepsText.ZIndex = 5;
         }
 
         public override void LoadContent()
@@ -49,12 +88,16 @@ namespace FNAF_NEA_Project.Engine.Game
         public override void Draw(GameTime gameTime)
         {
             DrawManager.EnqueueItem(StartNightText);
+            DrawManager.EnqueueItem(HeavyStaticText);
+            DrawManager.EnqueueItem(FaultyTempText);
+            DrawManager.EnqueueItem(SilentStepsText);
         }
 
         public override void Update(GameTime gameTime)
         {
             if (InputManager.GetKeyState("MainMenu").JustDown)
             {
+                Challenges.SetAll(false);
                 CNCharacter.ClearAIDict();
                 Game1.CurrentGame.RequestChangeScene(Scenes.MAIN_MENU);
             }
@@ -65,6 +108,25 @@ namespace FNAF_NEA_Project.Engine.Game
             NightSettings.CustomAI = CNCharacter.GetAIDict();
             CNCharacter.ClearAIDict();
             Game1.CurrentGame.RequestOfficeScene(7);
+        }
+
+        private void ToggleHeavyStatic()
+        {
+            Challenges.HeavyStatic = HeavyStaticButton.Toggled;
+            if (HeavyStaticButton.Toggled) HeavyStaticButton.SetRectColour(Color.LightGray);
+            else HeavyStaticButton.SetRectColour(DarkGray);
+        }
+        private void ToggleFaultyTemp()
+        {
+            Challenges.FaultyTemp = FaultyTempButton.Toggled;
+            if (FaultyTempButton.Toggled) FaultyTempButton.SetRectColour(Color.LightGray);
+            else FaultyTempButton.SetRectColour(DarkGray);
+        }
+        private void ToggleSilentSteps()
+        {
+            Challenges.SilentSteps = SilentStepsButton.Toggled;
+            if (SilentStepsButton.Toggled) SilentStepsButton.SetRectColour(Color.LightGray);
+            else SilentStepsButton.SetRectColour(DarkGray);
         }
     }
 }

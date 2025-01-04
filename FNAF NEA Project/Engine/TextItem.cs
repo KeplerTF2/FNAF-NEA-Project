@@ -50,6 +50,7 @@ namespace FNAF_NEA_Project.Engine
         public override void LoadContent()
         {
             Font = MonogameGraphics._content.Load<SpriteFont>(FontName);
+            if (FontName == "PixelFont" && Font.LineSpacing == 85) Font.LineSpacing = 101;
         }
 
         // What to draw

@@ -97,29 +97,33 @@ namespace FNAF_NEA_Project.Engine
 
         public override void Update(GameTime gameTime)
         {
-            if (Difficulty != 0 && !Attacking)
+            if (!Game1.GetOfficeScene().InTutorial)
             {
-                CurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (CurrentTime > BaseTime)
+                if (Difficulty != 0 && !Attacking)
                 {
-                    Attacking = true;
-                    CurrentTime = 0f;
-                    LaughSound.Play();
-                    Attacked?.Invoke();
+                    CurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (CurrentTime > BaseTime)
+                    {
+                        Attacking = true;
+                        CurrentTime = 0f;
+                        LaughSound.Play();
+                        Attacked?.Invoke();
 
-                    if (Challenges.OutputCheat)
-                        Debug.WriteLine("Helpy attacked");
+                        if (Challenges.OutputCheat)
+                            Debug.WriteLine("Helpy attacked");
+                    }
                 }
-            }
 
-            // Only update button pos on Update instead of Draw to reduce on processing
-            if (Attacking)
-            {
-                NoseButton.SetPos(new Vector2(XPos + 76 + Scroll.GetScrollAmount(), YPos + 52));
-            }
+                // Only update button pos on Update instead of Draw to reduce on processing
+                if (Attacking)
+                {
+                    NoseButton.SetPos(new Vector2(XPos + 76 + Scroll.GetScrollAmount(), YPos + 52));
+                }
 
-            // Update if the nose should be active
-            NoseButton.SetActive(!Game1.GetOfficeScene().Cameras.IsUsing() && Attacking);
+                // Update if the nose should be active
+                if (NoseButton.GetActive() != (!Game1.GetOfficeScene().Cameras.IsUsing() && Attacking))
+                    NoseButton.SetActive(!Game1.GetOfficeScene().Cameras.IsUsing() && Attacking);
+            }
         }
 
         public void OnNoseBooped()

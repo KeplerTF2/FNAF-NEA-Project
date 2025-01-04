@@ -12,17 +12,17 @@ namespace FNAF_NEA_Project.Engine.Game
 {
     public class MainMenu: Scene
     {
-        public TextItem NameText = new TextItem("DefaultFont", "PLACEHOLDER\nNAME");
-        public TextItem NewGameText = new TextItem("DefaultFont", "New Game");
-        public TextItem CurrentGameText = new TextItem("DefaultFont", "Current Game");
-        public TextItem CurrentNightText = new TextItem("DefaultFont", "Night 1");
-        public TextItem CustomNightText = new TextItem("DefaultFont", "Custom Night");
-        public TextItem QuitText = new TextItem("DefaultFont", "Quit");
+        public TextItem NameText = new TextItem("PixelFont", "PLACEHOLDER\nNAME");
+        public TextItem NewGameText = new TextItem("PixelFont", "New Game");
+        public TextItem CurrentGameText = new TextItem("PixelFont", "Current Game");
+        public TextItem CurrentNightText = new TextItem("PixelFont", "Night 1");
+        public TextItem CustomNightText = new TextItem("PixelFont", "Custom Night");
+        public TextItem QuitText = new TextItem("PixelFont", "Quit");
 
-        private Button NewGameButton = new Button(new Rectangle(64, 448 + 8, 208, 32));
-        private Button CurrentGameButton = new Button(new Rectangle(64, 512 + 8, 270, 64));
-        private Button CustomNightButton = new Button(new Rectangle(64, 608 + 8, 256, 32));
-        private Button QuitButton = new Button(new Rectangle(64, 736 + 8, 80, 32));
+        private Button NewGameButton = new Button(new Rectangle(64, 448, 336, 36));
+        private Button CurrentGameButton = new Button(new Rectangle(64, 512, 506, 72));
+        private Button CustomNightButton = new Button(new Rectangle(64, 608, 498, 36));
+        private Button QuitButton = new Button(new Rectangle(64, 736, 160, 36));
 
         public MainMenu() { }
 

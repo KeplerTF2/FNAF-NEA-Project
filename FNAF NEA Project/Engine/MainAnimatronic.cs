@@ -139,20 +139,23 @@ namespace FNAF_NEA_Project.Engine
 
         public override void Update(GameTime gameTime)
         {
-            DoorInFace = (CurrentRoom == 9 && Game1.GetOfficeScene().LeftDoor.IsClosed()) || (CurrentRoom == 11 && Game1.GetOfficeScene().RightDoor.IsClosed());
-            if (Difficulty != 0 && !Returning)
+            if (!Game1.GetOfficeScene().InTutorial)
             {
-                if (DoorInFace)
+                DoorInFace = (CurrentRoom == 9 && Game1.GetOfficeScene().LeftDoor.IsClosed()) || (CurrentRoom == 11 && Game1.GetOfficeScene().RightDoor.IsClosed());
+                if (Difficulty != 0 && !Returning)
                 {
-                    DoorTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (DoorTime > MaxDoorTime)
-                        Return();
-                }
-                else
-                {
-                    CurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (CurrentTime > MaxTime)
-                        Move();
+                    if (DoorInFace)
+                    {
+                        DoorTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (DoorTime > MaxDoorTime)
+                            Return();
+                    }
+                    else
+                    {
+                        CurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (CurrentTime > MaxTime)
+                            Move();
+                    }
                 }
             }
         }

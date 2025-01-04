@@ -13,5 +13,12 @@ namespace FNAF_NEA_Project.Engine
         public static bool SilentSteps = false;
 
         public static bool OutputCheat = false;
+
+        public static void SetAll(bool Value)
+        {
+            HeavyStatic = Value;
+            FaultyTemp = Value;
+            SilentSteps = Value;
+        }
     }
 }

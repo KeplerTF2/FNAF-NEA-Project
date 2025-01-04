@@ -50,10 +50,13 @@ namespace FNAF_NEA_Project.Engine
 
         public void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(DrawText);
-            DrawManager.EnqueueItem(LossText);
-            DrawManager.EnqueueItem(UsageBar);
-            DrawManager.EnqueueItem(BlackOutSprite);
+            if (!Game1.GetOfficeScene().InTutorial)
+            {
+                DrawManager.EnqueueItem(DrawText);
+                DrawManager.EnqueueItem(LossText);
+                DrawManager.EnqueueItem(UsageBar);
+                DrawManager.EnqueueItem(BlackOutSprite);
+            }
         }
 
         public void Initialize()
@@ -64,14 +67,14 @@ namespace FNAF_NEA_Project.Engine
         public void LoadContent()
         {
             // Text setup logic
-            DrawText = new TextItem("DefaultFont", "100%");
-            DrawText.dp.Scale = new Vector2(0.5f, 0.5f);
-            DrawText.dp.Pos = new Vector2(16, (216 * 4) - 102);
+            DrawText = new TextItem("PixelFont", "100%");
+            DrawText.dp.Scale = new Vector2(0.4f, 0.4f);
+            DrawText.dp.Pos = new Vector2(16, (216 * 4) - 96);
             DrawText.ZIndex = 6;
 
-            LossText = new TextItem("DefaultFont", "-1%");
-            LossText.dp.Scale = new Vector2(0.5f, 0.5f);
-            LossText.dp.Pos = new Vector2(112, (216 * 4) - 102);
+            LossText = new TextItem("PixelFont", "-1%");
+            LossText.dp.Scale = new Vector2(0.4f, 0.4f);
+            LossText.dp.Pos = new Vector2(128, (216 * 4) - 96);
             LossText.ZIndex = 6;
             LossText.dp.Colour = new Color(0);
 
@@ -118,7 +121,7 @@ namespace FNAF_NEA_Project.Engine
         public void Update(GameTime gameTime)
         {
             // Don't do power logic if power is out
-            if (!PowerOut)
+            if ((!PowerOut) && (!Game1.GetOfficeScene().InTutorial))
             {
                 float OldAmount = Amount;
                 float AmountChange;
@@ -203,24 +206,27 @@ namespace FNAF_NEA_Project.Engine
 
         public void RemovePower(float value)
         {
-            float OldAmount = Amount;
-
-            Amount -= value;
-
-            // Invokes power out event if amount reaches 0
-            if (Amount < 0) { PowerOutReached?.Invoke(); Amount = 0; }
-
-            // Change label if needed
-            else if ((int)OldAmount != (int)Amount)
+            if (!Game1.GetOfficeScene().InTutorial)
             {
-                DrawText.Text = (int)Amount + "%";
-            }
+                float OldAmount = Amount;
 
-            // Minus text
-            LossText.Text = "-" + (int)MathF.Max(value, 1f) + "%";
-            LossText.dp.Colour = new Color(1f, 0.25f, 0f, 1f);
-            ShouldFade = true;
-            FadeAmount = 1f;
+                Amount -= value;
+
+                // Invokes power out event if amount reaches 0
+                if (Amount < 0) { PowerOutReached?.Invoke(); Amount = 0; }
+
+                // Change label if needed
+                else if ((int)OldAmount != (int)Amount)
+                {
+                    DrawText.Text = (int)Amount + "%";
+                }
+
+                // Minus text
+                LossText.Text = "-" + (int)MathF.Max(value, 1f) + "%";
+                LossText.dp.Colour = new Color(1f, 0.25f, 0f, 1f);
+                ShouldFade = true;
+                FadeAmount = 1f;
+            }
         }
     }
 }

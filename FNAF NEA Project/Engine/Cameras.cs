@@ -135,17 +135,17 @@ namespace FNAF_NEA_Project.Engine
             CamIndicator.dp.Pos = new Vector2((384 * 2) - (576 / 2), (216 * 4) - 68);
 
             // Creates the text displaying which cam we are on
-            CamLabel = new TextItem("DefaultFont", "Cam 01 - Parts & Service", true);
+            CamLabel = new TextItem("PixelFont", "Cam 01 - Parts & Service", true);
             CamLabel.ZIndex = 4;
             CamLabel.Visible = false;
-            CamLabel.dp.Scale = new Vector2(0.5f);
-            CamLabel.dp.Pos = new Vector2(768, 64);
+            CamLabel.dp.Scale = new Vector2(0.3f, 0.3f);
+            CamLabel.dp.Pos = new Vector2(768, 32);
         }
 
         public void Update(GameTime gameTime)
         {
             // Keybind Input Logic
-            if (InputManager.GetKeyState("FlipCam").JustDown && !Game1.GetOfficeScene().Power.PowerOut) { event_FlipCamera(); }
+            if (InputManager.GetKeyState("FlipCam").JustDown && (!Game1.GetOfficeScene().Power.PowerOut) && (!Game1.GetOfficeScene().IsJumpscared)) { event_FlipCamera(); }
 
             // Updates opacity of static
             if (StaticFade > 0.1f)

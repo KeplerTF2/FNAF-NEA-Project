@@ -15,6 +15,7 @@ namespace FNAF_NEA_Project.Engine
         public bool ButtonPressed = false;
         public bool LMBPressed = false;
         public bool ClickedOutside = false;
+        public bool Toggled = false;
 
         public event Notify MousePressed;
         public event Notify MouseReleased;
@@ -88,7 +89,7 @@ namespace FNAF_NEA_Project.Engine
 
                 if (MouseInside && !ClickedOutside)
                 {
-                    if (LMBPressed && !ButtonPressed) { ButtonPressed = true; MousePressed?.Invoke(); }
+                    if (LMBPressed && !ButtonPressed) { ButtonPressed = true; Toggled = !Toggled; MousePressed?.Invoke(); }
                     else if (!LMBPressed && ButtonPressed) { ButtonPressed = false; MouseReleased?.Invoke(); }
                 }
             }

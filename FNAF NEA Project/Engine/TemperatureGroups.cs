@@ -33,33 +33,36 @@ namespace FNAF_NEA_Project.Engine
 
         public void UpdateValue(GameTime gameTime)
         {
-            if (!OnCoolDown)
+            if (!Game1.GetOfficeScene().InTutorial)
             {
-                Value += Rate / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (Value > 1.0f) Value = 1.0f;
-            }
-            else
-            {
-                // Cools temperature
-                Value -= 0.2f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (Value < 0.0f)
-                { 
-                    Value = 0.0f;
+                if (!OnCoolDown)
+                {
+                    Value += Rate / 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (Value > 1.0f) Value = 1.0f;
+                }
+                else
+                {
+                    // Cools temperature
+                    Value -= 0.2f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (Value < 0.0f)
+                    {
+                        Value = 0.0f;
 
-                    // End cooldown timer prematurely if on faulty temp
-                    if (Challenges.FaultyTemp)
+                        // End cooldown timer prematurely if on faulty temp
+                        if (Challenges.FaultyTemp)
+                        {
+                            CoolDownTimer = 0f;
+                            OnCoolDown = false;
+                        }
+                    }
+
+                    // Handles cool down code
+                    CoolDownTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (CoolDownTimer > 20f)
                     {
                         CoolDownTimer = 0f;
                         OnCoolDown = false;
                     }
-                }
-
-                // Handles cool down code
-                CoolDownTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (CoolDownTimer > 20f)
-                {
-                    CoolDownTimer = 0f;
-                    OnCoolDown = false;
                 }
             }
         }

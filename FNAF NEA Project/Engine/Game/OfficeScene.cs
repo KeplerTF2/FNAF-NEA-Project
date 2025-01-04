@@ -34,6 +34,8 @@ namespace FNAF_NEA_Project.Engine.Game
         private AudioEffect Ambience1Amp = new AudioEffect("Ambience1Amp", "Audio/nighttime_ambience");
         private AudioEffect Ambience2 = new AudioEffect("Ambience2", "Audio/camera_light");
         private bool AmbiencePlaying = false;
+        public bool InTutorial = true;
+        public Tutorial Tutorial = new Tutorial();
 
         public AnimatedSprite sprite;
 
@@ -189,6 +191,7 @@ namespace FNAF_NEA_Project.Engine.Game
             else if (NightNum == 6) SaveData.CustomNight = true;
 
             SaveFileHandler.WriteSaveData();
+            Challenges.SetAll(false);
             Game1.CurrentGame.RequestChangeScene(Scenes.NIGHTWIN);
         }
 
@@ -221,10 +224,13 @@ namespace FNAF_NEA_Project.Engine.Game
 
             LeftDoor.RemoveInput();
             RightDoor.RemoveInput();
+
+            Challenges.SetAll(false);
         }
 
         private void MainMenu()
         {
+            Challenges.SetAll(false);
             Game1.CurrentGame.RequestChangeScene(Scenes.MAIN_MENU);
         }
     }
