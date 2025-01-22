@@ -18,22 +18,7 @@ namespace FNAF_NEA_Project.Engine
         public string Text;
         public bool Centred = false;
 
-        public TextItem() { }
-
-        public TextItem(string FontName)
-        {
-            this.FontName = FontName;
-            LoadContent();
-        }
-
-        public TextItem(string FontName, string Text)
-        {
-            this.FontName = FontName;
-            this.Text = Text;
-            LoadContent();
-        }
-
-        public TextItem(string FontName, string Text, bool Centred)
+        public TextItem(string FontName = "", string Text = "", bool Centred = false)
         {
             this.FontName = FontName;
             this.Text = Text;

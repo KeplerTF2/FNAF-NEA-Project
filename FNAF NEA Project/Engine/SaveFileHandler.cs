@@ -10,14 +10,14 @@ namespace FNAF_NEA_Project.Engine
 {
     public static class SaveFileHandler
     {
-        const string DirectoryName = @"C:\FNAF_NEA";
-        const string PathName = @"C:\FNAF_NEA\SaveFile.txt";
+        const string DICT_NAME = @"C:\FNAF_NEA";
+        const string PATH_NAME = @"C:\FNAF_NEA\SaveFile.txt";
 
         public static bool ReadSaveData()
         {
-            if (File.Exists(PathName))
+            if (File.Exists(PATH_NAME))
             {
-                string[] Data = File.ReadAllLines(PathName);
+                string[] Data = File.ReadAllLines(PATH_NAME);
 
                 if (Data.Length >= 4)
                 {
@@ -35,8 +35,8 @@ namespace FNAF_NEA_Project.Engine
 
         public static void WriteSaveData()
         {
-            if (!Directory.Exists(DirectoryName)) Directory.CreateDirectory(DirectoryName);
-            File.WriteAllText(PathName, SaveData.NightNum + "\n" + SaveData.CustomNight + "\n" + SaveData.MaxMode + "\n" + SaveData.MaxModeAllChallenges);
+            if (!Directory.Exists(DICT_NAME)) Directory.CreateDirectory(DICT_NAME);
+            File.WriteAllText(PATH_NAME, SaveData.NightNum + "\n" + SaveData.CustomNight + "\n" + SaveData.MaxMode + "\n" + SaveData.MaxModeAllChallenges);
         }
     }
 }

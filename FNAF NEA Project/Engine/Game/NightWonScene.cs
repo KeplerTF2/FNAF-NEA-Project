@@ -11,8 +11,8 @@ namespace FNAF_NEA_Project.Engine.Game
 {
     public class NightWonScene : Scene
     {
-        public TextItem text = new TextItem("DefaultFont", "You Win!");
-        public Timer timer = new Timer(2000);
+        private TextItem text = new TextItem("DefaultFont", "You Win!");
+        private Timer timer = new Timer(2000);
 
         public NightWonScene() { }
 
@@ -41,17 +41,17 @@ namespace FNAF_NEA_Project.Engine.Game
         {
         }
 
-        public void NextNight()
+        private void NextNight()
         {
             Game1.CurrentGame.RequestChangeScene(Scenes.OFFICE);
         }
 
-        public void MainMenu()
+        private void MainMenu()
         {
             Game1.CurrentGame.RequestChangeScene(Scenes.MAIN_MENU);
         }
 
-        public void Continue(object sender, EventArgs e)
+        private void Continue(object sender, EventArgs e)
         {
             timer.Dispose();
             if (SaveData.CurrentNightNum < 6) NextNight();

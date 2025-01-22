@@ -18,7 +18,7 @@ namespace FNAF_NEA_Project.Engine
     public abstract class Animatronic: IMonogame
     {
         public event Notify Jumpscared;
-        Timer SceneSwitchTimer = new Timer(1500);
+        protected Timer SceneSwitchTimer = new Timer(1500);
 
         protected int Difficulty;
         protected Animatronics Name;
@@ -140,40 +140,6 @@ namespace FNAF_NEA_Project.Engine
         public static float GetTime(float TimeAt20, int Difficulty)
         {
             return 25 * TimeAt20 / (MathF.Exp(Difficulty * MathF.Log(20) / 20) + 5);
-        }
-
-        // Same formula, but with an offset value. Time returned can not go below this value regardless of difficulty
-        public static float GetTime(float TimeAt20, int Difficulty, float Offset)
-        {
-            // Offset can't be larger than the time at 20 difficulty
-            if (Offset > TimeAt20) Offset = TimeAt20;
-
-            return 25 * TimeAt20 / (MathF.Exp(Difficulty * MathF.Log((20 * TimeAt20 + 5 * Offset) / (TimeAt20 - Offset)) / 20) + 5);
-        }
-
-        // Same formula, the offset is only applied once a cut-off difficulty is reached
-        public static float GetTime(float TimeAt20, int Difficulty, float Offset, bool CutoffBefore20)
-        {
-            // Offset can't be larger than the time at 20 difficulty
-            if (Offset > TimeAt20) Offset = TimeAt20;
-
-            if (!CutoffBefore20)
-            {
-                if (Difficulty <= 20)
-                    return 25 * TimeAt20 / (MathF.Exp(Difficulty * MathF.Log(20) / 20) + 5);
-                else
-                    return 25 * TimeAt20 / (MathF.Exp(Difficulty * MathF.Log((20 * TimeAt20 + 5 * Offset) / (TimeAt20 - Offset)) / 20) + 5);
-            }
-            else
-            {
-                float Value1 = 25 * TimeAt20 / (MathF.Exp(Difficulty * MathF.Log(20) / 20) + 5);
-                float Value2 = 25 * TimeAt20 / (MathF.Exp(Difficulty * MathF.Log((20 * TimeAt20 + 5 * Offset) / (TimeAt20 - Offset)) / 20) + 5);
-
-                if (Difficulty > 20)
-                    return Value2;
-                else
-                    return MathF.Min(Value1, Value2);
-            }
         }
     }
 }

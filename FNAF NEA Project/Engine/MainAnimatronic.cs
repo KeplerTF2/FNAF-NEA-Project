@@ -23,20 +23,20 @@ namespace FNAF_NEA_Project.Engine
         public static int[] DefaultReturnRooms = new int[] { 5, 0, 1, 2, 3, 4 };
 
         // Variables
-        Timer MoveTimer = new Timer(1000);
-        Timer ReturnTimer = new Timer(3000);
-        float BaseTime = 5f;
-        float MaxTime = 5f;
-        float CurrentTime = 0f;
-        float DoorTime = 0f;
-        float MaxDoorTime = 5f;
-        int NextRoom;
-        Random random = new Random();
-        int[] ReturnRooms = DefaultReturnRooms;
-        bool Returning = false;
-        bool DoorInFace = false;
-        Entrance NextEntrance = Entrance.LEFT_DOOR;
-        Entrance[] AvailableEntrances = new Entrance[] { Entrance.LEFT_DOOR, Entrance.HALLWAY, Entrance.RIGHT_DOOR };
+        protected Timer MoveTimer = new Timer(1000);
+        protected Timer ReturnTimer = new Timer(3000);
+        protected float BaseTime = 5f;
+        protected float MaxTime = 5f;
+        protected float CurrentTime = 0f;
+        protected float DoorTime = 0f;
+        protected float MaxDoorTime = 5f;
+        protected int NextRoom;
+        protected Random random = new Random();
+        protected int[] ReturnRooms = DefaultReturnRooms;
+        protected bool Returning = false;
+        protected bool DoorInFace = false;
+        protected Entrance NextEntrance = Entrance.LEFT_DOOR;
+        protected Entrance[] AvailableEntrances = new Entrance[] { Entrance.LEFT_DOOR, Entrance.HALLWAY, Entrance.RIGHT_DOOR };
 
         // Audio
         private AudioEffect MoveSound;

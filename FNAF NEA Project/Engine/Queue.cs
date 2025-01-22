@@ -34,8 +34,6 @@ namespace NEA_Project.Engine
         private QueueItem? head;
         private int length = 0;
 
-        public int Length { get { return length; } }
-
         public Queue() { }
 
         // Adds an item to the end of the queue
@@ -62,6 +60,11 @@ namespace NEA_Project.Engine
 
                 return returnItem;
             }
+        }
+
+        public int GetLength()
+        {
+            return length;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace FNAF_NEA_Project.Engine
     {
         public static Dictionary<Animatronics, int> CustomAI = new Dictionary<Animatronics, int>();
 
-        public static Dictionary<Animatronics, int> GetAIS(int NightNum)
+        public static Dictionary<Animatronics, int> GetAIs(int NightNum)
         {
             Dictionary<Animatronics, int> AnimDict = new Dictionary<Animatronics, int>();
 

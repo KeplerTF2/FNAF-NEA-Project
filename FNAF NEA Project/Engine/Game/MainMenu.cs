@@ -12,12 +12,12 @@ namespace FNAF_NEA_Project.Engine.Game
 {
     public class MainMenu: Scene
     {
-        public TextItem NameText = new TextItem("PixelFont", "PLACEHOLDER\nNAME");
-        public TextItem NewGameText = new TextItem("PixelFont", "New Game");
-        public TextItem CurrentGameText = new TextItem("PixelFont", "Current Game");
-        public TextItem CurrentNightText = new TextItem("PixelFont", "Night 1");
-        public TextItem CustomNightText = new TextItem("PixelFont", "Custom Night");
-        public TextItem QuitText = new TextItem("PixelFont", "Quit");
+        private TextItem NameText = new TextItem("PixelFont", "PLACEHOLDER\nNAME");
+        private TextItem NewGameText = new TextItem("PixelFont", "New Game");
+        private TextItem CurrentGameText = new TextItem("PixelFont", "Current Game");
+        private TextItem CurrentNightText = new TextItem("PixelFont", "Night 1");
+        private TextItem CustomNightText = new TextItem("PixelFont", "Custom Night");
+        private TextItem QuitText = new TextItem("PixelFont", "Quit");
 
         private Button NewGameButton = new Button(new Rectangle(64, 448, 336, 36));
         private Button CurrentGameButton = new Button(new Rectangle(64, 512, 506, 72));

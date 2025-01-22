@@ -17,8 +17,6 @@ namespace FNAF_NEA_Project
         EMPTY, OFFICE, NIGHTWIN, NIGHTLOSE, MAIN_MENU, CUSTOM_NIGHT
     }
 
-    // BIG TODO: Make it so that changing scenes actually deletes everything prior! Probably involves making anything static, non-static
-
     public class Game1 : Game
     {
         public static Game1 CurrentGame;
@@ -26,9 +24,6 @@ namespace FNAF_NEA_Project
 
         private bool ShouldChangeScene = false;
         private Scenes SceneToChangeTo;
-
-        private bool LoadingNextScene = false;
-        private bool ShouldClearData = false;
 
         private int RequestedNightNum = 1;
         private bool UseGlobalNightNum = true;
@@ -41,7 +36,7 @@ namespace FNAF_NEA_Project
             CurrentGame = this;
         }
 
-        public OfficeScene GetLocalOfficeScene()
+        private OfficeScene GetLocalOfficeScene()
         {
             if (CurrentScene.GetType() == typeof(OfficeScene))
             {
@@ -116,7 +111,6 @@ namespace FNAF_NEA_Project
             MonogameIManager.LoadContent();
 
             SceneToChangeTo = Scenes.EMPTY;
-            LoadingNextScene = false;
             ShouldChangeScene = false;
             NightSettings.CustomAI.Clear();
         }

@@ -105,7 +105,7 @@ namespace FNAF_NEA_Project.Engine
                 CoolDisabled.Visible = !CanCool && CamUp;
         }
 
-        public void SetSensorReading(float value) // Value should range from 0 to 1
+        private void SetSensorReading(float value) // Value should range from 0 to 1
         {
             int Offset = (int)((1f - value) * 46);
             TempBarFGSprite.dp.Pos = new Vector2(1348, 72 + Offset * 4);
@@ -117,7 +117,7 @@ namespace FNAF_NEA_Project.Engine
             CurrentTempGroup = TemperatureGroups.CamToGroup(CamNum);
         }
 
-        public void CoolRoom()
+        private void CoolRoom()
         {
             TempGroup.CoolGradual(CurrentTempGroup);
             Game1.GetOfficeScene().Power.RemovePower(0.75f);

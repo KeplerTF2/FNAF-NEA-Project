@@ -210,7 +210,7 @@ namespace FNAF_NEA_Project.Engine
         }
 
         // Toggles whether cameras are up or not
-        public void event_FlipCamera()
+        private void event_FlipCamera()
         {
             Using = !Using; // Sets Using variable
 
@@ -234,7 +234,7 @@ namespace FNAF_NEA_Project.Engine
         }
 
         // When the camera flip animation is finished, set state to either up or down
-        public void event_FlipAnimFinished()
+        private void event_FlipAnimFinished()
         {
             if (Using) { 
                 State = CamState.UP;
@@ -274,7 +274,7 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
-        public void event_CamButtonPressed(int CamNum)
+        private void event_CamButtonPressed(int CamNum)
         {
             CurrentCamNum = CamNum;
             RoomSprite.Frame = CamNum;

@@ -15,21 +15,9 @@ namespace FNAF_NEA_Project.Engine
         private static Dictionary<string, SoundEffect> SoundEffects = new Dictionary<string, SoundEffect>();
         private static Dictionary<string, SoundEffectInstance> SoundEffectInstances = new Dictionary<string, SoundEffectInstance>();
 
-        public static void AddSound(string Name)
-        {
-            SoundEffects.TryAdd(Name, MonogameGraphics._content.Load<SoundEffect>(Name));
-            SoundEffectInstances.TryAdd(Name, SoundEffects[Name].CreateInstance());
-        }
-
         public static void AddSound(string Name, string Path)
         {
             SoundEffects.TryAdd(Name, MonogameGraphics._content.Load<SoundEffect>(Path));
-            SoundEffectInstances.TryAdd(Name, SoundEffects[Name].CreateInstance());
-        }
-
-        public static void AddSound(string Name, SoundEffect Effect)
-        {
-            SoundEffects.TryAdd(Name, Effect);
             SoundEffectInstances.TryAdd(Name, SoundEffects[Name].CreateInstance());
         }
 

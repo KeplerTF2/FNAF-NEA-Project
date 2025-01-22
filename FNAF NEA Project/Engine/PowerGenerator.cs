@@ -121,12 +121,12 @@ namespace FNAF_NEA_Project.Engine
             UpdateButtonEnabled();
         }
 
-        public void ToggleGenerator()
+        private void ToggleGenerator()
         {
             SetGenerator(!Generating);
         }
 
-        public void SetGenerator(bool value)
+        private void SetGenerator(bool value)
         {
             Generating = value;
             Game1.GetOfficeScene().Power.SetToolStatus(Tools.GENERATOR, value);
@@ -143,7 +143,7 @@ namespace FNAF_NEA_Project.Engine
             UpdateButtonEnabled();
         }
 
-        public void Repair()
+        private void Repair()
         {
             Broken = false;
             UpdateButtonEnabled();

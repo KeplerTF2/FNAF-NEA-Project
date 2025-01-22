@@ -79,7 +79,7 @@ namespace FNAF_NEA_Project.Engine
             Button.SetActive(value);
         }
 
-        public void event_ButtonPressed()
+        private void event_ButtonPressed()
         {
             ButtonPressed?.Invoke(Num);
         }

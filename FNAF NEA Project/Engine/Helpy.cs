@@ -16,17 +16,17 @@ namespace FNAF_NEA_Project.Engine
     {
         public event Notify Attacked;
 
-        float XPos = 2304f;
-        float YPos = 576f;
-        float BaseTime = 5f;
-        float CurrentTime = -5f;
-        bool Attacking = false;
-        bool Reteating = false;
+        private float XPos = 2304f;
+        private float YPos = 576f;
+        private float BaseTime = 5f;
+        private float CurrentTime = -5f;
+        private bool Attacking = false;
+        private bool Reteating = false;
         private AudioEffect LaughSound = new AudioEffect("LaughHelpy", "Audio/golden_laugh", 0.6f);
         private AudioEffect BoopSound = new AudioEffect("Boop", "Audio/nosepush", 0.75f);
         private AnimatedSprite HelpySprite;
         private Button NoseButton = new Button(new Rectangle(2304 + 76, 576 + 52, 40, 24));
-        ScrollObject Scroll;
+        private ScrollObject Scroll;
 
         public Helpy(int AI)
         {

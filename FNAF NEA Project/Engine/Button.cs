@@ -12,9 +12,9 @@ namespace FNAF_NEA_Project.Engine
 {
     public class Button : MouseTrigger
     {
-        public bool ButtonPressed = false;
-        public bool LMBPressed = false;
-        public bool ClickedOutside = false;
+        private bool ButtonPressed = false;
+        private bool LMBPressed = false;
+        private bool ClickedOutside = false;
         public bool Toggled = false;
 
         public event Notify MousePressed;

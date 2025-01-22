@@ -22,7 +22,7 @@ namespace NEA_Project.Engine
             {
                 if (queue != null)
                 {
-                    while (queue.Length > 0)
+                    while (queue.GetLength() > 0)
                     {
                         dynamic drawItem = queue.Dequeue();
                         drawItem.Draw();

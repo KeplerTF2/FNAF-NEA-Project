@@ -11,26 +11,26 @@ namespace FNAF_NEA_Project.Engine.Game
 {
     public class CustomNight : Scene
     {
-        public TextItem text = new TextItem("DefaultFont", "Custom Night");
+        private TextItem text = new TextItem("DefaultFont", "Custom Night");
         private Color DarkGray = new Color(0.25f, 0.25f, 0.25f);
 
         // Animatronics
-        public CNCharacter Freddy = new CNCharacter(Animatronics.Freddy, new Vector2(128, 144));
-        public CNCharacter Bonnie = new CNCharacter(Animatronics.Bonnie, new Vector2(384, 144));
-        public CNCharacter Chica = new CNCharacter(Animatronics.Chica, new Vector2(640, 144));
-        public CNCharacter Foxy = new CNCharacter(Animatronics.Foxy, new Vector2(128, 464));
-        public CNCharacter GoldenFreddy = new CNCharacter(Animatronics.GoldenFreddy, new Vector2(384, 464));
-        public CNCharacter Helpy = new CNCharacter(Animatronics.Helpy, new Vector2(640, 464));
+        private CNCharacter Freddy = new CNCharacter(Animatronics.Freddy, new Vector2(128, 144));
+        private CNCharacter Bonnie = new CNCharacter(Animatronics.Bonnie, new Vector2(384, 144));
+        private CNCharacter Chica = new CNCharacter(Animatronics.Chica, new Vector2(640, 144));
+        private CNCharacter Foxy = new CNCharacter(Animatronics.Foxy, new Vector2(128, 464));
+        private CNCharacter GoldenFreddy = new CNCharacter(Animatronics.GoldenFreddy, new Vector2(384, 464));
+        private CNCharacter Helpy = new CNCharacter(Animatronics.Helpy, new Vector2(640, 464));
 
-        public Button StartNightButton = new Button(new Rectangle(1000, 532, 300, 200), true, true);
-        public TextItem StartNightText = new TextItem("PixelFont", "Start", true);
+        private Button StartNightButton = new Button(new Rectangle(1000, 532, 300, 200), true, true);
+        private TextItem StartNightText = new TextItem("PixelFont", "Start", true);
 
-        public Button HeavyStaticButton = new Button(new Rectangle(1000, 128, 300, 100), true, true);
-        public Button FaultyTempButton = new Button(new Rectangle(1000, 256, 300, 100), true, true);
-        public Button SilentStepsButton = new Button(new Rectangle(1000, 384, 300, 100), true, true);
-        public TextItem HeavyStaticText = new TextItem("PixelFont", "Heavy\nStatic", true);
-        public TextItem FaultyTempText = new TextItem("PixelFont", "Faulty\nTemp.", true);
-        public TextItem SilentStepsText = new TextItem("PixelFont", "Silent\nSteps", true);
+        private Button HeavyStaticButton = new Button(new Rectangle(1000, 128, 300, 100), true, true);
+        private Button FaultyTempButton = new Button(new Rectangle(1000, 256, 300, 100), true, true);
+        private Button SilentStepsButton = new Button(new Rectangle(1000, 384, 300, 100), true, true);
+        private TextItem HeavyStaticText = new TextItem("PixelFont", "Heavy\nStatic", true);
+        private TextItem FaultyTempText = new TextItem("PixelFont", "Faulty\nTemp.", true);
+        private TextItem SilentStepsText = new TextItem("PixelFont", "Silent\nSteps", true);
 
         public CustomNight() { }
 
@@ -103,7 +103,7 @@ namespace FNAF_NEA_Project.Engine.Game
             }
         }
 
-        public void StartNight()
+        private void StartNight()
         {
             NightSettings.CustomAI = CNCharacter.GetAIDict();
             CNCharacter.ClearAIDict();

@@ -74,9 +74,9 @@ namespace FNAF_NEA_Project.Engine
         {
         }
 
-        public static int CamNumToID(int ID)
+        public static int CamNumToID(int CamNum)
         {
-            switch (ID)
+            switch (CamNum)
             {
                 case 1: return 0;
                 case 2: return 5;
@@ -89,9 +89,9 @@ namespace FNAF_NEA_Project.Engine
             return -1;
         }
 
-        public static int IDToCamNum(int CamNum)
+        public static int IDToCamNum(int ID)
         {
-            switch (CamNum)
+            switch (ID)
             {
                 case 0: return 1;
                 case 2: return 3;

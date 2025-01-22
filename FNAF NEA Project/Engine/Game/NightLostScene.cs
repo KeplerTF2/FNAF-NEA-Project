@@ -11,8 +11,8 @@ namespace FNAF_NEA_Project.Engine.Game
 {
     public class NightLostScene : Scene
     {
-        public TextItem text = new TextItem("DefaultFont", "You Lose :(");
-        public Timer timer = new Timer(2000);
+        private TextItem text = new TextItem("DefaultFont", "You Lose :(");
+        private Timer timer = new Timer(2000);
 
         public NightLostScene() { }
 
@@ -41,12 +41,12 @@ namespace FNAF_NEA_Project.Engine.Game
         {
         }
 
-        public void MainMenu()
+        private void MainMenu()
         {
             Game1.CurrentGame.RequestChangeScene(Scenes.MAIN_MENU);
         }
 
-        public void MainMenu(object sender, EventArgs e)
+        private void MainMenu(object sender, EventArgs e)
         {
             timer.Dispose();
             MainMenu();

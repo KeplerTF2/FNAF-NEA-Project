@@ -51,18 +51,6 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
-        public void SetAnimation(string animationName, bool play)
-        {
-            if (Animations.ContainsKey(animationName))
-            {
-                CurrentAnimationName = animationName;
-                CurrentAnimation = Animations[animationName];
-                Frame = 0;
-                Time = 0;
-                Playing = play;
-            }
-        }
-
         public void SetAnimation(string animationName, AnimationData animation)
         {
             if (Animations.ContainsKey(animationName))
@@ -75,21 +63,6 @@ namespace FNAF_NEA_Project.Engine
             Frame = 0;
             Time = 0;
         }
-
-        public void SetAnimation(string animationName, AnimationData animation, bool play)
-        {
-            if (Animations.ContainsKey(animationName))
-                Animations[animationName] = animation;
-            else
-                Animations.Add(animationName, animation);
-
-            CurrentAnimationName = animationName;
-            CurrentAnimation = animation;
-            Frame = 0;
-            Time = 0;
-            Playing = play;
-        }
-
 
         // What to load
         public override void LoadContent()

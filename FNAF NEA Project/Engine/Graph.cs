@@ -150,15 +150,6 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
-        public void SetConnection(int ID, float[] Connections)
-        {
-            for (int i = 0; i < Connections.Length; i++)
-            {
-                ConnectionDict[ID][i] = Connections[i];
-                ConnectionDict[i][ID] = Connections[i];
-            }
-        }
-
         public int GetSize()
         {
             return Size;
@@ -176,21 +167,6 @@ namespace FNAF_NEA_Project.Engine
                 if (ItemDict[ID] == item) return ID;
             }
             return -1;
-        }
-
-        // DEBUG, checking Dijkstras
-        public void DebugPrintDijkstra(int Room1 = 2, int Room2 = 13)
-        {
-            List<int> list = Dijkstra(Room1, Room2);
-            foreach (int i in Dijkstra(Room1, Room2))
-            {
-                if (i != -1)
-                {
-                    Room room = GetItem(i);
-                    Debug.Write(room.GetName() + ", ");
-                }
-            }
-            Debug.WriteLine("Dijkstras performed");
         }
 
         public Dictionary<int, dynamic> GetItemDict() { return ItemDict; }

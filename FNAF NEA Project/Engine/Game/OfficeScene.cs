@@ -18,35 +18,36 @@ namespace FNAF_NEA_Project.Engine.Game
 
     public class OfficeScene : Scene
     {
+        // Private Vars
+        private ScrollObject Scroll;
+        private ScrollSprite Office;
+        private Clock Time;
+        private DebugPosCollector DebugPosCollector = new DebugPosCollector(false);
+        private HallwayLight HallwayLight = new HallwayLight();
+        private AudioEffect Ambience1 = new AudioEffect("Ambience1", "Audio/nighttime_ambience");
+        private AudioEffect Ambience1Amp = new AudioEffect("Ambience1Amp", "Audio/nighttime_ambience");
+        private AudioEffect Ambience2 = new AudioEffect("Ambience2", "Audio/camera_light");
+        private bool AmbiencePlaying = false;
+        private Tutorial Tutorial = new Tutorial();
+
+        // Animatronics
+        private MainAnimatronic Freddy;
+        private MainAnimatronic Bonnie;
+        private MainAnimatronic Chica;
+        private MainAnimatronic Foxy;
+        private GoldenFreddy GoldenFreddy;
+        private Helpy Helpy;
+
+        // Public vars
         public int NightNum;
-        public ScrollObject Scroll;
-        public ScrollSprite Office;
-        public Clock Time;
         public Power Power = new Power();
-        public DebugPosCollector DebugPosCollector = new DebugPosCollector(false);
         public Cameras Cameras = new Cameras();
         public TemperatureGroups TempGroups = new TemperatureGroups();
         public Building Building = new Building();
         public Door LeftDoor = new Door(DoorSide.LEFT);
         public Door RightDoor = new Door(DoorSide.RIGHT);
-        public HallwayLight HallwayLight = new HallwayLight();
-        private AudioEffect Ambience1 = new AudioEffect("Ambience1", "Audio/nighttime_ambience");
-        private AudioEffect Ambience1Amp = new AudioEffect("Ambience1Amp", "Audio/nighttime_ambience");
-        private AudioEffect Ambience2 = new AudioEffect("Ambience2", "Audio/camera_light");
-        private bool AmbiencePlaying = false;
-        public bool InTutorial = true;
-        public Tutorial Tutorial = new Tutorial();
-
-        public AnimatedSprite sprite;
-
-        // Animatronics
-        public MainAnimatronic Freddy;
-        public MainAnimatronic Bonnie;
-        public MainAnimatronic Chica;
-        public MainAnimatronic Foxy;
-        public GoldenFreddy GoldenFreddy;
-        public Helpy Helpy;
         public bool IsJumpscared = false;
+        public bool InTutorial = true;
 
         public OfficeScene()
         {
@@ -94,7 +95,7 @@ namespace FNAF_NEA_Project.Engine.Game
             if (NightNum < 7) SaveData.NightNum = NightNum;
             Time = new Clock(NightNum);
 
-            Dictionary<Animatronics, int> AIDict = NightSettings.GetAIS(NightNum);
+            Dictionary<Animatronics, int> AIDict = NightSettings.GetAIs(NightNum);
 
             // Goes through the dictionary and assigns
             foreach (Animatronics Name in AIDict.Keys)

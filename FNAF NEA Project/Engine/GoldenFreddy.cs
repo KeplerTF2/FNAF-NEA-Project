@@ -16,11 +16,11 @@ namespace FNAF_NEA_Project.Engine
     {
         public event Notify Attacked;
 
-        Timer MoveTimer = new Timer(1000);
-        float BaseTime = 5f;
-        float MaxTime = 5f;
-        float CurrentTime = 0f;
-        bool Attacking = false;
+        private Timer MoveTimer = new Timer(1000);
+        private float BaseTime = 5f;
+        private float MaxTime = 5f;
+        private float CurrentTime = 0f;
+        private bool Attacking = false;
         private AudioEffect LaughSound = new AudioEffect("Laugh", "Audio/golden_laugh", 0.5f);
 
         public GoldenFreddy(int AI)
