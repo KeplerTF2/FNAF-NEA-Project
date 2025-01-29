@@ -79,13 +79,13 @@ namespace FNAF_NEA_Project.Engine
             // Camera Scroll Logic
             ScrollSprite(gameTime);
 
-            DrawManager.EnqueueItem(CamBG);
-            DrawManager.EnqueueItem(RoomSprite);
-            DrawManager.EnqueueItem(StaticAnim);
-            DrawManager.EnqueueItem(CamIndicator);
-            DrawManager.EnqueueItem(LoadAnim);
-            DrawManager.EnqueueItem(CamMap);
-            DrawManager.EnqueueItem(CamLabel);
+            CamBG.QueueToDraw();
+            RoomSprite.QueueToDraw();
+            StaticAnim.QueueToDraw();
+            CamIndicator.QueueToDraw();
+            LoadAnim.QueueToDraw();
+            CamMap.QueueToDraw();
+            CamLabel.QueueToDraw();
         }
 
         public void Initialize()

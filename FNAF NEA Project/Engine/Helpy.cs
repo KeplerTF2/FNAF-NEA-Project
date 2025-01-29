@@ -68,8 +68,8 @@ namespace FNAF_NEA_Project.Engine
 
             HelpySprite.dp.Pos.X = Scroll.GetScrollAmount() + XPos;
             HelpySprite.Update(gameTime);
-            DrawManager.EnqueueItem(HelpySprite);
-            DrawManager.EnqueueItem(JumpscareSprite);
+            HelpySprite.QueueToDraw();
+            JumpscareSprite.QueueToDraw();
         }
 
         public override void Initialize()

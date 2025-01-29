@@ -87,10 +87,10 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public override void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(StartNightText);
-            DrawManager.EnqueueItem(HeavyStaticText);
-            DrawManager.EnqueueItem(FaultyTempText);
-            DrawManager.EnqueueItem(SilentStepsText);
+            StartNightText.QueueToDraw();
+            HeavyStaticText.QueueToDraw();
+            FaultyTempText.QueueToDraw();
+            SilentStepsText.QueueToDraw();
         }
 
         public override void Update(GameTime gameTime)

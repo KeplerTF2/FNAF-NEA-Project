@@ -118,7 +118,7 @@ namespace FNAF_NEA_Project.Engine
         {
             if (DrawDebug)
             {
-                DrawManager.EnqueueItem(DebugRect);
+                DebugRect.QueueToDraw();
             }
         }
 

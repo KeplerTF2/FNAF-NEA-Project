@@ -35,7 +35,7 @@ namespace FNAF_NEA_Project.Engine
 
         public void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(DrawText);
+            DrawText.QueueToDraw();
         }
 
         public void Initialize()

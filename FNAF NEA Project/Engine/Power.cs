@@ -52,10 +52,10 @@ namespace FNAF_NEA_Project.Engine
         {
             if (!Game1.GetOfficeScene().InTutorial)
             {
-                DrawManager.EnqueueItem(DrawText);
-                DrawManager.EnqueueItem(LossText);
-                DrawManager.EnqueueItem(UsageBar);
-                DrawManager.EnqueueItem(BlackOutSprite);
+                DrawText.QueueToDraw();
+                LossText.QueueToDraw();
+                UsageBar.QueueToDraw();
+                BlackOutSprite.QueueToDraw();
             }
         }
 

@@ -34,9 +34,9 @@ namespace FNAF_NEA_Project.Engine
 
         public void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(BGSprite);
-            DrawManager.EnqueueItem(OnSprite);
-            DrawManager.EnqueueItem(RepairSprite);
+            BGSprite.QueueToDraw();
+            OnSprite.QueueToDraw();
+            RepairSprite.QueueToDraw();
         }
 
         public void Initialize()

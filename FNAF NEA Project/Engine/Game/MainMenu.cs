@@ -12,12 +12,14 @@ namespace FNAF_NEA_Project.Engine.Game
 {
     public class MainMenu: Scene
     {
-        private TextItem NameText = new TextItem("PixelFont", "PLACEHOLDER\nNAME");
+        private TextItem NameText = new TextItem("PixelFont", "Six\nStickmen\nAt\nFreddy's");
         private TextItem NewGameText = new TextItem("PixelFont", "New Game");
         private TextItem CurrentGameText = new TextItem("PixelFont", "Current Game");
         private TextItem CurrentNightText = new TextItem("PixelFont", "Night 1");
         private TextItem CustomNightText = new TextItem("PixelFont", "Custom Night");
         private TextItem QuitText = new TextItem("PixelFont", "Quit");
+        private SpriteItem FreddySprite;
+        private AnimatedSprite StaticAnim;
 
         private Button NewGameButton = new Button(new Rectangle(64, 448, 336, 36));
         private Button CurrentGameButton = new Button(new Rectangle(64, 512, 506, 72));
@@ -34,6 +36,7 @@ namespace FNAF_NEA_Project.Engine.Game
             if (!SaveFileHandler.ReadSaveData()) SaveFileHandler.WriteSaveData();
 
             // All text item properties
+            NameText.dp.Scale = new Vector2(0.75f);
             NameText.dp.Pos = new Vector2(64, 48);
 
             NewGameText.dp.Scale = new Vector2(0.5f);
@@ -72,6 +75,18 @@ namespace FNAF_NEA_Project.Engine.Game
             // Should always be first!
             base.LoadContent();
 
+            // Creates the static sprite
+            StaticAnim = new AnimatedSprite("StaticSprite", new AnimationData("Static/", 4, 10, true));
+            StaticAnim.ZIndex = 4;
+            StaticAnim.dp.Scale = new Vector2(4);
+            StaticAnim.dp.Colour = new Color(0.2f, 0.2f, 0.2f, 0.2f);
+            StaticAnim.Play();
+
+            // Creates the trigger indicator sprite
+            FreddySprite = new SpriteItem("freddy_mainmenu");
+            FreddySprite.dp.Scale = new Vector2(4f);
+            FreddySprite.ZIndex = 3;
+
             NameText.LoadContent();
             NewGameText.LoadContent();
             CurrentGameText.LoadContent();
@@ -82,12 +97,16 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public override void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(NameText);
-            DrawManager.EnqueueItem(NewGameText);
-            DrawManager.EnqueueItem(CurrentGameText);
-            DrawManager.EnqueueItem(CurrentNightText);
-            DrawManager.EnqueueItem(CustomNightText);
-            DrawManager.EnqueueItem(QuitText);
+            StaticAnim.Update(gameTime);
+
+            NameText.QueueToDraw();
+            NewGameText.QueueToDraw();
+            CurrentGameText.QueueToDraw();
+            CurrentNightText.QueueToDraw();
+            CustomNightText.QueueToDraw();
+            QuitText.QueueToDraw();
+            StaticAnim.QueueToDraw();
+            FreddySprite.QueueToDraw();
         }
 
         public override void Update(GameTime gameTime)

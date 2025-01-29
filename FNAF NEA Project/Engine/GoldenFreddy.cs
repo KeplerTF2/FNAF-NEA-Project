@@ -50,7 +50,7 @@ namespace FNAF_NEA_Project.Engine
             if (ShouldDrawCamSprite())
             {
                 CamSprite.dp.Pos.X = Game1.GetOfficeScene().Cameras.GetScrollAmount();
-                DrawManager.EnqueueItem(CamSprite);
+                CamSprite.QueueToDraw();
             }
         }
 

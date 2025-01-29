@@ -34,7 +34,7 @@ namespace FNAF_NEA_Project.Engine
             {
                 rect.dp.Pos = new Vector2(Mouse.GetState().X / (float)GlobalCamera.WindowSize.X * (float)GlobalCamera.Size.X,
                                           Mouse.GetState().Y / (float)GlobalCamera.WindowSize.Y * (float)GlobalCamera.Size.Y);
-                DrawManager.EnqueueItem(rect);
+                rect.QueueToDraw();
             }
         }
 

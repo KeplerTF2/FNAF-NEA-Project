@@ -37,12 +37,12 @@ namespace FNAF_NEA_Project.Engine
 
         public void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(FlashButtonUsedSprite);
-            DrawManager.EnqueueItem(FlashButtonSprite);
-            DrawManager.EnqueueItem(HallwaySprite);
-            DrawManager.EnqueueItem(FreddySprite);
-            DrawManager.EnqueueItem(FoxySprite);
-            DrawManager.EnqueueItem(FreddyFoxySprite);
+            FlashButtonUsedSprite.QueueToDraw();
+            FlashButtonSprite.QueueToDraw();
+            HallwaySprite.QueueToDraw();
+            FreddySprite.QueueToDraw();
+            FoxySprite.QueueToDraw();
+            FreddyFoxySprite.QueueToDraw();
         }
 
         public void Initialize()

@@ -34,7 +34,7 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public override void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(text);
+            text.QueueToDraw();
         }
 
         public override void Update(GameTime gameTime)

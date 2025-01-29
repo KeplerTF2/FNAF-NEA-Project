@@ -29,9 +29,9 @@ namespace FNAF_NEA_Project.Engine
 
         public void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(TempBarBGSprite);
-            DrawManager.EnqueueItem(TempBarFGSprite);
-            DrawManager.EnqueueItem(CoolDisabled);
+            TempBarBGSprite.QueueToDraw();
+            TempBarFGSprite.QueueToDraw();
+            CoolDisabled.QueueToDraw();
         }
 
         public void Initialize()

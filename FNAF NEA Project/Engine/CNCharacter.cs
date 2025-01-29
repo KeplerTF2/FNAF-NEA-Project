@@ -39,10 +39,10 @@ namespace FNAF_NEA_Project.Engine
 
         public void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(BGSprite);
-            DrawManager.EnqueueItem(AnimatronicSprite);
-            DrawManager.EnqueueItem(ArrowSprite);
-            DrawManager.EnqueueItem(DifficultyText);
+            BGSprite.QueueToDraw();
+            AnimatronicSprite.QueueToDraw();
+            ArrowSprite.QueueToDraw();
+            DifficultyText.QueueToDraw();
         }
 
         public void Initialize() { }

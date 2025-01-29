@@ -50,10 +50,10 @@ namespace FNAF_NEA_Project.Engine
         {
             DoorSprite.Update(gameTime);
             DoorSprite.dp.Pos = GetDoorPos() + new Vector2(Scroll.GetScrollAmount(), 0);
-            DrawManager.EnqueueItem(DoorSprite);
-            DrawManager.EnqueueItem(ButtonClosedSprite);
-            DrawManager.EnqueueItem(ButtonOpenSprite);
-            DrawManager.EnqueueItem(ButtonInactiveSprite);
+            DoorSprite.QueueToDraw();
+            ButtonClosedSprite.QueueToDraw();
+            ButtonOpenSprite.QueueToDraw();
+            ButtonInactiveSprite.QueueToDraw();
         }
 
         public void Initialize()

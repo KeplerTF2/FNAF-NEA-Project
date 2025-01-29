@@ -154,8 +154,7 @@ namespace FNAF_NEA_Project.Engine.Game
 
         public override void Draw(GameTime gameTime)
         {
-            DrawManager.EnqueueItem(Office);
-            //DrawManager.EnqueueItem(sprite);
+            Office.QueueToDraw();
         }
 
         public override void Update(GameTime gameTime)
