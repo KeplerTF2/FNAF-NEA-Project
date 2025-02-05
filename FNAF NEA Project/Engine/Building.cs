@@ -131,38 +131,35 @@ namespace FNAF_NEA_Project.Engine
             Graph graph = new Graph();
 
             // Creates clone of graph
-            foreach (int Node1 in _graph.GetConnectionDict().Keys)
-                graph.AddItem(_graph.GetItem(Node1));
+            foreach (int Node in _graph.GetItemDict().Keys)
+                graph.AddItem(_graph.GetItem(Node));
 
             // Set connections after adding items, or else the graph will try assigning to non-existant rooms
-            foreach (int Node1 in _graph.GetConnectionDict().Keys)
-                graph.SetConnection(Node1, _graph.GetConnectionDict()[Node1]);
+            foreach ((int Node1, int Node2) in _graph.GetConnectionDict().Keys)
+                graph.SetConnection(Node1, _graph.GetConnectionDict());
 
             // Applies temperature modifiers
-            foreach (int Node1 in graph.GetConnectionDict().Keys)
+            foreach ((int Node1, int Node2) in graph.GetConnectionDict().Keys)
             {
-                foreach (int Node2 in graph.GetConnectionDict()[Node1].Keys)
-                {
-                    Room Room1 = graph.GetItem(Node1);
-                    Room Room2 = graph.GetItem(Node2);
+                Room Room1 = graph.GetItem(Node1);
+                Room Room2 = graph.GetItem(Node2);
 
-                    // Get temperature movement multiplers
-                    float Room1Mult = (Game1.GetOfficeScene().TempGroups.GetTemperature(Room1.GetTempGroup()) / -2f) + 1f;
-                    if (Room1.GetTempGroup() == 1f)
-                        Room1Mult = 1f / 3f;
-                    float Room2Mult = (Game1.GetOfficeScene().TempGroups.GetTemperature(Room2.GetTempGroup()) / -2f) + 1f;
-                    if (Room2.GetTempGroup() == 1f)
-                        Room2Mult = 1f / 3f;
+                // Get temperature movement multiplers
+                float Room1Mult = (Game1.GetOfficeScene().TempGroups.GetTemperature(Room1.GetTempGroup()) / -2f) + 1f;
+                if (Room1.GetTempGroup() == 1f)
+                    Room1Mult = 1f / 3f;
+                float Room2Mult = (Game1.GetOfficeScene().TempGroups.GetTemperature(Room2.GetTempGroup()) / -2f) + 1f;
+                if (Room2.GetTempGroup() == 1f)
+                    Room2Mult = 1f / 3f;
 
-                    // Get overall multipler
-                    float Value = (Room1Mult + Room2Mult) / 2f;
+                // Get overall multipler
+                float Value = (Room1Mult + Room2Mult) / 2f;
 
-                    // Applies multiplier to graph (making sure not to apply multiplier twice)
-                    if (Node1 != 13 && Node2 != 13)
-                        graph.SetConnection(Node1, Node2, graph.GetConnection(Node1, Node2) * Value, graph.GetConnection(Node2, Node1));
-                    else
-                        graph.SetConnection(Node1, Node2, graph.GetConnection(Node1, Node2) * Value, graph.GetConnection(Node2, Node1));
-                }
+                // Applies multiplier to graph (making sure not to apply multiplier twice)
+                if (Node1 != 13 && Node2 != 13)
+                    graph.SetConnection(Node1, Node2, graph.GetConnection(Node1, Node2) * Value, graph.GetConnection(Node2, Node1));
+                else
+                    graph.SetConnection(Node1, Node2, graph.GetConnection(Node1, Node2) * Value, graph.GetConnection(Node2, Node1));
             }
 
             return graph;

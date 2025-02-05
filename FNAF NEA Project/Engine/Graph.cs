@@ -14,7 +14,7 @@ namespace FNAF_NEA_Project.Engine
     {
         private int Size;
         private Dictionary<int, dynamic> ItemDict = new Dictionary<int, dynamic>();
-        private Dictionary<int, Dictionary<int, float>> ConnectionDict = new Dictionary<int, Dictionary<int, float>>();
+        private Dictionary<(int From, int To), float> ConnectionDict = new Dictionary<(int, int), float>();
 
         public Graph() { }
 
@@ -60,15 +60,16 @@ namespace FNAF_NEA_Project.Engine
                 UncheckedVertices.Remove(ClosestVertex);
 
                 // Calculates distances to next node
-                foreach (int V in ConnectionDict[ClosestVertex].Keys)
+                foreach (int V in ItemDict.Keys)
                 {
                     // Only consider vertices that haven't been checked already
-                    if (UncheckedVertices.Contains(V))
+                    // and don't check if we try to compare the same value against itself
+                    if (UncheckedVertices.Contains(V) && ClosestVertex != V)
                     {
                         // If alternate distance found is shorter, use that one
-                        if (ConnectionDict[ClosestVertex][V] != 0)
+                        if (ConnectionDict[(ClosestVertex, V)] != 0)
                         {
-                            float AltDist = Distance[ClosestVertex] + ConnectionDict[ClosestVertex][V];
+                            float AltDist = Distance[ClosestVertex] + ConnectionDict[(ClosestVertex, V)];
                             if (AltDist < Distance[V])
                             {
                                 Distance[V] = AltDist;
@@ -112,41 +113,37 @@ namespace FNAF_NEA_Project.Engine
             // Adds the item to the item dictionary
             ItemDict.Add(ID, item);
 
-            // Gives every node a connection to the new item
-            foreach (Dictionary<int, float> value in ConnectionDict.Values)
+            // Gives every node a two-way connection to the new item
+            foreach (int node in ItemDict.Keys)
             {
-                value.Add(ID, 0f);
-            }
-
-            // Adds the item to the connection dictionary
-            ConnectionDict.Add(ID, new Dictionary<int, float>());
-
-            // Gives the item a connection to every node
-            for (int i = 0; i < Size; i++)
-            {
-                ConnectionDict[ID].Add(i, 0f);
+                if (node != ID)
+                {
+                    ConnectionDict.Add((ID, node), 0f);
+                    ConnectionDict.Add((node, ID), 0f);
+                }
             }
         }
 
         public void SetConnection(int ID1, int ID2, float Value)
         {
             // Sets value between the two nodes
-            ConnectionDict[ID1][ID2] = Value;
-            ConnectionDict[ID2][ID1] = Value;
+            ConnectionDict[(ID1, ID2)] = Value;
+            ConnectionDict[(ID2, ID1)] = Value;
         }
 
         public void SetConnection(int ID1, int ID2, float ValueFrom1, float ValueFrom2)
         {
             // Sets value between the two nodes. ValueFrom1 is from Node ID1 to Node ID2, and vice-versa
-            ConnectionDict[ID1][ID2] = ValueFrom1;
-            ConnectionDict[ID2][ID1] = ValueFrom2;
+            ConnectionDict[(ID1, ID2)] = ValueFrom1;
+            ConnectionDict[(ID2, ID1)] = ValueFrom2;
         }
 
-        public void SetConnection(int ID, Dictionary<int, float> Connections)
+        public void SetConnection(int ID, Dictionary<(int From, int To), float> Connections)
         {
-            foreach (int ID2 in Connections.Keys)
+            foreach (int ID2 in ItemDict.Keys)
             {
-                ConnectionDict[ID][ID2] = Connections[ID2];
+                if (ID != ID2)
+                    ConnectionDict[(ID, ID2)] = Connections[(ID, ID2)];
             }
         }
 
@@ -157,7 +154,7 @@ namespace FNAF_NEA_Project.Engine
 
         public float GetConnection(int ID1, int ID2)
         {
-            return ConnectionDict[ID1][ID2];
+            return ConnectionDict[(ID1, ID2)];
         }
 
         public int GetID(dynamic item)
@@ -171,6 +168,6 @@ namespace FNAF_NEA_Project.Engine
 
         public Dictionary<int, dynamic> GetItemDict() { return ItemDict; }
 
-        public Dictionary<int, Dictionary<int, float>> GetConnectionDict() { return ConnectionDict; }
+        public Dictionary<(int From, int To), float> GetConnectionDict() { return ConnectionDict; }
     }
 }
