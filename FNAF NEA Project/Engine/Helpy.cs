@@ -25,7 +25,7 @@ namespace FNAF_NEA_Project.Engine
         private AudioEffect LaughSound = new AudioEffect("LaughHelpy", "Audio/golden_laugh", 0.6f);
         private AudioEffect BoopSound = new AudioEffect("Boop", "Audio/nosepush", 0.75f);
         private AnimatedSprite HelpySprite;
-        private Button NoseButton = new Button(new Rectangle(2304 + 76, 576 + 52, 40, 24));
+        private Button NoseButton = new Button(new Rectangle(2304 + 72, 576 + 48, 48, 32));
         private ScrollObject Scroll;
 
         public Helpy(int AI)
@@ -76,6 +76,8 @@ namespace FNAF_NEA_Project.Engine
         {
             AnimatronicDict.Add(Name, this);
             NoseButton.MousePressed += OnNoseBooped;
+
+            NoseButton.SetRectZIndex(28);
         }
 
         public override void LoadContent()

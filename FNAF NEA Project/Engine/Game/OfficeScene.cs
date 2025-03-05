@@ -100,6 +100,7 @@ namespace FNAF_NEA_Project.Engine.Game
             // Goes through the dictionary and assigns
             foreach (Animatronics Name in AIDict.Keys)
             {
+                Debug.WriteLine(Name + ": " + AIDict[Name]);
                 switch (Name)
                 {
                     case Animatronics.Freddy:
@@ -148,7 +149,6 @@ namespace FNAF_NEA_Project.Engine.Game
             foreach (Animatronic animatronic in Animatronic.AnimatronicDict.Values)
             {
                 animatronic.Jumpscared += event_OnJumpscare;
-                Debug.WriteLine("Added event to " + animatronic.GetName());
             }
         }
 

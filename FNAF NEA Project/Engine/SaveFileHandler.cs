@@ -19,12 +19,10 @@ namespace FNAF_NEA_Project.Engine
             {
                 string[] Data = File.ReadAllLines(PATH_NAME);
 
-                if (Data.Length >= 4)
+                if (Data.Length >= 2)
                 {
                     SaveData.NightNum = Convert.ToInt32(Data[0]);
                     SaveData.CustomNight = Convert.ToBoolean(Data[1]);
-                    SaveData.MaxMode = Convert.ToBoolean(Data[2]);
-                    SaveData.MaxModeAllChallenges = Convert.ToBoolean(Data[3]);
                 }
                 else return false;
 
@@ -36,7 +34,7 @@ namespace FNAF_NEA_Project.Engine
         public static void WriteSaveData()
         {
             if (!Directory.Exists(DICT_NAME)) Directory.CreateDirectory(DICT_NAME);
-            File.WriteAllText(PATH_NAME, SaveData.NightNum + "\n" + SaveData.CustomNight + "\n" + SaveData.MaxMode + "\n" + SaveData.MaxModeAllChallenges);
+            File.WriteAllText(PATH_NAME, SaveData.NightNum + "\n" + SaveData.CustomNight);
         }
     }
 }

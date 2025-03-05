@@ -126,7 +126,7 @@ namespace FNAF_NEA_Project.Engine
             CurrentTime = (float)Random.Shared.NextDouble() * -5f;
             AnimatronicDict.Add(Name, this);
             NextEntrance = AvailableEntrances[random.Next(AvailableEntrances.Length)];
-            UpdateNextMovement();
+            UpdateNextMovement(false);
         }
 
         public override void LoadContent()
@@ -160,7 +160,7 @@ namespace FNAF_NEA_Project.Engine
             }
         }
 
-        private void UpdateNextMovement()
+        private void UpdateNextMovement(bool CalledFromMove)
         {
             // Finds target room
             if ((CurrentRoom != 13) && (!Returning) && (!DoorInFace))
@@ -179,19 +179,25 @@ namespace FNAF_NEA_Project.Engine
                     }
                 }
                 NextRoom = Game1.GetOfficeScene().Building.GetNextRoom(CurrentRoom, Target);
-                MaxTime = Game1.GetOfficeScene().Building.GetTempRoomTime(CurrentRoom, NextRoom) * BaseTime;
+                if (NextRoom != CurrentRoom)
+                    MaxTime = Game1.GetOfficeScene().Building.GetTempRoomTime(CurrentRoom, NextRoom) * BaseTime;
+
+                if (Challenges.OutputCheat && CalledFromMove)
+                    Debug.WriteLine(", next room in path is " + NextRoom + ", target room is room " + Target);
             }
         }
 
         private void UpdateNextMovement(object sender, ElapsedEventArgs e)
         {
-            UpdateNextMovement();
+            UpdateNextMovement(false);
         }
 
         private void Move()
         {
             if (Challenges.OutputCheat && (CurrentRoom == 9 || CurrentRoom == 10 || CurrentRoom == 11))
                 Debug.WriteLine(Name + " has left");
+            else if (Challenges.OutputCheat)
+                Debug.Write(Name + " has moved to room " + NextRoom);
 
             if ((!Challenges.SilentSteps) && (CurrentRoom != 9) && (CurrentRoom != 11))
                 MoveSound.Play();
@@ -199,13 +205,11 @@ namespace FNAF_NEA_Project.Engine
             Game1.GetOfficeScene().Cameras.ShowAnimMovement(Building.IDToCamNum(CurrentRoom), Building.IDToCamNum(NextRoom));
             CurrentRoom = NextRoom;
             CurrentTime = 0f;
-            UpdateNextMovement();
+
+            UpdateNextMovement(true);
             UpdateSprite();
             if (CurrentRoom == 13)
                 Jumpscare();
-
-            if (Challenges.OutputCheat && (CurrentRoom == 9 || CurrentRoom == 10 || CurrentRoom == 11))
-                Debug.WriteLine(Name + " is attacking in " + NextEntrance);
         }
 
         public void HallwayFlashed()
