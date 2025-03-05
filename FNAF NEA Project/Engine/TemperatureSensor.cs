@@ -84,11 +84,7 @@ namespace FNAF_NEA_Project.Engine
             else if (!TempGroup.IsOnCoolDown(CurrentTempGroup) && !CanCool)
                 CanCool = true;
 
-            // Only make the button active IF the cameras are up
-            if (CoolButton.GetActive() != CanCool && CamUp)
-                CoolButton.SetActive(CanCool && CamUp);
-            if (CoolDisabled.Visible != (!CanCool && CamUp))
-                CoolDisabled.Visible = !CanCool && CamUp;
+            UpdateCoolDisabled();
         }
 
         public void SetVisible(bool visible)
@@ -98,6 +94,11 @@ namespace FNAF_NEA_Project.Engine
             TempBarFGSprite.Visible = visible;
             CoolButton.SetActive(visible);
 
+            UpdateCoolDisabled();
+        }
+
+        private void UpdateCoolDisabled()
+        {
             // Only make the button active IF the cameras are up
             if (CoolButton.GetActive() != CanCool && CamUp)
                 CoolButton.SetActive(CanCool && CamUp);
